@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="https://sbcoder.cn/"/>
   <updated>2019-03-21T03:57:26.875Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>https://sbcoder.cn/</id>
   
   <author>
     <name>ai0by</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2019/03/21/hello-world/"/>
-    <id>http://yoursite.com/2019/03/21/hello-world/</id>
+    <link href="https://sbcoder.cn/2019/03/21/hello-world/"/>
+    <id>https://sbcoder.cn/2019/03/21/hello-world/</id>
     <published>2019-03-21T03:57:26.875Z</published>
     <updated>2019-03-21T03:57:26.875Z</updated>
     
