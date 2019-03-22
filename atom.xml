@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2019-03-22T03:10:52.997Z</updated>
+  <updated>2019-03-22T05:11:11.990Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>岛国推特妹子图爬虫</title>
+    <link href="https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html"/>
+    <id>https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html</id>
+    <published>2019-03-22T03:54:58.000Z</published>
+    <updated>2019-03-22T05:11:11.990Z</updated>
+    
+    <content type="html"><![CDATA[<p>LOC的大佬们分享了一个网站，收集了很多岛国的妹子图和她们的推特<br>地址：<a href="http://jigadori.fkoji.com" target="_blank" rel="noopener">岛国妹子推特</a><br>推特不是很感兴趣，就爬一下图片好了~</p><h2 id="爬虫介绍"><a href="#爬虫介绍" class="headerlink" title="爬虫介绍"></a>爬虫介绍</h2><h3 id="爬虫环境："><a href="#爬虫环境：" class="headerlink" title="爬虫环境："></a>爬虫环境：</h3><ul><li>Python2.7.9 可更替为3，自行更替</li><li>BeautifulSoup4</li><li>requests</li></ul><h3 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spy</span><span class="params">(url)</span>:</span></span><br><span class="line">    req = urllib2.Request(url)</span><br><span class="line">    req = urllib2.urlopen(req)</span><br><span class="line">    page = req.read()</span><br><span class="line">    soup = BeautifulSoup(page, <span class="string">"html.parser"</span>)</span><br><span class="line">    <span class="keyword">for</span> imgSoup <span class="keyword">in</span> soup.find_all(<span class="string">'div'</span>, &#123;<span class="string">"class"</span>: <span class="string">"row"</span>&#125;):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> imgSoup.find_all(<span class="string">'div'</span>, &#123;<span class="string">'class'</span>: <span class="string">'photo'</span>&#125;):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> i.find(<span class="string">'div'</span>, &#123;<span class="string">'class'</span>: <span class="string">'photo-link-outer'</span>&#125;).find(<span class="string">'a'</span>).find_all(<span class="string">'img'</span>):</span><br><span class="line">                img = j.get(<span class="string">"src"</span>)</span><br><span class="line">                <span class="keyword">print</span> img</span><br><span class="line">                str = random.sample(<span class="string">'zyxwvutsrqponmlkjihgfedcba'</span>, <span class="number">6</span>)</span><br><span class="line">                downImg(img, str)</span><br><span class="line">    nexturl = soup.find(<span class="string">'p'</span>,&#123;<span class="string">'class'</span>:<span class="string">'go-to-next-page'</span>&#125;)</span><br><span class="line">    nexturl = nexturl.find(<span class="string">'a'</span>).get(<span class="string">'href'</span>)</span><br><span class="line">    pageurl = <span class="string">"http://jigadori.fkoji.com"</span>+nexturl</span><br><span class="line">    spy(pageurl)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">downImg</span><span class="params">(img,m)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = requests.get(img)</span><br><span class="line">    <span class="keyword">except</span> Exception , e:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"图片获取失败"</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'./img/good%s.jpg'</span> % m, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(r.content)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    url = <span class="string">"http://jigadori.fkoji.com"</span></span><br><span class="line">    spy(url)</span><br></pre></td></tr></table></figure><h2 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h2><p>看一下，网页构造，发现首页底部有下一页标签，BeautifulSoup取Class取值递归获取下一页地址<br>图片同上<br>整体难度不高，有兴趣的可以拿这个网站练练手~</p><h2 id="演示截图"><a href="#演示截图" class="headerlink" title="演示截图"></a>演示截图</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://fulicos.sbcoder.cn/2019/03/21/5c92e798d4689.png" alt="演示数据1" title>                </div>                <div class="image-caption">演示数据1</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://fulicos.sbcoder.cn/2019/03/21/5c92e794e9827.png" alt="演示数据2" title>                </div>                <div class="image-caption">演示数据2</div>            </figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;LOC的大佬们分享了一个网站，收集了很多岛国的妹子图和她们的推特&lt;br&gt;地址：&lt;a href=&quot;http://jigadori.fkoji.com&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;岛国妹子推特&lt;/a&gt;&lt;br&gt;推特不是很感兴趣，就爬一下图片好了
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="https://sbcoder.cn/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="https://sbcoder.cn/tags/Python/"/>
+    
+      <category term="爬虫" scheme="https://sbcoder.cn/tags/%E7%88%AC%E8%99%AB/"/>
+    
+      <category term="福利" scheme="https://sbcoder.cn/tags/%E7%A6%8F%E5%88%A9/"/>
+    
+  </entry>
   
   <entry>
     <title>Python+selenium针对网银控件过登录取数据</title>
@@ -50,10 +79,10 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="https://sbcoder.cn/2019/03/21/undefined.html"/>
-    <id>https://sbcoder.cn/2019/03/21/undefined.html</id>
+    <link href="https://sbcoder.cn/2019/03/21/Hello_world.html"/>
+    <id>https://sbcoder.cn/2019/03/21/Hello_world.html</id>
     <published>2019-03-21T03:57:26.875Z</published>
-    <updated>2019-03-21T03:57:26.875Z</updated>
+    <updated>2019-03-22T03:13:12.430Z</updated>
     
     <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
     
