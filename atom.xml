@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2019-03-27T03:50:12.114Z</updated>
+  <updated>2019-03-29T06:23:54.691Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>192TT(192tb)套图吧整站爬虫</title>
+    <link href="https://sbcoder.cn/2019/03/28/192tt_Spider.html"/>
+    <id>https://sbcoder.cn/2019/03/28/192tt_Spider.html</id>
+    <published>2019-03-28T08:15:16.000Z</published>
+    <updated>2019-03-29T06:23:54.691Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="观察目录结构"><a href="#观察目录结构" class="headerlink" title="观察目录结构"></a>观察目录结构</h2><p>目标网站：192tb.com<br>网站结构复杂，但也不是太复杂，总体来说都写在导航栏上面了，本以为是new分类下就是所有的文章了，后来发现不是，需要遍历整个导航分类，由于每个分类都有很庞大的资源，因此我决定写成配置文件的形式，建立config.py</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">mt  = <span class="string">'https://www.192tb.com/listinfo-1-1.html'</span>                  <span class="comment"># 美图</span></span><br><span class="line">mt1 = <span class="string">'https://www.192tb.com/meitu/xingganmeinv/'</span>  <span class="comment"># 性感美女</span></span><br><span class="line">mt2 = <span class="string">'https://www.192tb.com/meitu/siwameitui/'</span>    <span class="comment"># 丝袜美腿</span></span><br><span class="line">mt3 = <span class="string">'https://www.192tb.com/meitu/weimeixiezhen/'</span> <span class="comment"># 唯美写真</span></span><br><span class="line">mt4 = <span class="string">'https://www.192tb.com/meitu/wangluomeinv/'</span>  <span class="comment"># 网络美女</span></span><br><span class="line">mt5 = <span class="string">'https://www.192tb.com/meitu/gaoqingmeinv/'</span>  <span class="comment"># 高清美女</span></span><br><span class="line">mt6 = <span class="string">'https://www.192tb.com/meitu/motemeinv/'</span>     <span class="comment"># 模特美女</span></span><br><span class="line">mt7 = <span class="string">'https://www.192tb.com/meitu/tiyumeinv/'</span>     <span class="comment"># 体育美女</span></span><br><span class="line">mt8 = <span class="string">'https://www.192tb.com/meitu/dongmanmeinv/'</span>  <span class="comment"># 动漫美女</span></span><br><span class="line">mt9 = <span class="string">'https://www.192tb.com/new/ugirlapp/'</span>        <span class="comment"># 爱尤物APP/尤果网</span></span><br><span class="line"></span><br><span class="line">gc  = <span class="string">'https://www.192tb.com/gc/'</span>                   <span class="comment"># 国产</span></span><br><span class="line">gc1 = <span class="string">'https://www.192tb.com/gc/bl/'</span> <span class="comment"># beautyleg1</span></span><br></pre></td></tr></table></figure><p>顶级分类和二级分类不便多说，这里只是测试并没有收录所有的分类，有兴趣可以自己添加</p><p>进入分类页后既是套图封面，从这里可以爬取套图的链接，分类页的底部也是有下一页的选项，可以根据下一页来获取下一个分类页的链接，以此递归，并获取链接</p><p>获取到套图链接后发现每个单页面都是需要点击下一张图片来做的，单页面中的图片，使用BeautifulSoup即可轻松获取，由于不知道一套图里面有多少张，我这边使用递归的方式，走到最后一张，即退出递归。</p><h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><h3 id="获取单个套图并下载"><a href="#获取单个套图并下载" class="headerlink" title="获取单个套图并下载"></a>获取单个套图并下载</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSingleData</span><span class="params">(url,singleTitle,i = <span class="number">1</span>)</span>:</span></span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    soup = BeautifulSoup(response.text,<span class="string">"html.parser"</span>)</span><br><span class="line">    imgUrl = soup.find(id = <span class="string">'p'</span>).find(<span class="string">'center'</span>).find(<span class="string">'img'</span>).get(<span class="string">'lazysrc'</span>)</span><br><span class="line">    <span class="keyword">print</span> imgUrl</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        j = i + <span class="number">1</span></span><br><span class="line">        result = <span class="string">'_%s.html'</span>%i <span class="keyword">in</span> url</span><br><span class="line">        <span class="keyword">if</span> result:</span><br><span class="line">            nextImg = response.url.replace(<span class="string">'_%s.html'</span>%i, <span class="string">'_%s.html'</span>%j)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            nextImg = response.url.replace(<span class="string">'.html'</span>, <span class="string">'_%s.html'</span>%j)</span><br><span class="line">        <span class="comment"># print nextImg</span></span><br><span class="line">        downImg(imgUrl,singleTitle,i)</span><br><span class="line">        getSingleData(nextImg,j)</span><br><span class="line">    <span class="keyword">except</span> Exception,e:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure><h3 id="获取下一页页面信息"><a href="#获取下一页页面信息" class="headerlink" title="获取下一页页面信息"></a>获取下一页页面信息</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getPage</span><span class="params">(url,new = <span class="number">1</span>,i = <span class="number">1</span>)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'开始采集第%s页'</span>%i</span><br><span class="line">    <span class="keyword">print</span> url</span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    soup = BeautifulSoup(response.text,<span class="string">"html.parser"</span>)</span><br><span class="line">    <span class="keyword">for</span> dataUrl <span class="keyword">in</span> soup.find(<span class="string">'div'</span>,&#123;<span class="string">'class'</span>:<span class="string">'piclist'</span>&#125;).find(<span class="string">'ul'</span>).find_all(<span class="string">'li'</span>):</span><br><span class="line">        singleDataUrl = <span class="string">'https://www.192tb.com/'</span>+dataUrl.find(<span class="string">'a'</span>).get(<span class="string">'href'</span>)</span><br><span class="line">        <span class="keyword">print</span> singleDataUrl</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            singleTitle = dataUrl.find(<span class="string">'a'</span>).find(<span class="string">'img'</span>).get(<span class="string">'alt'</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception,e:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">print</span> singleTitle</span><br><span class="line">        getSingleData(singleDataUrl,singleTitle)</span><br><span class="line">    result = <span class="string">'_%s.html'</span> % i <span class="keyword">in</span> url</span><br><span class="line">    j = i + <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> new != <span class="number">1</span>:</span><br><span class="line">        nextPageUrl = url.replace(<span class="string">'listinfo-1-%s.html'</span> % i, <span class="string">'listinfo-1-%s.html'</span> % j)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> result:</span><br><span class="line">            nextPageUrl = url.replace(<span class="string">'index_%s.html'</span> % i, <span class="string">'index_%s.html'</span> % j)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            nextPageUrl = url.replace(url, url+<span class="string">'/index_%s.html'</span> % j)</span><br><span class="line">    getPage(nextPageUrl,new,j)</span><br></pre></td></tr></table></figure><h2 id="演示及下载"><a href="#演示及下载" class="headerlink" title="演示及下载"></a>演示及下载</h2><p><a href="https://github.com/ai0by/ai0by-spider/tree/master/192tt" target="_blank" rel="noopener">Github</a><br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://fulicos.sbcoder.cn/2019/03/29/5c9dba3205190.png" alt="192tt演示图" title>                </div>                <div class="image-caption">192tt演示图</div>            </figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;观察目录结构&quot;&gt;&lt;a href=&quot;#观察目录结构&quot; class=&quot;headerlink&quot; title=&quot;观察目录结构&quot;&gt;&lt;/a&gt;观察目录结构&lt;/h2&gt;&lt;p&gt;目标网站：192tb.com&lt;br&gt;网站结构复杂，但也不是太复杂，总体来说都写在导航栏上面了，本以为是new
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="https://sbcoder.cn/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="https://sbcoder.cn/tags/Python/"/>
+    
+      <category term="爬虫" scheme="https://sbcoder.cn/tags/%E7%88%AC%E8%99%AB/"/>
+    
+      <category term="福利" scheme="https://sbcoder.cn/tags/%E7%A6%8F%E5%88%A9/"/>
+    
+  </entry>
   
   <entry>
     <title>正则表达式应用，常用取值表（记录）</title>
@@ -101,11 +130,11 @@
     
       <category term="Python" scheme="https://sbcoder.cn/tags/Python/"/>
     
+      <category term="爬虫" scheme="https://sbcoder.cn/tags/%E7%88%AC%E8%99%AB/"/>
+    
       <category term="网银" scheme="https://sbcoder.cn/tags/%E7%BD%91%E9%93%B6/"/>
     
       <category term="selenium" scheme="https://sbcoder.cn/tags/selenium/"/>
-    
-      <category term="爬虫" scheme="https://sbcoder.cn/tags/%E7%88%AC%E8%99%AB/"/>
     
   </entry>
   
