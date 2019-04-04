@@ -21,19 +21,17 @@
     
     
     <meta name="keywords" content>
-    <meta name="description" content="二维码生成介绍使用场景很多，简单来讲，给我地址，我给你图，直接将地址放在img标签内即可~ 参数说明以GET的方式提交到：https://api.0161.org/qrcode/qrcode.php    参数 数值类型 示例 是否必传      url String https://sbcoder.cn 是   err String L (L,M,Q,H四种对应容错级别，不传默认L) 否   s">
+    <meta name="description" content="微博图床-远程图片上传api介绍我们在使用爬虫相关内容的时候，存放图片时往往会遇到图片尺寸过大，存储不方便等问题，这时候，存放在一个永久存储的云上面就很有必要，微博是一个不限流量，全球CDN的图床~微博也是有缺点的，他并不是一个易于管理的图床，仅限于存放图片但不能管理图片，如果希望使用可以管理的图床，可以参考使用自建图床，参考我的:FuliCOSIMG 参数说明以GET的方式提交到：https:/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="api">
-<meta property="og:url" content="https://sbcoder.cn/api/index.html">
+<meta property="og:url" content="https://sbcoder.cn/api/sinaImg.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
-<meta property="og:description" content="二维码生成介绍使用场景很多，简单来讲，给我地址，我给你图，直接将地址放在img标签内即可~ 参数说明以GET的方式提交到：https://api.0161.org/qrcode/qrcode.php    参数 数值类型 示例 是否必传      url String https://sbcoder.cn 是   err String L (L,M,Q,H四种对应容错级别，不传默认L) 否   s">
+<meta property="og:description" content="微博图床-远程图片上传api介绍我们在使用爬虫相关内容的时候，存放图片时往往会遇到图片尺寸过大，存储不方便等问题，这时候，存放在一个永久存储的云上面就很有必要，微博是一个不限流量，全球CDN的图床~微博也是有缺点的，他并不是一个易于管理的图床，仅限于存放图片但不能管理图片，如果希望使用可以管理的图床，可以参考使用自建图床，参考我的:FuliCOSIMG 参数说明以GET的方式提交到：https:/">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://api.0161.org/qrcode/qrcode.php?url=https://sbcoder.cn">
-<meta property="og:updated_time" content="2019-04-04T07:27:59.307Z">
+<meta property="og:updated_time" content="2019-04-04T07:27:58.387Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="api">
-<meta name="twitter:description" content="二维码生成介绍使用场景很多，简单来讲，给我地址，我给你图，直接将地址放在img标签内即可~ 参数说明以GET的方式提交到：https://api.0161.org/qrcode/qrcode.php    参数 数值类型 示例 是否必传      url String https://sbcoder.cn 是   err String L (L,M,Q,H四种对应容错级别，不传默认L) 否   s">
-<meta name="twitter:image" content="https://api.0161.org/qrcode/qrcode.php?url=https://sbcoder.cn">
+<meta name="twitter:description" content="微博图床-远程图片上传api介绍我们在使用爬虫相关内容的时候，存放图片时往往会遇到图片尺寸过大，存储不方便等问题，这时候，存放在一个永久存储的云上面就很有必要，微博是一个不限流量，全球CDN的图床~微博也是有缺点的，他并不是一个易于管理的图床，仅限于存放图片但不能管理图片，如果希望使用可以管理的图床，可以参考使用自建图床，参考我的:FuliCOSIMG 参数说明以GET的方式提交到：https:/">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
     
@@ -151,8 +149,9 @@
 <div class="container body-wrap">
     <article class="page-article fade" itemprop="blogPage">
         <div class="post-content page-content" id="page-content" itemprop="pageContent">
-            <h2 id="二维码生成"><a href="#二维码生成" class="headerlink" title="二维码生成"></a>二维码生成</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>使用场景很多，简单来讲，给我地址，我给你图，直接将地址放在img标签内即可~</p>
-<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><p>以GET的方式提交到：<a href="https://api.0161.org/qrcode/qrcode.php" target="_blank" rel="noopener">https://api.0161.org/qrcode/qrcode.php</a></p>
+            <h2 id="微博图床-远程图片上传api"><a href="#微博图床-远程图片上传api" class="headerlink" title="微博图床-远程图片上传api"></a>微博图床-远程图片上传api</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>我们在使用爬虫相关内容的时候，存放图片时往往会遇到图片尺寸过大，存储不方便等问题，这时候，存放在一个永久存储的云上面就很有必要，微博是一个不限流量，全球CDN的图床~<br>微博也是有缺点的，他并不是一个易于管理的图床，仅限于存放图片但不能管理图片，如果希望使用可以管理的图床，可以参考使用自建图床，参考我的:<a href="https://img.0161.org" target="_blank" rel="noopener">FuliCOSIMG</a></p>
+<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><p>以GET的方式提交到：<a href="https://api.0161.org/sinaimg/sinaImg.php" target="_blank" rel="noopener">https://api.0161.org/sinaimg/sinaImg.php</a></p>
+<p>传递参数类型：GET POST</p>
 <table>
 <thead>
 <tr>
@@ -166,39 +165,15 @@
 <tr>
 <td style="text-align:center">url</td>
 <td style="text-align:center">String</td>
-<td style="text-align:center"><a href="https://sbcoder.cn">https://sbcoder.cn</a></td>
-<td style="text-align:center">是</td>
-</tr>
-<tr>
-<td style="text-align:center">err</td>
-<td style="text-align:center">String</td>
-<td style="text-align:center">L (L,M,Q,H四种对应容错级别，不传默认L)</td>
-<td style="text-align:center">否</td>
-</tr>
-<tr>
-<td style="text-align:center">size</td>
-<td style="text-align:center">String</td>
-<td style="text-align:center">7 (可以选择1~9999之间的值，对应不同大小，默认7)</td>
-<td style="text-align:center">否</td>
-</tr>
-<tr>
-<td style="text-align:center">logo</td>
-<td style="text-align:center">String</td>
 <td style="text-align:center"><a href="https://sbcoder.cn/img/avatar.jpg">https://sbcoder.cn/img/avatar.jpg</a></td>
-<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
 </tr>
 </tbody>
 </table>
-<p>返回值类型 : 直接返回图片</p>
-<h3 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h3><p>直接访问以下地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://api.0161.org/qrcode/qrcode.php?url=https://sbcoder.cn</span><br><span class="line">https://api.0161.org/qrcode/qrcode.php?url=https://sbcoder.cn&amp;err=L&amp;size=7&amp;logo=https://sbcoder.cn/img/avatar.jpg</span><br></pre></td></tr></table></figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://api.0161.org/qrcode/qrcode.php?url=https://sbcoder.cn" alt="示例图片" title>
-                </div>
-                <div class="image-caption">示例图片</div>
-            </figure>
+<p>返回参数类型 ： JSON</p>
+<h3 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h3><p>示例:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"large"</span>:<span class="string">"http://ww2.sinaimg.cn/bmiddle/0062WdSely1g1p8mlciyrg30390120jl.gif"</span>&#125;</span><br></pre></td></tr></table></figure></p>
+<p>PHP DEMO<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$data = <span class="keyword">array</span>(</span><br><span class="line">	<span class="string">'url'</span> =&gt; <span class="string">"https://sbcoder.cn/img/avatar.jpg"</span>, </span><br><span class="line">);</span><br><span class="line"><span class="keyword">echo</span> curlPost(<span class="string">"https://api.0161.org/sinaimg/sinaImg.php"</span>,$data);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">curlPost</span><span class="params">($url,$res)</span></span>&#123;</span><br><span class="line">	$curl = curl_init();</span><br><span class="line">	curl_setopt($curl, CURLOPT_URL, $url);</span><br><span class="line">	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, <span class="number">0</span>); </span><br><span class="line">	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, <span class="number">1</span>); </span><br><span class="line">	curl_setopt($curl, CURLOPT_AUTOREFERER, <span class="number">1</span>);</span><br><span class="line">	curl_setopt($curl, CURLOPT_POST, <span class="number">1</span>); </span><br><span class="line">	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($res));</span><br><span class="line">	curl_setopt($curl, CURLOPT_TIMEOUT, <span class="number">30</span>); </span><br><span class="line">	curl_setopt($curl, CURLOPT_HEADER, <span class="number">0</span>); </span><br><span class="line">	curl_setopt($curl, CURLOPT_RETURNTRANSFER, <span class="number">1</span>); </span><br><span class="line">	$result = curl_exec($curl);</span><br><span class="line">	curl_close($curl);</span><br><span class="line">    <span class="keyword">return</span> $result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
         </div>
 
         
@@ -217,7 +192,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/api/&title=《api》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/api/sinaImg.html&title=《api》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -227,22 +202,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/api/&title=《api》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/api/sinaImg.html&title=《api》 — 风向标 | 分享与创造&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/api/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/api/sinaImg.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《api》 — 风向标 | 分享与创造&url=https://sbcoder.cn/api/&via=https://sbcoder.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《api》 — 风向标 | 分享与创造&url=https://sbcoder.cn/api/sinaImg.html&via=https://sbcoder.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/api/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/api/sinaImg.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -382,7 +357,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/api/&title=《api》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/api/sinaImg.html&title=《api》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -392,22 +367,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/api/&title=《api》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/api/sinaImg.html&title=《api》 — 风向标 | 分享与创造&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/api/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/api/sinaImg.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《api》 — 风向标 | 分享与创造&url=https://sbcoder.cn/api/&via=https://sbcoder.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《api》 — 风向标 | 分享与创造&url=https://sbcoder.cn/api/sinaImg.html&via=https://sbcoder.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/api/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/api/sinaImg.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -418,7 +393,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAAAAAAZai4+AAABU0lEQVR42u3aywqDQBBE0fn/nzaQVSCxqa4eA1p3ViKDHjf9ctaS1/Fen9dn62zPumLBgvUglv6a7+v6Od4nwYKVzFKCQk2p7+jvggULlpKea1ZNgQUL1t4AURfEsGDB8ljddrRuSv9ay8OC9QiWN0jyri+fb8GCdUPWYa1u0m0/HxasMJZS/s6HR/qepVflsGA9lNUdyNbDI++zfwQIWLACWN5BAX2/OSyGBSue5fWSSuptjI1gwYpkdRP2vJiWGldYsGJYkzTsNa7mx8OCFcyapPZJoIEFK5OlDI/04wjdgZR09AcWrBiWEgJG6Vb+IQoLVhrLPAowaGKlMAELVhhrbzGtT2XbQ15YsAJYVxy52zBIggUrkqX/bdQL6G5Sl2ISLFiw5HZXaYBhwYLlsXTQPHzAgpXJ0n+fTPY3xkawYIWxukFEPxKkELfNt2DBuivrBe7QVOx8wCvQAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAAByElEQVR42u3ay07FMAwFwPv/P122SCi9x04dFWmyqgqUycby6/OJz/Xn/H6/ev79ZvXNz8TBxcXd5l63556y+s3VT1fcxICLi3ueW/3cPn31/MWGi4v7Sm7yV/kFcHFx/zt3xbp/n7/BxcV9G7cXgO4/nXxtsFbDxcXd4OZdyrnnkf4uLi5ui3ttnzzM7f9fXFzcM9xq0ElSnGq7pFwa4eLiDnN7LYy8Ybpz1WUIw8XFPcKdK3jyy0frXLi4uMe5OyVNtcHRHLTg4uIe5z4b4HZKo61pMC4u7kPcajM0KYfGazVcXNwxblRyBIEmb6PkCxxfSiBcXNxhblKW5IidUFVOnnBxcY9wqylLTt8JlA/sjuHi4rb6DHmq0RuHVFculnsiuLi4w9xeYpE3U3aGsoUsDBcX91FuEqR6ixT3328OaXBxcY9w88KjlwzlFyu0WnBxcYe5V/FMt1EKMx9cXNwxbrV5Wh2u5Otf1WQIFxd3mltdz9rpweQLW9FiFi4u7jC3l7LsrF/kQRMXF/fN3N5wJQlYhVwMFxf3ZdxqatJbuRhPcXBxcQeKn941dhqsy8kPLi7uGDdvmFbHJPlW1Uh/FxcXt8P9ARaHQ/rxjnSgAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
 
 
