@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>岛国推特妹子图爬虫 | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,爬虫,福利">
+    <meta name="description" content="LOC的大佬们分享了一个网站，收集了很多岛国的妹子图和她们的推特地址：岛国妹子推特推特不是很感兴趣，就爬一下图片好了~ 爬虫介绍爬虫环境： Python2.7.9 可更替为3，自行更替 BeautifulSoup4 requests  代码：12345678910111213141516171819202122232425262728293031323334# -*- coding: utf-8">
+<meta name="keywords" content="Python,爬虫,福利">
+<meta property="og:type" content="article">
+<meta property="og:title" content="岛国推特妹子图爬虫">
+<meta property="og:url" content="https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="LOC的大佬们分享了一个网站，收集了很多岛国的妹子图和她们的推特地址：岛国妹子推特推特不是很感兴趣，就爬一下图片好了~ 爬虫介绍爬虫环境： Python2.7.9 可更替为3，自行更替 BeautifulSoup4 requests  代码：12345678910111213141516171819202122232425262728293031323334# -*- coding: utf-8">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://fulicos.sbcoder.cn/2019/03/21/5c92e798d4689.png">
+<meta property="og:image" content="http://fulicos.sbcoder.cn/2019/03/21/5c92e794e9827.png">
+<meta property="og:updated_time" content="2019-03-22T05:11:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="岛国推特妹子图爬虫">
+<meta name="twitter:description" content="LOC的大佬们分享了一个网站，收集了很多岛国的妹子图和她们的推特地址：岛国妹子推特推特不是很感兴趣，就爬一下图片好了~ 爬虫介绍爬虫环境： Python2.7.9 可更替为3，自行更替 BeautifulSoup4 requests  代码：12345678910111213141516171819202122232425262728293031323334# -*- coding: utf-8">
+<meta name="twitter:image" content="http://fulicos.sbcoder.cn/2019/03/21/5c92e798d4689.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api">
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">岛国推特妹子图爬虫</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">岛国推特妹子图爬虫</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-03-22T03:54:58.000Z" itemprop="datePublished" class="page-time">
+  2019-03-22
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Python/">Python</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#爬虫介绍"><span class="post-toc-number">1.</span> <span class="post-toc-text">爬虫介绍</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#爬虫环境："><span class="post-toc-number">1.1.</span> <span class="post-toc-text">爬虫环境：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#代码："><span class="post-toc-number">1.2.</span> <span class="post-toc-text">代码：</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#整体思路"><span class="post-toc-number">2.</span> <span class="post-toc-text">整体思路</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#演示截图"><span class="post-toc-number">3.</span> <span class="post-toc-text">演示截图</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-岛国推特妹子图爬虫" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">岛国推特妹子图爬虫</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-03-22 11:54:58" datetime="2019-03-22T03:54:58.000Z" itemprop="datePublished">2019-03-22</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Python/">Python</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>LOC的大佬们分享了一个网站，收集了很多岛国的妹子图和她们的推特<br>地址：<a href="http://jigadori.fkoji.com" target="_blank" rel="noopener">岛国妹子推特</a><br>推特不是很感兴趣，就爬一下图片好了~</p>
+<h2 id="爬虫介绍"><a href="#爬虫介绍" class="headerlink" title="爬虫介绍"></a>爬虫介绍</h2><h3 id="爬虫环境："><a href="#爬虫环境：" class="headerlink" title="爬虫环境："></a>爬虫环境：</h3><ul>
+<li>Python2.7.9 可更替为3，自行更替</li>
+<li>BeautifulSoup4</li>
+<li>requests</li>
+</ul>
+<h3 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spy</span><span class="params">(url)</span>:</span></span><br><span class="line">    req = urllib2.Request(url)</span><br><span class="line">    req = urllib2.urlopen(req)</span><br><span class="line">    page = req.read()</span><br><span class="line">    soup = BeautifulSoup(page, <span class="string">"html.parser"</span>)</span><br><span class="line">    <span class="keyword">for</span> imgSoup <span class="keyword">in</span> soup.find_all(<span class="string">'div'</span>, &#123;<span class="string">"class"</span>: <span class="string">"row"</span>&#125;):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> imgSoup.find_all(<span class="string">'div'</span>, &#123;<span class="string">'class'</span>: <span class="string">'photo'</span>&#125;):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> i.find(<span class="string">'div'</span>, &#123;<span class="string">'class'</span>: <span class="string">'photo-link-outer'</span>&#125;).find(<span class="string">'a'</span>).find_all(<span class="string">'img'</span>):</span><br><span class="line">                img = j.get(<span class="string">"src"</span>)</span><br><span class="line">                <span class="keyword">print</span> img</span><br><span class="line">                str = random.sample(<span class="string">'zyxwvutsrqponmlkjihgfedcba'</span>, <span class="number">6</span>)</span><br><span class="line">                downImg(img, str)</span><br><span class="line">    nexturl = soup.find(<span class="string">'p'</span>,&#123;<span class="string">'class'</span>:<span class="string">'go-to-next-page'</span>&#125;)</span><br><span class="line">    nexturl = nexturl.find(<span class="string">'a'</span>).get(<span class="string">'href'</span>)</span><br><span class="line">    pageurl = <span class="string">"http://jigadori.fkoji.com"</span>+nexturl</span><br><span class="line">    spy(pageurl)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">downImg</span><span class="params">(img,m)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = requests.get(img)</span><br><span class="line">    <span class="keyword">except</span> Exception , e:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"图片获取失败"</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'./img/good%s.jpg'</span> % m, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(r.content)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    url = <span class="string">"http://jigadori.fkoji.com"</span></span><br><span class="line">    spy(url)</span><br></pre></td></tr></table></figure>
+<h2 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h2><p>看一下，网页构造，发现首页底部有下一页标签，BeautifulSoup取Class取值递归获取下一页地址<br>图片同上<br>整体难度不高，有兴趣的可以拿这个网站练练手~</p>
+<h2 id="演示截图"><a href="#演示截图" class="headerlink" title="演示截图"></a>演示截图</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://fulicos.sbcoder.cn/2019/03/21/5c92e798d4689.png" alt="演示数据1" title>
+                </div>
+                <div class="image-caption">演示数据1</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://fulicos.sbcoder.cn/2019/03/21/5c92e794e9827.png" alt="演示数据2" title>
+                </div>
+                <div class="image-caption">演示数据2</div>
+            </figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-03-22T05:11:10.000Z" itemprop="dateUpdated">2019-03-22 13:11:10</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/福利/">福利</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html&title=《岛国推特妹子图爬虫》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html&title=《岛国推特妹子图爬虫》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《岛国推特妹子图爬虫》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/03/25/Hello_world.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Hello World</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/03/21/Python_WY_Spider.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Python+selenium针对网银控件过登录取数据</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html&title=《岛国推特妹子图爬虫》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html&title=《岛国推特妹子图爬虫》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《岛国推特妹子图爬虫》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACOklEQVR42u3aQW7DMAwFUd//0i7QbRt5PmkXNTVaBQ1i82nBkqKOA6/ze336y4nXp9/+fM7xxJIhQ8ZrGemL179dB8S3g8cmQ4aMfRjrJMsDXVPXwa3T8UXMMmTIkNGgpt/KkCFDRj/hknSZloCd7ZMhQ8Y+DB5cWib2S8Obe3EZMmS8kJEOBv7y84PzDRkyZLyEcYYrbWI72xFEJUOGjNEMMlYkRR4PujPCvHijDBkyhjJq17b4NYvaYDK9oiFDhozdGCSBrgNaP42n4BtGAjJkyBjBIEmNX4NIQ68VoKhMlCFDxjgGH2HWwuLJPS0fZciQsQODDAtrTWl6daM1NJUhQ8YGDF72cV6nrIyLSxkyZIxm8MsNfMTIg+NDUNQwy5AhYyijNmjkF7n6p4DoSE6GDBmjGelr0iYzTb5pe1ycJ8iQIeO1DJ5S0zKRNKidRlqGDBm7MUjyvStB1578MVnLkCFjKIMftKWvr40zyVb+sjUyZMgYzehfHuUHZJ1yMPjvIUOGjHGM2pE9P6znqZMXkTfsvQwZMl7I4MVccEzfblaD6xcyZMgYzSBNJod1hgQkEV9kWhkyZAxlnOHqH6WR1BmPPGXIkDGaUcvQT+D5hTMZMmTsyUjLPnJVi+9W7QnxlQsZMmSMYNQO6GuDzH7nHZ8dypAhYxtGOj2sDQP4JYxiKDJkyNiAQUKsNaUk6IsmVoYMGaMZ/Ii/dhzWP/O7+K0MGTJGM2oNZNrc1j4/PsKUIUPGf2d8Ae+/5lQ2XEbJAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
