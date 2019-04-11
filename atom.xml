@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2019-04-11T12:32:17.000Z</updated>
+  <updated>2019-04-11T13:19:37.000Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://sbcoder.cn/2019/04/11/Discuz-Userinfo-To-Wordpress.html"/>
     <id>https://sbcoder.cn/2019/04/11/Discuz-Userinfo-To-Wordpress.html</id>
     <published>2019-04-11T12:06:06.000Z</published>
-    <updated>2019-04-11T12:32:17.000Z</updated>
+    <updated>2019-04-11T13:19:37.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>这个情景可能遇到的也不在少数，不想舍弃用户数据，还想让用户无需注册在新站保留账号。<br>实际当我们在迁移的时候，稍微了解数据库的同学应该明白想要迁移用户数据只需要迁移用户数据表即可。<br>实际上我也是这么做的，但是中途遇到了几个小问题，这里我总结一下！</p><h2 id="Discuz用户密码加密算法"><a href="#Discuz用户密码加密算法" class="headerlink" title="Discuz用户密码加密算法"></a>Discuz用户密码加密算法</h2><p>Discuz的用户信息都存放在 ‘<font color="#FF0000">pre_common_member}</font>‘  表里，包含了我们需要转移的 邮箱,用户名,密码,积分,ip 等各类信息<br>那么很简单了，便利这个表再插入到Wordpress表内即可<br>但在导入表之前需要先测试一下用户数据是否匹配以示严谨~<br>当我测试密码匹配的时候发现，这里的密码似乎并不匹配，首先我想到的就是应该是加盐了，但是纵观整个 ‘<font color="#FF0000">pre_common_member}</font>‘ 表，似乎并没有该有的字段<br>网上找了一圈发现Discuz的用户真实密码是存在 ‘<font color="#FF0000">pre_ucenter_members</font>‘ 表内的，’<font color="#FF0000">pre_common_member}</font>‘ 表内的密码我现在还不知道有什么用处，但至少跟我们需要迁移的数据没什么关联。<br>从  ‘<font color="#FF0000">pre_ucenter_members</font>‘ 表中找到了我们需要的 ‘<font color="#FF0000">salt</font>‘ 字段，经过测试得出Discuz的密码加密算法为<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">md5(md5(<span class="string">'password'</span>).<span class="string">'salt'</span>);</span><br></pre></td></tr></table></figure></p><p>tips: Discuz里面的salt是一个6位的 数字+字母 随机数</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>这个情景可能遇到的也不在少数，不想舍弃用户数据，还想让用户无需注册在新站保留账号。<br>实际当我们在迁移的时候，稍微了解数据库的同学应该明白想要迁移用户数据只需要迁移用户数据表即可。<br>实际上我也是这么做的，但是中途遇到了几个小问题，这里我总结一下！</p><h2 id="Discuz用户密码加密算法"><a href="#Discuz用户密码加密算法" class="headerlink" title="Discuz用户密码加密算法"></a>Discuz用户密码加密算法</h2><p>Discuz的用户信息都存放在 ‘<font color="#FF0000">pre_common_member</font>‘  表里，包含了我们需要转移的 邮箱,用户名,密码,积分,ip 等各类信息<br>那么很简单了，便利这个表再插入到Wordpress表内即可<br>但在导入表之前需要先测试一下用户数据是否匹配以示严谨~<br>当我测试密码匹配的时候发现，这里的密码似乎并不匹配，首先我想到的就是应该是加盐了，但是纵观整个 ‘<font color="#FF0000">pre_common_member</font>‘ 表，似乎并没有该有的字段<br>网上找了一圈发现Discuz的用户真实密码是存在 ‘<font color="#FF0000">pre_ucenter_members</font>‘ 表内的，’<font color="#FF0000">pre_common_member</font>‘ 表内的密码我现在还不知道有什么用处，但至少跟我们需要迁移的数据没什么关联。<br>从  ‘<font color="#FF0000">pre_ucenter_members</font>‘ 表中找到了我们需要的 ‘<font color="#FF0000">salt</font>‘ 字段，经过测试得出Discuz的密码加密算法为<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">md5(md5(<span class="string">'password'</span>).<span class="string">'salt'</span>);</span><br></pre></td></tr></table></figure></p><p>tips: Discuz里面的salt是一个6位的 数字+字母 随机数</p>]]></content>
     
     <summary type="html">
     
