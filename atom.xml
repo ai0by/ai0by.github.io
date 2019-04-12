@@ -105,23 +105,25 @@
   </entry>
   
   <entry>
-    <title>Hello World</title>
+    <title>博客迁移说明</title>
     <link href="https://sbcoder.cn/2019/03/25/Hello_world.html"/>
     <id>https://sbcoder.cn/2019/03/25/Hello_world.html</id>
     <published>2019-03-25T05:12:58.000Z</published>
-    <updated>2019-03-25T05:12:58.000Z</updated>
+    <updated>2019-04-12T14:57:49.000Z</updated>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<h2 id="关于迁移"><a href="#关于迁移" class="headerlink" title="关于迁移"></a>关于迁移</h2><p>博客总是在起起伏伏，关了又开，开了又关中反复，这一次，我将风向标博客放在了Github Page上。<br>程序采用了当下比较流行的静态博客程序 Hexo ，Hexo其实是一个非常好的程序，但由于我经常换电脑，以前用hexo搭建的博客数据丢失了很多次，后经过更换为Wordpress，Typecho之类的开源博客程序后，我又回到了 Hexo 的怀抱，可能是真的懒得折腾了，上了年纪？<br>这次我将源代码都备份好了，应该会长期更新，有什么好的东西我应该会分享出来，主打原创~<br>可能之前认识我的人也很少，但我这个域名还是很好记的，sb coder 也是一种自嘲吧，有想跟我交流技术或者有外包工作介绍给我的，我的微信与域名同号~<br>多的不说了，我将尽我所能，一周至少写一篇文章，可能有时候晚上回家写一点，一天写一点，一周下来也能写不少，希望各位监督~</p><h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><p>我是谁，职业是PHP，爱好Python，云服务器爱好者<br>支付接口对接，可以定制各类免签约支付接口，微信支付宝，有想法的朋友可以联系我 Telegram : ai0by</p><h2 id="承接业务"><a href="#承接业务" class="headerlink" title="承接业务"></a>承接业务</h2><p>支付相关业务，爬虫(几乎不要钱，练手)，PHP程序开发<br>服务器环境配置，PHP程序修改，PHP BUG排查</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+        &lt;h2 id=&quot;关于迁移&quot;&gt;&lt;a href=&quot;#关于迁移&quot; class=&quot;headerlink&quot; title=&quot;关于迁移&quot;&gt;&lt;/a&gt;关于迁移&lt;/h2&gt;&lt;p&gt;博客总是在起起伏伏，关了又开，开了又关中反复，这一次，我将风向标博客放在了Github Page上。&lt;br&gt;程序采用了当下比
       
     
     </summary>
     
+    
+      <category term="ai0by" scheme="https://sbcoder.cn/tags/ai0by/"/>
     
   </entry>
   
