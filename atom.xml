@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2019-04-11T13:19:37.000Z</updated>
+  <updated>2019-04-12T10:56:18.000Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -18,12 +18,12 @@
   
   <entry>
     <title>Discuz会员数据与Wordpress互通</title>
-    <link href="https://sbcoder.cn/Discuz-Userinfo-To-Wordpress.html"/>
-    <id>https://sbcoder.cn/Discuz-Userinfo-To-Wordpress.html</id>
+    <link href="https://sbcoder.cn/2019/04/11/Discuz-Userinfo-To-Wordpress.html"/>
+    <id>https://sbcoder.cn/2019/04/11/Discuz-Userinfo-To-Wordpress.html</id>
     <published>2019-04-11T12:06:06.000Z</published>
-    <updated>2019-04-11T13:19:37.000Z</updated>
+    <updated>2019-04-12T10:56:18.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>这个情景可能遇到的也不在少数，不想舍弃用户数据，还想让用户无需注册在新站保留账号。<br>实际当我们在迁移的时候，稍微了解数据库的同学应该明白想要迁移用户数据只需要迁移用户数据表即可。<br>实际上我也是这么做的，但是中途遇到了几个小问题，这里我总结一下！</p><h2 id="Discuz用户密码加密算法"><a href="#Discuz用户密码加密算法" class="headerlink" title="Discuz用户密码加密算法"></a>Discuz用户密码加密算法</h2><p>Discuz的用户信息都存放在 ‘<font color="#FF0000">pre_common_member</font>‘  表里，包含了我们需要转移的 邮箱,用户名,密码,积分,ip 等各类信息<br>那么很简单了，便利这个表再插入到Wordpress表内即可<br>但在导入表之前需要先测试一下用户数据是否匹配以示严谨~<br>当我测试密码匹配的时候发现，这里的密码似乎并不匹配，首先我想到的就是应该是加盐了，但是纵观整个 ‘<font color="#FF0000">pre_common_member</font>‘ 表，似乎并没有该有的字段<br>网上找了一圈发现Discuz的用户真实密码是存在 ‘<font color="#FF0000">pre_ucenter_members</font>‘ 表内的，’<font color="#FF0000">pre_common_member</font>‘ 表内的密码我现在还不知道有什么用处，但至少跟我们需要迁移的数据没什么关联。<br>从  ‘<font color="#FF0000">pre_ucenter_members</font>‘ 表中找到了我们需要的 ‘<font color="#FF0000">salt</font>‘ 字段，经过测试得出Discuz的密码加密算法为<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">md5(md5(<span class="string">'password'</span>).<span class="string">'salt'</span>);</span><br></pre></td></tr></table></figure></p><p>tips: Discuz里面的salt是一个6位的 数字+字母 随机数</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>这个情景可能遇到的也不在少数，不想舍弃用户数据，还想让用户无需注册在新站保留账号。<br>实际当我们在迁移的时候，稍微了解数据库的同学应该明白想要迁移用户数据只需要迁移用户数据表即可。<br>实际上我也是这么做的，但是中途遇到了几个小问题，这里我总结一下！</p><h2 id="Discuz用户密码加密算法"><a href="#Discuz用户密码加密算法" class="headerlink" title="Discuz用户密码加密算法"></a>Discuz用户密码加密算法</h2><p>Discuz的用户信息都存放在 ‘<font color="#FF0000">pre_common_member</font>‘  表里，包含了我们需要转移的 邮箱,用户名,密码,积分,ip 等各类信息<br>那么很简单了，便利这个表再插入到Wordpress表内即可<br>但在导入表之前需要先测试一下用户数据是否匹配以示严谨~<br>当我测试密码匹配的时候发现，这里的密码似乎并不匹配，首先我想到的就是应该是加盐了，但是纵观整个 ‘<font color="#FF0000">pre_common_member</font>‘ 表，似乎并没有该有的字段<br>网上找了一圈发现Discuz的用户真实密码是存在 ‘<font color="#FF0000">pre_ucenter_members</font>‘ 表内的，’<font color="#FF0000">pre_common_member</font>‘ 表内的密码我现在还不知道有什么用处，但至少跟我们需要迁移的数据没什么关联。<br>从  ‘<font color="#FF0000">pre_ucenter_members</font>‘ 表中找到了我们需要的 ‘<font color="#FF0000">salt</font>‘ 字段，经过测试得出Discuz的密码加密算法为<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">md5(md5(<span class="string">'password'</span>).<span class="string">'salt'</span>);</span><br></pre></td></tr></table></figure></p><p>tips: Discuz里面的salt是一个6位的 数字+字母 随机数</p><h2 id="Wordpress用户密码加密算法"><a href="#Wordpress用户密码加密算法" class="headerlink" title="Wordpress用户密码加密算法"></a>Wordpress用户密码加密算法</h2><p>搞定了DZ的加密算法后，那么如何将DZ的用户信息插入到WP里面就很重要了，打开 Wordpress 的数据库找到 ‘<font color="#FF0000">wp-user</font>‘表，找到 ‘<font color="#FF0000">user_pass</font>‘ 字段，发现里面加密的内容似乎无迹可寻。<br>实际上，Wordpress的加密是使用了 phpass 类来加密的，由 phpass 加密的密码具有不可逆性，所以想要破解是不可能了，这里简单说一下 phpass 的加密算法<br>目前我们的PHP版本应该都在5以上，所以前缀是一样的 $P$B 大致写出来如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$count = rand(<span class="number">1</span>,<span class="number">8</span>);</span><br><span class="line">$hash = md5($salt . $password, <span class="keyword">TRUE</span>);</span><br><span class="line"><span class="keyword">while</span>($count--)&#123;</span><br><span class="line">$hash = md5($hash . $password, <span class="keyword">TRUE</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>看起来是不是很强，我们无法破解这样的密码，实际使用中，我们也可以使用 phpass 来做密码加密，让我们的数据库更加的安全~<br>然而我们数据迁移时其实完全可以避免这种问题，Wordpress是保留了md5加密的形式的，如果 ‘<font color="#FF0000">user_pass</font>‘ 字段里面存储的是md5加密的32值，wordpress也可以登录成功，并且再登陆后会将 ‘<font color="#FF0000">user_pass</font>‘ 字段修改为 phpass 加密的格式，是不是很人性化呢。<br>综上所述，我们无需解出来wordpress的加密算法，我们也解不出来~</p><h2 id="开始迁移用户数据"><a href="#开始迁移用户数据" class="headerlink" title="开始迁移用户数据"></a>开始迁移用户数据</h2><p>未完待续…</p>]]></content>
     
     <summary type="html">
     
@@ -45,8 +45,8 @@
   
   <entry>
     <title>192TT(192tb)套图吧整站爬虫</title>
-    <link href="https://sbcoder.cn/192tt_Spider.html"/>
-    <id>https://sbcoder.cn/192tt_Spider.html</id>
+    <link href="https://sbcoder.cn/2019/03/28/192tt_Spider.html"/>
+    <id>https://sbcoder.cn/2019/03/28/192tt_Spider.html</id>
     <published>2019-03-28T08:15:16.000Z</published>
     <updated>2019-03-29T06:33:44.000Z</updated>
     
@@ -74,8 +74,8 @@
   
   <entry>
     <title>正则表达式应用，常用取值表（记录）</title>
-    <link href="https://sbcoder.cn/Regex_match_note.html"/>
-    <id>https://sbcoder.cn/Regex_match_note.html</id>
+    <link href="https://sbcoder.cn/2019/03/26/Regex_match_note.html"/>
+    <id>https://sbcoder.cn/2019/03/26/Regex_match_note.html</id>
     <published>2019-03-26T08:11:06.000Z</published>
     <updated>2019-03-27T03:50:12.000Z</updated>
     
@@ -106,8 +106,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="https://sbcoder.cn/Hello_world.html"/>
-    <id>https://sbcoder.cn/Hello_world.html</id>
+    <link href="https://sbcoder.cn/2019/03/25/Hello_world.html"/>
+    <id>https://sbcoder.cn/2019/03/25/Hello_world.html</id>
     <published>2019-03-25T05:12:58.000Z</published>
     <updated>2019-03-25T05:12:58.000Z</updated>
     
@@ -127,8 +127,8 @@
   
   <entry>
     <title>岛国推特妹子图爬虫</title>
-    <link href="https://sbcoder.cn/Japan_Twitter_Spider.html"/>
-    <id>https://sbcoder.cn/Japan_Twitter_Spider.html</id>
+    <link href="https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html"/>
+    <id>https://sbcoder.cn/2019/03/22/Japan_Twitter_Spider.html</id>
     <published>2019-03-22T03:54:58.000Z</published>
     <updated>2019-03-22T05:11:10.000Z</updated>
     
@@ -156,8 +156,8 @@
   
   <entry>
     <title>Python+selenium针对网银控件过登录取数据</title>
-    <link href="https://sbcoder.cn/Python_WY_Spider.html"/>
-    <id>https://sbcoder.cn/Python_WY_Spider.html</id>
+    <link href="https://sbcoder.cn/2019/03/21/Python_WY_Spider.html"/>
+    <id>https://sbcoder.cn/2019/03/21/Python_WY_Spider.html</id>
     <published>2019-03-21T08:53:30.000Z</published>
     <updated>2019-03-22T03:10:52.000Z</updated>
     
