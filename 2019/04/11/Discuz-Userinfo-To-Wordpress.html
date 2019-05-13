@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="风向标 | 分享与创造">
 <meta property="og:description" content="情景这个情景可能遇到的也不在少数，不想舍弃用户数据，还想让用户无需注册在新站保留账号。实际当我们在迁移的时候，稍微了解数据库的同学应该明白想要迁移用户数据只需要迁移用户数据表即可。实际上我也是这么做的，但是中途遇到了几个小问题，这里我总结一下！ Discuz用户密码加密算法Discuz的用户信息都存放在 ‘pre_common_member‘  表里，包含了我们需要转移的 邮箱,用户名,密码,积分">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-12T10:56:18.000Z">
+<meta property="og:updated_time" content="2019-05-13T14:57:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Discuz会员数据与Wordpress互通">
 <meta name="twitter:description" content="情景这个情景可能遇到的也不在少数，不想舍弃用户数据，还想让用户无需注册在新站保留账号。实际当我们在迁移的时候，稍微了解数据库的同学应该明白想要迁移用户数据只需要迁移用户数据表即可。实际上我也是这么做的，但是中途遇到了几个小问题，这里我总结一下！ Discuz用户密码加密算法Discuz的用户信息都存放在 ‘pre_common_member‘  表里，包含了我们需要转移的 邮箱,用户名,密码,积分">
@@ -197,7 +197,7 @@
 <p>tips: Discuz里面的salt是一个6位的 数字+字母 随机数</p>
 <h2 id="Wordpress用户密码加密算法"><a href="#Wordpress用户密码加密算法" class="headerlink" title="Wordpress用户密码加密算法"></a>Wordpress用户密码加密算法</h2><p>搞定了DZ的加密算法后，那么如何将DZ的用户信息插入到WP里面就很重要了，打开 Wordpress 的数据库找到 ‘<font color="#FF0000">wp-user</font>‘表，找到 ‘<font color="#FF0000">user_pass</font>‘ 字段，发现里面加密的内容似乎无迹可寻。<br>实际上，Wordpress的加密是使用了 phpass 类来加密的，由 phpass 加密的密码具有不可逆性，所以想要破解是不可能了，这里简单说一下 phpass 的加密算法<br>目前我们的PHP版本应该都在5以上，所以前缀是一样的 $P$B 大致写出来如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$count = rand(<span class="number">1</span>,<span class="number">8</span>);</span><br><span class="line">$hash = md5($salt . $password, <span class="keyword">TRUE</span>);</span><br><span class="line"><span class="keyword">while</span>($count--)&#123;</span><br><span class="line">	$hash = md5($hash . $password, <span class="keyword">TRUE</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>看起来是不是很强，我们无法破解这样的密码，实际使用中，我们也可以使用 phpass 来做密码加密，让我们的数据库更加的安全~<br>然而我们数据迁移时其实完全可以避免这种问题，Wordpress是保留了md5加密的形式的，如果 ‘<font color="#FF0000">user_pass</font>‘ 字段里面存储的是md5加密的32值，wordpress也可以登录成功，并且再登陆后会将 ‘<font color="#FF0000">user_pass</font>‘ 字段修改为 phpass 加密的格式，是不是很人性化呢。<br>综上所述，我们无需解出来wordpress的加密算法，我们也解不出来~</p>
-<h2 id="开始迁移用户数据"><a href="#开始迁移用户数据" class="headerlink" title="开始迁移用户数据"></a>开始迁移用户数据</h2><p>未完待续…</p>
+<h2 id="开始迁移用户数据"><a href="#开始迁移用户数据" class="headerlink" title="开始迁移用户数据"></a>开始迁移用户数据</h2><p>关于迁移有很多细节，本来是打算写出来的，后来发现没什么技术含量，都是流水账，直接开源到github好了<br>需要的朋友请直接点击 <a href="https://github.com/ai0by/D2W" target="_blank" rel="noopener">D2W - Github</a></p>
 
         </div>
 
@@ -206,7 +206,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-04-12T10:56:18.000Z" itemprop="dateUpdated">2019-04-12 18:56:18</time>
+    最后更新时间：<time datetime="2019-05-13T14:57:58.000Z" itemprop="dateUpdated">2019-05-13 22:57:58</time>
 </span><br>
 
 
