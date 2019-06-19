@@ -29,14 +29,14 @@
 <meta property="og:site_name" content="风向标 | 分享与创造">
 <meta property="og:description" content="起因LOC的大佬们最近开始疯狂的爬取mm131，作为一个Python初心者，作为技术上的学习，也要与时俱进，简单写了一个图片下载爬虫，看到大佬们似乎是做了一个typechoo的对接接口，我这边回头有空也搞一个wordpress的接口（只在博客内发布），之前写过一个新浪远程上传的接口，由于种种原因，新浪已经不支持外链了，因此这个wordpress接口可能就有时间再做了，不然做出来也是个摆设，没地方放">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://imgchr.com/i/VLAght">
-<meta property="og:image" content="https://imgchr.com/i/VLE8v8">
-<meta property="og:image" content="https://imgchr.com/i/VLEhP1">
-<meta property="og:updated_time" content="2019-06-19T14:35:48.000Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/18/VLAght.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/18/VLE8v8.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/18/VLEhP1.jpg">
+<meta property="og:updated_time" content="2019-06-19T14:56:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mm131全栈多线程爬虫">
 <meta name="twitter:description" content="起因LOC的大佬们最近开始疯狂的爬取mm131，作为一个Python初心者，作为技术上的学习，也要与时俱进，简单写了一个图片下载爬虫，看到大佬们似乎是做了一个typechoo的对接接口，我这边回头有空也搞一个wordpress的接口（只在博客内发布），之前写过一个新浪远程上传的接口，由于种种原因，新浪已经不支持外链了，因此这个wordpress接口可能就有时间再做了，不然做出来也是个摆设，没地方放">
-<meta name="twitter:image" content="https://imgchr.com/i/VLAght">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/06/18/VLAght.jpg">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
     
@@ -197,12 +197,12 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>LOC的大佬们最近开始疯狂的爬取mm131，作为一个Python初心者，作为技术上的学习，也要与时俱进，简单写了一个图片下载爬虫，看到大佬们似乎是做了一个typechoo的对接接口，我这边回头有空也搞一个wordpress的接口（只在博客内发布），之前写过一个新浪远程上传的接口，由于种种原因，新浪已经不支持外链了，因此这个wordpress接口可能就有时间再做了，不然做出来也是个摆设，没地方放。</p>
-<h1 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h1><p>网址不发了，直接讲，或者大家直接百度谷歌都可以搜得到。<br>打开网站,总共有如下六个分类<br>[<figure class="image-bubble">
+<h1 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h1><p>网址不发了，直接讲，或者大家直接百度谷歌都可以搜得到。<br>打开网站,总共有如下六个分类<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://imgchr.com/i/VLAght" alt="mm131.jpg](https://s2.ax1x.com/2019/06/18/VLAght.md.jpg)" title>
+                    <img src="https://s2.ax1x.com/2019/06/18/VLAght.jpg" alt="mm131.jpg" title>
                 </div>
-                <div class="image-caption">mm131.jpg](https://s2.ax1x.com/2019/06/18/VLAght.md.jpg)</div>
+                <div class="image-caption">mm131.jpg</div>
             </figure><br>每个分类下面都有一堆的图集，有N个分页的图集，但是第一页跟第二页的地址还不太一样，这点跟192tt做的很相似，感觉这几个站长是不是都是用的同一套程序，如果是的话可以通杀了。。。<br>首先遍历图集的地址，到目前更新文章截止，一共大概5000多套<br>按分类给他搞一个分类循环</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list = &#123;<span class="string">'xinggan'</span>:<span class="number">6</span>,<span class="string">'qingchun'</span>:<span class="number">1</span>,<span class="string">'xiaohua'</span>:<span class="number">2</span>,<span class="string">'chemo'</span>:<span class="number">3</span>,<span class="string">'qipao'</span>:<span class="number">4</span>,<span class="string">'mingxing'</span>:<span class="number">5</span>&#125;</span><br><span class="line">    <span class="comment"># list = &#123;'mingxing':5&#125;</span></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> list:</span><br><span class="line">        getPageUrl(key,list[key])</span><br></pre></td></tr></table></figure>
 <p>解析图片url，用正则获取就行，用bs4取到末页的地址，然后遍历循环取图集地址</p>
@@ -210,19 +210,20 @@
 <p>获取图集地址<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">nextUrl = <span class="string">"%s/list_%s_%s.html"</span>%(url,num,i+<span class="number">2</span>)</span><br><span class="line">response = requests.get(nextUrl, headers=headers)</span><br><span class="line">response.encoding = <span class="string">'gb2312'</span></span><br><span class="line">soup = BeautifulSoup(response.text, <span class="string">'html.parser'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> soup.find(<span class="string">'dl'</span>, &#123;<span class="string">'class'</span>: <span class="string">'public-box'</span>&#125;).find_all(<span class="string">'dd'</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        i.find(<span class="string">'img'</span>).get(<span class="string">'src'</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    print(i.find(<span class="string">'a'</span>).get(<span class="string">'href'</span>))</span><br></pre></td></tr></table></figure></p>
 <p>需要注意的是，mm131的图片是有防盗链的，根据referer判断，随便找一个图集的地址设置上即可<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"</span>,</span><br><span class="line">    <span class="string">'referer'</span>: <span class="string">"http://www.mm131.com/xinggan/4995.html"</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h1 id="线程池应用"><a href="#线程池应用" class="headerlink" title="线程池应用"></a>线程池应用</h1><p>之前的爬虫除了Scrapy搞出来的之外都是单线程的爬虫，优点是比较稳定，但是缺点也很明显，太慢了，mm131这个站的图大都比较小，如果是一张一张下载确实是不太划算，于是搞了个线程池。<br>Python的线程池很简单，只需要引入 threadpool 即可，如果报错，请 pip install threadpool,<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 引入threadpool</span></span><br><span class="line"><span class="keyword">import</span> threadpool</span><br><span class="line"><span class="comment"># 创建线程池，设置为12线程，可以根据自身情况修改</span></span><br><span class="line">pool = threadpool.ThreadPool(<span class="number">12</span>)</span><br><span class="line"><span class="comment"># 创建callback函数，参数1 getSingleData 是需要调用的函数名，list是函数getSingleData的参数，该方法适用于单个参数的函数，list是一个一维数组或对象</span></span><br><span class="line">pageTask = threadpool.makeRequests(getSingleData, list)</span><br><span class="line"><span class="comment"># 执行线程池</span></span><br><span class="line">[pool.putRequest(req) <span class="keyword">for</span> req <span class="keyword">in</span> pageTask]</span><br><span class="line"><span class="comment"># 等待完成后退出</span></span><br><span class="line">pool.wait()</span><br></pre></td></tr></table></figure></p>
-<h1 id="演示和下载"><a href="#演示和下载" class="headerlink" title="演示和下载"></a>演示和下载</h1><h3 id="演示图"><a href="#演示图" class="headerlink" title="演示图"></a>演示图</h3><p>[<figure class="image-bubble">
+<h1 id="演示和下载"><a href="#演示和下载" class="headerlink" title="演示和下载"></a>演示和下载</h1><h3 id="演示图"><a href="#演示图" class="headerlink" title="演示图"></a>演示图</h3><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://imgchr.com/i/VLE8v8" alt="多线程演示.jpg](https://s2.ax1x.com/2019/06/18/VLE8v8.jpg)" title>
+                    <img src="https://s2.ax1x.com/2019/06/18/VLE8v8.jpg" alt="多线程演示.jpg" title>
                 </div>
-                <div class="image-caption">多线程演示.jpg](https://s2.ax1x.com/2019/06/18/VLE8v8.jpg)</div>
-            </figure><br>[<figure class="image-bubble">
+                <div class="image-caption">多线程演示.jpg</div>
+            </figure>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://imgchr.com/i/VLEhP1" alt="下载结果.jpg](https://s2.ax1x.com/2019/06/18/VLEhP1.md.jpg)" title>
+                    <img src="https://s2.ax1x.com/2019/06/18/VLEhP1.jpg" alt="下载结果.jpg" title>
                 </div>
-                <div class="image-caption">下载结果.jpg](https://s2.ax1x.com/2019/06/18/VLEhP1.md.jpg)</div>
-            </figure></p>
+                <div class="image-caption">下载结果.jpg</div>
+            </figure>
 <h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>演示代码不全，直接上地址<br><a href="https://github.com/ai0by/ai0by-spider/tree/master/mm131" target="_blank" rel="noopener">https://github.com/ai0by/ai0by-spider/tree/master/mm131</a></p>
 
         </div>
@@ -232,7 +233,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-06-19T14:35:48.000Z" itemprop="dateUpdated">2019-06-19 22:35:48</time>
+    最后更新时间：<time datetime="2019-06-19T14:56:33.000Z" itemprop="dateUpdated">2019-06-19 22:56:33</time>
 </span><br>
 
 
