@@ -30,7 +30,7 @@
 <meta property="og:description" content="前言以我的习惯来讲，每开始一个新的项目都需要先把思路完善，紧接着就需要建立数据库，在码代码的时候，就一般不会在修改数据库的构造了，因此，数据库的结构通常关乎着查询的速度以及程序的完善程度，一个好的结构可以让你少写很多代码，也能让程序的运行速度更加快，通常在大公司都是由DBA来做这件事，但是事无绝对，作为一名合格的后端，掌握一些少量的数据库优化也是很需要的。 MySQL优化 - 数据类型及CURDP">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/06/20/VvmQFU.png">
-<meta property="og:updated_time" content="2019-06-20T10:39:47.000Z">
+<meta property="og:updated_time" content="2019-06-20T10:42:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="开发中常见的MySQL数据库优化细节">
 <meta name="twitter:description" content="前言以我的习惯来讲，每开始一个新的项目都需要先把思路完善，紧接着就需要建立数据库，在码代码的时候，就一般不会在修改数据库的构造了，因此，数据库的结构通常关乎着查询的速度以及程序的完善程度，一个好的结构可以让你少写很多代码，也能让程序的运行速度更加快，通常在大公司都是由DBA来做这件事，但是事无绝对，作为一名合格的后端，掌握一些少量的数据库优化也是很需要的。 MySQL优化 - 数据类型及CURDP">
@@ -197,7 +197,7 @@
             <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>以我的习惯来讲，每开始一个新的项目都需要先把思路完善，紧接着就需要建立数据库，在码代码的时候，就一般不会在修改数据库的构造了，因此，数据库的结构通常关乎着查询的速度以及程序的完善程度，一个好的结构可以让你少写很多代码，也能让程序的运行速度更加快，通常在大公司都是由DBA来做这件事，但是事无绝对，作为一名合格的后端，掌握一些少量的数据库优化也是很需要的。</p>
 <h1 id="MySQL优化-数据类型及CURD"><a href="#MySQL优化-数据类型及CURD" class="headerlink" title="MySQL优化 - 数据类型及CURD"></a>MySQL优化 - 数据类型及CURD</h1><h2 id="PROCEDURE-ANALYSE"><a href="#PROCEDURE-ANALYSE" class="headerlink" title="PROCEDURE ANALYSE()"></a>PROCEDURE ANALYSE()</h2><p>PROCEDURE ANALYSE() [prəˈsējər ˈænəlaɪz]是一个MySQL自带的给我们提供数据库优化建议的函数，他可以直接运行在MySQL中，直接在执行语句中加上这个函数即可<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span>  <span class="string">`list`</span> <span class="keyword">WHERE</span> <span class="number">1</span> <span class="keyword">PROCEDURE</span> ANALYSE ( )</span><br></pre></td></tr></table></figure></p>
 <p>这段SQL执行过后，将会把list表中的数据分析一遍，并把他的分析结果展示出来</p>
-<table><br>    <tr><br>        <th>Field_name</th><br>        <th>Min_value</th><br>        <th>Max_value</th><br>        <th>Min_length</th><br>        <th>Max_length</th><br>        <th>Empties_or_zeros</th><br>        <th>Nulls</th><br>        <th>Avg_value_oravg_length</th><br>        <th>std</th><br>        <th>Optimal_fieldtype</th><br>    </tr><br></table>
+<table><tr><th>Field_name</th><th>Min_value</th><th>Max_value</th><th>Min_length</th><th>Max_length</th><th>Empties_or_zeros</th><th>Nulls</th><th>Avg_value_oravg_length</th><th>std</th><th>Optimal_fieldtype</th></tr></table>
 
 <p>他将会把分析出来的 字段名 最短值 最大值 以及最后一列就是MySQL给出的分析结果，我们可以在有一定数据的时候使用这个函数来分析，这样给出的结果会更精确一些，只需要查看最后一列Optimal_fieldtype的值即可，这个函数并不适用于数据库设计阶段，它适用于后期使用</p>
 <h2 id="EXPLAIN"><a href="#EXPLAIN" class="headerlink" title="EXPLAIN"></a>EXPLAIN</h2><p>EXPLAIN是一个非常好用的MySQL语法，在我们功能测试阶段，如果发现某页面非常慢，排除静态资源问题后就可以试试使用EXPLAIN，我们可以在执行语句前面加上 EXPLAIN 来获得执行过程，通过该结果我们可以看到SQL如何改变会减少查询时间和次数。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span>  <span class="string">`list`</span> <span class="keyword">WHERE</span> <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
@@ -259,7 +259,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-06-20T10:39:47.000Z" itemprop="dateUpdated">2019-06-20 18:39:47</time>
+    最后更新时间：<time datetime="2019-06-20T10:42:06.000Z" itemprop="dateUpdated">2019-06-20 18:42:06</time>
 </span><br>
 
 
