@@ -30,7 +30,7 @@
 <meta property="og:description" content="前言以我的习惯来讲，每开始一个新的项目都需要先把思路完善，紧接着就需要建立数据库，在码代码的时候，就一般不会在修改数据库的构造了，因此，数据库的结构通常关乎着查询的速度以及程序的完善程度，一个好的结构可以让你少写很多代码，也能让程序的运行速度更加快，通常在大公司都是由DBA来做这件事，但是事无绝对，作为一名合格的后端，掌握一些少量的数据库优化也是很需要的。 MySQL优化 - 数据类型及CURDP">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/06/20/VvmQFU.png">
-<meta property="og:updated_time" content="2019-06-20T10:42:06.000Z">
+<meta property="og:updated_time" content="2019-06-20T10:45:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="开发中常见的MySQL数据库优化细节">
 <meta name="twitter:description" content="前言以我的习惯来讲，每开始一个新的项目都需要先把思路完善，紧接着就需要建立数据库，在码代码的时候，就一般不会在修改数据库的构造了，因此，数据库的结构通常关乎着查询的速度以及程序的完善程度，一个好的结构可以让你少写很多代码，也能让程序的运行速度更加快，通常在大公司都是由DBA来做这件事，但是事无绝对，作为一名合格的后端，掌握一些少量的数据库优化也是很需要的。 MySQL优化 - 数据类型及CURDP">
@@ -197,12 +197,12 @@
             <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>以我的习惯来讲，每开始一个新的项目都需要先把思路完善，紧接着就需要建立数据库，在码代码的时候，就一般不会在修改数据库的构造了，因此，数据库的结构通常关乎着查询的速度以及程序的完善程度，一个好的结构可以让你少写很多代码，也能让程序的运行速度更加快，通常在大公司都是由DBA来做这件事，但是事无绝对，作为一名合格的后端，掌握一些少量的数据库优化也是很需要的。</p>
 <h1 id="MySQL优化-数据类型及CURD"><a href="#MySQL优化-数据类型及CURD" class="headerlink" title="MySQL优化 - 数据类型及CURD"></a>MySQL优化 - 数据类型及CURD</h1><h2 id="PROCEDURE-ANALYSE"><a href="#PROCEDURE-ANALYSE" class="headerlink" title="PROCEDURE ANALYSE()"></a>PROCEDURE ANALYSE()</h2><p>PROCEDURE ANALYSE() [prəˈsējər ˈænəlaɪz]是一个MySQL自带的给我们提供数据库优化建议的函数，他可以直接运行在MySQL中，直接在执行语句中加上这个函数即可<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span>  <span class="string">`list`</span> <span class="keyword">WHERE</span> <span class="number">1</span> <span class="keyword">PROCEDURE</span> ANALYSE ( )</span><br></pre></td></tr></table></figure></p>
 <p>这段SQL执行过后，将会把list表中的数据分析一遍，并把他的分析结果展示出来</p>
-<table><tr><th>Field_name</th><th>Min_value</th><th>Max_value</th><th>Min_length</th><th>Max_length</th><th>Empties_or_zeros</th><th>Nulls</th><th>Avg_value_oravg_length</th><th>std</th><th>Optimal_fieldtype</th></tr></table>
+<table><tr><th>Field_name</th><th>Min_value</th><th>Max_value</th><th>Min_length</th><th>Max_length</th></tr><tr><th>Empties_or_zeros</th><th>Nulls</th><th>Avg_value_oravg_length</th><th>std</th><th>Optimal_fieldtype</th></tr></table>
 
 <p>他将会把分析出来的 字段名 最短值 最大值 以及最后一列就是MySQL给出的分析结果，我们可以在有一定数据的时候使用这个函数来分析，这样给出的结果会更精确一些，只需要查看最后一列Optimal_fieldtype的值即可，这个函数并不适用于数据库设计阶段，它适用于后期使用</p>
 <h2 id="EXPLAIN"><a href="#EXPLAIN" class="headerlink" title="EXPLAIN"></a>EXPLAIN</h2><p>EXPLAIN是一个非常好用的MySQL语法，在我们功能测试阶段，如果发现某页面非常慢，排除静态资源问题后就可以试试使用EXPLAIN，我们可以在执行语句前面加上 EXPLAIN 来获得执行过程，通过该结果我们可以看到SQL如何改变会减少查询时间和次数。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span>  <span class="string">`list`</span> <span class="keyword">WHERE</span> <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
 <p>这段SQL执行后，将会返回如下格式的分析结果</p>
-<table><br>    <thead><br>        <tr><br>            <th>id</th><br>            <th>select_type</th><br>            <th>table</th><br>            <th>type</th><br>            <th>possible_keys</th><br>            <th>key</th><br>            <th>key_len</th><br>            <th>ref</th><br>            <th>rows</th><br>            <th>Extra</th><br>        </tr><br>    </thead><br></table>
+<table><thead><tr><th>id</th><th>select_type</th><th>table</th><th>type</th><th>possible_keys</th><th>key</th><th>key_len</th><th>ref</th><th>rows</th><th>Extra</th></tr></thead></table>
 
 <p>我们主要看rows就行，为了得到想要的结果，rows的值越小越好，使用EXPLAIN来调试简直是再好不过了！</p>
 <h2 id="ENUM-枚举-类型"><a href="#ENUM-枚举-类型" class="headerlink" title="ENUM(枚举)类型"></a>ENUM(枚举)类型</h2><p>很多程序员往往喜欢统一一个数据类型，比如说 ‘varchar’ ，这可能是我见过最多的数据类型了，早些时期，的确是有很多的公司或者程序都是大面积使用，随着MySQL的革新换代，很多的类型都可以避免使用它。<br>我在很多得程序上测试过（有数据）PROCEDURE ANALYSE()方法，他给出了很多 ‘varchar’ 替换为 ‘enum’ 的建议，这说明，enum类型的确是一个应该被重视的数据类型，但由于他是一个枚举类型，我们在定义数据类型的时候并不适合直接上手定义，所以很多时候都是在有一定的数据量的时候才想要换数据类型的。<br>可以理解为枚举即时索引，枚举就相当于给这个字段的可能值都加上了一个索引，与我们为了优化查询加索引是一样的概念。<br>enum更适用于选项卡类字段，例如性别，订单状态等，如果您字段中只有几个重复的值也是非常推荐使用的。</p>
@@ -259,7 +259,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-06-20T10:42:06.000Z" itemprop="dateUpdated">2019-06-20 18:42:06</time>
+    最后更新时间：<time datetime="2019-06-20T10:45:15.000Z" itemprop="dateUpdated">2019-06-20 18:45:15</time>
 </span><br>
 
 
