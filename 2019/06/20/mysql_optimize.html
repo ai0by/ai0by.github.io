@@ -25,12 +25,12 @@
 <meta name="keywords" content="优化,MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="开发中常见的MySQL数据库优化细节">
-<meta property="og:url" content="https://sbcoder.cn/2019/06/20/tuwan_spider.html">
+<meta property="og:url" content="https://sbcoder.cn/2019/06/20/mysql_optimize.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
 <meta property="og:description" content="前言以我的习惯来讲，每开始一个新的项目都需要先把思路完善，紧接着就需要建立数据库，在码代码的时候，就一般不会在修改数据库的构造了，因此，数据库的结构通常关乎着查询的速度以及程序的完善程度，一个好的结构可以让你少写很多代码，也能让程序的运行速度更加快，通常在大公司都是由DBA来做这件事，但是事无绝对，作为一名合格的后端，掌握一些少量的数据库优化也是很需要的。 MySQL优化 - 数据类型及CURDP">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/06/20/VvmQFU.png">
-<meta property="og:updated_time" content="2019-06-20T10:45:15.000Z">
+<meta property="og:updated_time" content="2019-12-09T11:51:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="开发中常见的MySQL数据库优化细节">
 <meta name="twitter:description" content="前言以我的习惯来讲，每开始一个新的项目都需要先把思路完善，紧接着就需要建立数据库，在码代码的时候，就一般不会在修改数据库的构造了，因此，数据库的结构通常关乎着查询的速度以及程序的完善程度，一个好的结构可以让你少写很多代码，也能让程序的运行速度更加快，通常在大公司都是由DBA来做这件事，但是事无绝对，作为一名合格的后端，掌握一些少量的数据库优化也是很需要的。 MySQL优化 - 数据类型及CURDP">
@@ -259,7 +259,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-06-20T10:45:15.000Z" itemprop="dateUpdated">2019-06-20 18:45:15</time>
+    最后更新时间：<time datetime="2019-12-09T11:51:26.000Z" itemprop="dateUpdated">2019-12-09 19:51:26</time>
 </span><br>
 
 
@@ -295,7 +295,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/06/20/tuwan_spider.html&title=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/06/20/mysql_optimize.html&title=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -305,22 +305,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/06/20/tuwan_spider.html&title=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/06/20/mysql_optimize.html&title=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/06/20/tuwan_spider.html" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/06/20/mysql_optimize.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/06/20/tuwan_spider.html&via=https://sbcoder.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/06/20/mysql_optimize.html&via=https://sbcoder.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/06/20/tuwan_spider.html" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/06/20/mysql_optimize.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -477,7 +477,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/06/20/tuwan_spider.html&title=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/06/20/mysql_optimize.html&title=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -487,22 +487,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/06/20/tuwan_spider.html&title=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/06/20/mysql_optimize.html&title=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/06/20/tuwan_spider.html" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/06/20/mysql_optimize.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/06/20/tuwan_spider.html&via=https://sbcoder.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《开发中常见的MySQL数据库优化细节》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/06/20/mysql_optimize.html&via=https://sbcoder.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/06/20/tuwan_spider.html" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/06/20/mysql_optimize.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -513,7 +513,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACOElEQVR42u3aQW7DMAwF0dz/0i6QVQBD9nxKTWtqtAoKV9HzgiFFvl54He/1+fn8l9F/ndf1PqPdFiwZMmQ8lnFcrtoXjPa5fjXXr+xmTxkyZGzA4EH2/DxHkid5KJchQ4YMEgTT8EpCpwwZMmSsYqwqVmfKYxkyZOzGIEchz/Nj/VktLkOGjAcyao2B73z+9f6GDBky/j3jCFctUNaao8GpZMiQ0ZpBSkp+uc8v/Wd+GYIMV4YMGS0Y/BK/1uBMQ3Ct2SBDhozejPlmQK0A5jvzxFSGDBldGWm7kSeU6VF4W/Qmt5UhQ0Y7Ri2xI0NdtRGKdLBDhgwZ+zCmwhxO6cjFGQ/KcfCVIUNGC8ZMusbL4JnCGAVuGTJkbMPgqVgtKNcu74K6XIYMGa0ZcbMQpIm1MrUWsmXIkNGbwYtYHmRnGpbppZ4MGTK6Mmol5aoxC/4taNhChgwZWzJ4g7PWGOAF6s0ZZMiQ0ZoRhzb8mTcpa6MYqLMhQ4aMdgyeuqWDFym++OJkyJDRlJFOjfEEkT9Tu26TIUPGzox4uAEnfLUhjDgplCFDRjtGOgAxn0SuHeYIKnIZMmQ8lnGEa9UgBdmHX9XJkCGjNyMNcGtbm/y4/IdBhgwZXRl8a5IUpiE7bW0O95QhQ8YGjPmbK57qpQMWcRUuQ4aMjRl8AIK3E/jzKDWUIUOGjPDqn78I3lIdPilDhowNGGkRWzsESSXJqWTIkLEbI20MkOIz/oIwJS3uL0OGjOcxfgDefR3znCIwsgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3aO3LDMAxFUe9/00qbImLuAyjPCLysPLEi8aiA8eHng9f1a62/Xa+768lTNiwZMmS8llF7MNlECrj7vH6uDBkyzmHcRbD1rdf36bwgvjcZMmTIIEHw6YArQ4YMGTXG+n/XYZeEaRkyZMioJXCdBlyaRD5Yi8uQIeOFDN51//7nR+YbMmTIeBXjChdvt6WDyauxZMiQMZvxnUK0E8SDwx8yZMgYzUhvStr6/BqyuSBZlCFDxjgGSdc6D0gHn2T8+cf9ZciQcQCjVr7WRgLpMQ70iyFDhozRjFrvPc3Q+FiUp4lFpAwZMkYwSPFZK1zTIxqtdy9DhoxBjLSk5M24WiJYC+UyZMiYzai16dNgTQpjPrT4ZxIrQ4aMcYy9ja3aAQsUTNcBWoYMGccw0oMUtYFlmmgGhy1kyJAxlNFplvEwzTdaC8EyZMg4gZFWvWlpmm6uU9zKkCFjHoOHsLR9T1JDkpIG/UIZMmQMZewtTdMXsesvMmTIOJPBj5amm9477ETjARkyZIxj8OQs7czXks7guJgMGTIOYPCGPmd0SmI+r5QhQ8ZsxhUuvnWeGpI0EU0zZMiQMZTRidNpEsmPaPBAH8NkyJDxWsaGVtdjaV+rFpchQ8Y4Rhr4njhawZHBFzJkyDiYQYJseniiM5aQIUOGDFKg8is7aehtcJchQ8YBjFqzPg2aaekbXC9DhozRjFrp2Gmr1cYDG4aaMmTIeB/jBzUpS6nFQjjfAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
 
 
