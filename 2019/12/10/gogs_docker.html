@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>公司代码架构 - Docker + Jenkins + Gogs + Portainer(二) | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="版本控制,优化,架构">
+    <meta name="description" content="安装 Gogs + Docker常用命令介绍本节主要写一下Jenkins的配置与自动构建过程，包括使用Gogs作为git服务器，配置自动构建等。本节需要配合上一节的内容使用，即 安装 Docker + Jenkins 的服务器一台 搭建环境 服务器3     ：TencentCloud 北京 RAM4G 2C 40GSSD（新用户机器）998RMB/3Year 操作系统    ：CentOS7.5">
+<meta name="keywords" content="版本控制,优化,架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)">
+<meta property="og:url" content="https://sbcoder.cn/2019/12/10/gogs_docker.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="安装 Gogs + Docker常用命令介绍本节主要写一下Jenkins的配置与自动构建过程，包括使用Gogs作为git服务器，配置自动构建等。本节需要配合上一节的内容使用，即 安装 Docker + Jenkins 的服务器一台 搭建环境 服务器3     ：TencentCloud 北京 RAM4G 2C 40GSSD（新用户机器）998RMB/3Year 操作系统    ：CentOS7.5">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2019/12/10/Q8blCz9rTSN7tqB.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/10/DEwP32bkWKcJS6l.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/10/uGs24UWEbvRlO8N.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/10/2HbjfQsEygriOe9.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/10/E6t9KsZXg7TwFO3.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/10/eTy2A1EksPLdxlZ.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/10/4FveSlBTdIVO5tA.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/10/oQylDbdHcfOgL1j.png">
+<meta property="og:updated_time" content="2019-12-10T11:07:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)">
+<meta name="twitter:description" content="安装 Gogs + Docker常用命令介绍本节主要写一下Jenkins的配置与自动构建过程，包括使用Gogs作为git服务器，配置自动构建等。本节需要配合上一节的内容使用，即 安装 Docker + Jenkins 的服务器一台 搭建环境 服务器3     ：TencentCloud 北京 RAM4G 2C 40GSSD（新用户机器）998RMB/3Year 操作系统    ：CentOS7.5">
+<meta name="twitter:image" content="https://i.loli.net/2019/12/10/Q8blCz9rTSN7tqB.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api">
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                Link
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-12-10T11:05:36.000Z" itemprop="datePublished" class="page-time">
+  2019-12-10
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/架构/">架构</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#安装-Gogs-Docker常用命令"><span class="post-toc-number">1.</span> <span class="post-toc-text">安装 Gogs + Docker常用命令</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#介绍"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">介绍</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#搭建环境"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">搭建环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CentOS7-安装-Docker"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">CentOS7 安装 Docker</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Docker-常用命令"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">Docker 常用命令</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装-Gogs"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">安装 Gogs</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#反向代理绑定域名"><span class="post-toc-number">1.4.3.</span> <span class="post-toc-text">反向代理绑定域名</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结语"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">结语</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-公司代码架构-Docker-Jenkins-Gogs-Portainer-二" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-12-10 19:05:36" datetime="2019-12-10T11:05:36.000Z" itemprop="datePublished">2019-12-10</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/架构/">架构</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="安装-Gogs-Docker常用命令"><a href="#安装-Gogs-Docker常用命令" class="headerlink" title="安装 Gogs + Docker常用命令"></a>安装 Gogs + Docker常用命令</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本节主要写一下Jenkins的配置与自动构建过程，包括使用Gogs作为git服务器，配置自动构建等。<br>本节需要配合上一节的内容使用，即 安装 Docker + Jenkins 的服务器一台</p>
+<h2 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h2><ul>
+<li>服务器3     ：TencentCloud 北京 RAM4G 2C 40GSSD（新用户机器）998RMB/3Year</li>
+<li>操作系统    ：CentOS7.5</li>
+<li>部署环境    ：LNMP1.6 （我是军哥铁粉）</li>
+</ul>
+<p>服务器1：搭建Jenkins中转服务器，做代码自动构建使用<br>服务器2：生产环境服务器，实则测试服务器，部署代码使用<br>服务器3：Gogs服务器，Git版本库服务器，做代码版本控制使用</p>
+<p>配置无需对标，都是低配置小鸡，唯一一个腾讯云 2C4G 的机器是我之前放其他业务的机器，由于git经常需要使用因此搭建在国内套CloudFlare使用，实则Gogs只需要 2C1G 机器即可，官方推荐配置是2C512M，是一个不吃内存的程序，目前腾讯云的 1C2G 只需要99/年，属于大众所承受的起的价格，由于我不是专职AFFMAN，因此不贴链接</p>
+<h2 id="CentOS7-安装-Docker"><a href="#CentOS7-安装-Docker" class="headerlink" title="CentOS7 安装 Docker"></a>CentOS7 安装 Docker</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker</span><br></pre></td></tr></table></figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/10/Q8blCz9rTSN7tqB.png" alt="1.png" title>
+                </div>
+                <div class="image-caption">1.png</div>
+            </figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start docker</span><br><span class="line">enable docker</span><br></pre></td></tr></table></figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/10/DEwP32bkWKcJS6l.png" alt="2.png" title>
+                </div>
+                <div class="image-caption">2.png</div>
+            </figure>
+<p>查看版本号，查看是否安装成功！<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker -v</span><br></pre></td></tr></table></figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/10/uGs24UWEbvRlO8N.png" alt="3.png" title>
+                </div>
+                <div class="image-caption">3.png</div>
+            </figure>
+<h3 id="Docker-常用命令"><a href="#Docker-常用命令" class="headerlink" title="Docker 常用命令"></a>Docker 常用命令</h3><p>记录一下安装时可能会出现的问题，以及常用的Docker命令</p>
+<p>查看当前运行的容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure></p>
+<p>查看所有容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure></p>
+<p>停止容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker stop [DOCKER NAME] </span><br><span class="line"><span class="meta">#</span> 例如：docker stop gogs</span><br></pre></td></tr></table></figure></p>
+<p>删除容器(必须在Stop之后才可以删除)<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker rm [DOCKER NAME] </span><br><span class="line"><span class="meta">#</span> 例如：docker rm gogs</span><br></pre></td></tr></table></figure></p>
+<p>进入容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker attach [DOCKER NAME] </span><br><span class="line"><span class="meta">#</span> 例如： docker attach gogs</span><br><span class="line">docker exec -it [DOCKER IMAGE ID] /bin/bash</span><br><span class="line"><span class="meta">#</span> 例如： docker exec -it ef5cb0692b57 /bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>退出容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure></p>
+<p>查看容器变动日志<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker diff [DOCKER NAME]</span><br><span class="line"><span class="meta">#</span> 例如：docker diff gogs</span><br></pre></td></tr></table></figure></p>
+<p>查看容器或者镜像详细信息<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker inspect [IMAGE NAME]:0.1 </span><br><span class="line"><span class="meta">#</span> 例如： sudo docker inspect gogs</span><br></pre></td></tr></table></figure></p>
+<p>向容器内部发送指令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker exec [DOCKER NAME] [COMMAND]</span><br><span class="line"><span class="meta">#</span> 例如 docker exec gogs ls</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装-Gogs"><a href="#安装-Gogs" class="headerlink" title="安装 Gogs"></a>安装 Gogs</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>下载镜像 Gogs<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull gogs/gogs</span><br></pre></td></tr></table></figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/10/2HbjfQsEygriOe9.png" alt="4.png" title>
+                </div>
+                <div class="image-caption">4.png</div>
+            </figure>
+<p>创建目录<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /home/Gogs</span><br><span class="line">cd /home/Gogs</span><br></pre></td></tr></table></figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/10/E6t9KsZXg7TwFO3.png" alt="5.png" title>
+                </div>
+                <div class="image-caption">5.png</div>
+            </figure>
+<p>开启Docker<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 直接启动</span><br><span class="line">docker run --name=gogs -p 10022:22 -p 10080:3000 -v /home/Gogs:/data gogs/gogs</span><br><span class="line"><span class="meta">#</span> 后台启动</span><br><span class="line">docker run --name=gogs -d  -p 10022:22 -p 10080:3000 -v /home/Gogs:/data gogs/gogs</span><br></pre></td></tr></table></figure></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>正常启动后直接打开 <a href="http://ip:10080" target="_blank" rel="noopener">http://ip:10080</a>即可</p>
+<p>如图：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/10/eTy2A1EksPLdxlZ.png" alt="6.png" title>
+                </div>
+                <div class="image-caption">6.png</div>
+            </figure>
+<p>接下来按照提示配置即可，我们这里使用SQLite3</p>
+<p>应用配置需要注意一下</p>
+<ul>
+<li>域名填写你的服务器公网IP</li>
+<li>SSH端口号填写 映射的端口号 10022</li>
+<li>HTTP端口号填写 3000</li>
+<li>应用URL填写 ip + 映射的端口号 10080 访问<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/10/4FveSlBTdIVO5tA.png" alt="7.png" title>
+                </div>
+                <div class="image-caption">7.png</div>
+            </figure>
+</li>
+</ul>
+<p>配置完成后如果设置好管理员账户的会自动登录进去，如果没有设置的可以自行注册。</p>
+<p>注意：数据库中第一个用户就是管理员账户<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/10/oQylDbdHcfOgL1j.png" alt="8.png" title>
+                </div>
+                <div class="image-caption">8.png</div>
+            </figure></p>
+<p>Tips：Gogs的配置文件存放在 Docker中的 /data/gogs/conf/app.ini 如果想要更改可以</p>
+<h3 id="反向代理绑定域名"><a href="#反向代理绑定域名" class="headerlink" title="反向代理绑定域名"></a>反向代理绑定域名</h3><p>同 <a href="https://sbcoder.cn/2019/12/09/code_build.html#Nginx%E5%8F%8D%E4%BB%A3Jenkins%EF%BC%8C%E7%BB%91%E5%AE%9A%E5%9F%9F%E5%90%8D">公司代码架构 - Docker + Jenkins + Gogs + Portainer(一)</a>一样，在应用配置阶段修改或者修改配置文件都可以</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Gogs 是一个轻量级的 Git服务器，适用于一些小公司小团队使用，大公司使用Gitlab的情况可能更多一些，但是东西实际都是差不多的，为了占用资源更小一些，我这里还是选用了比较轻量级的Gogs</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-12-10T11:07:02.000Z" itemprop="dateUpdated">2019-12-10 19:07:02</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构/">架构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/版本控制/">版本控制</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/12/10/gogs_docker.html&title=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/12/10/gogs_docker.html&title=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/12/10/gogs_docker.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/12/10/gogs_docker.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/12/10/gogs_docker.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/12/09/code_build.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">公司代码架构 - Docker + Jenkins + Gogs + Portainer(一)</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/12/10/gogs_docker.html&title=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/12/10/gogs_docker.html&title=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/12/10/gogs_docker.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/12/10/gogs_docker.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/12/10/gogs_docker.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKklEQVR42u3aS27DMAxF0ex/0y7QUYHG8n1kHED01ShI/OHJgJBIvl54Hb9r/ev/a/5+07nmY0uGDBnbMo7lOrtmHcT6yrN7+TPfUGXIkPEAxjrJogctw+3zLmKWIUOGjDD58hDJNzJkyJBRYxASSc0yZMiQwRnpBq5zLzkM33gWlyFDxoaMtDHwzc839jdkyJCxCeMIF29G8mYnL8+dRiVDhozRjLR8Viv98yek2fUi7cqQIWMQI90U8iA6vPVdMUaGDBmbM/iWLg203/jkhTkZMmQ8gZGW5jtZ/JaULUOGjNGMzybZu4ctWntbGTJkjGB0Nmr8oMu3khwsQ4aM2Yw08aXH1E7Zjj9ThgwZUxl8k0eK+P1GI2kbBDMjMmTIGMHobwrJcAYv7ZE/6IItQ4aM0QzyyvTK9Bs0qCpDhoyHMWqvT8cmeBGNpN03n2XIkDGaQcJKD5Zpm7M28FEMRYYMGRsyUvE6uPSuOKWexSlDhozRDH4Q7ZfVSMmsj5QhQ8Y8Bi9vdUbBasNeQVQyZMh4JCMd1bqjhRC8S4YMGaMZtYEtPnhRfFlnLEyGDBnjGEe4+qUxfmTlLVIZMmTMZtQSbm3KrHZITo/TMmTImMrgSZbvMfn/VEvEwc5RhgwZgxjk4Jq+njcGOmwZMmTI4M3ITjGuQ5IhQ4aMztgEfxpvJ1z0Y2XIkDGawQ+xtSMoL9XV2hUyZMiYzag1Bmqh8/LchwEyZMjYlfEDzB5lqzd/3SYAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

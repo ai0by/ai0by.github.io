@@ -20,9 +20,9 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="优化,版本控制,架构">
+    <meta name="keywords" content="版本控制,优化,架构">
     <meta name="description" content="公司代码架构 - Docker + Jenkins + Gogs + Portainer(一)介绍公司研发项目时，遇到git作为版本控制时，很常见的问题是部署比较麻烦（相比较麻烦），需要先克隆在拉到服务器部署，代码提交频率过高时，就会出现一天很多次提交代码，部署代码，浪费了大量的人力物力，于是乎大量的架构师技术总监们开始研究各类解决方案，各种上线前review代码，这是一件非常痛苦的事情，这里简单">
-<meta name="keywords" content="优化,版本控制,架构">
+<meta name="keywords" content="版本控制,优化,架构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="公司代码架构 - Docker + Jenkins + Gogs + Portainer(一)">
 <meta property="og:url" content="https://sbcoder.cn/2019/12/09/code_build.html">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/12/09/6KpsuV2xYUROPXa.png">
 <meta property="og:image" content="https://i.loli.net/2019/12/09/vtdZiLsepn9Hkag.png">
 <meta property="og:image" content="https://i.loli.net/2019/12/09/yEO6u195Xw2Z348.png">
-<meta property="og:updated_time" content="2019-12-09T11:49:20.000Z">
+<meta property="og:updated_time" content="2019-12-10T11:07:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="公司代码架构 - Docker + Jenkins + Gogs + Portainer(一)">
 <meta name="twitter:description" content="公司代码架构 - Docker + Jenkins + Gogs + Portainer(一)介绍公司研发项目时，遇到git作为版本控制时，很常见的问题是部署比较麻烦（相比较麻烦），需要先克隆在拉到服务器部署，代码提交频率过高时，就会出现一天很多次提交代码，部署代码，浪费了大量的人力物力，于是乎大量的架构师技术总监们开始研究各类解决方案，各种上线前review代码，这是一件非常痛苦的事情，这里简单">
@@ -173,7 +173,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#公司代码架构-Docker-Jenkins-Gogs-Portainer-一"><span class="post-toc-number">1.</span> <span class="post-toc-text">公司代码架构 - Docker + Jenkins + Gogs + Portainer(一)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#介绍"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">介绍</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#搭建环境"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">搭建环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装Docker"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">安装Docker</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#启动Docker并查看版本"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">启动Docker并查看版本</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装Jenkins"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">安装Jenkins</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装-1"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Nginx反代Jenkins，绑定域名"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">Nginx反代Jenkins，绑定域名</span></a></li></ol></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#公司代码架构-Docker-Jenkins-Gogs-Portainer-一"><span class="post-toc-number">1.</span> <span class="post-toc-text">公司代码架构 - Docker + Jenkins + Gogs + Portainer(一)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#介绍"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">介绍</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#搭建环境"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">搭建环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Ubuntu16-04-Ubuntu18-04-安装-Docker"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Ubuntu16.04/Ubuntu18.04 安装 Docker</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#启动Docker并查看版本"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">启动Docker并查看版本</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装Jenkins"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">安装Jenkins</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装-1"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Nginx反代Jenkins，绑定域名"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">Nginx反代Jenkins，绑定域名</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结语"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">结语</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -201,13 +201,14 @@
             <h1 id="公司代码架构-Docker-Jenkins-Gogs-Portainer-一"><a href="#公司代码架构-Docker-Jenkins-Gogs-Portainer-一" class="headerlink" title="公司代码架构 - Docker + Jenkins + Gogs + Portainer(一)"></a>公司代码架构 - Docker + Jenkins + Gogs + Portainer(一)</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>公司研发项目时，遇到git作为版本控制时，很常见的问题是部署比较麻烦（相比较麻烦），需要先克隆在拉到服务器部署，代码提交频率过高时，就会出现一天很多次提交代码，部署代码，浪费了大量的人力物力，于是乎大量的架构师技术总监们开始研究各类解决方案，各种上线前review代码，这是一件非常痛苦的事情，这里简单记录一下公司代码架构的部署，来解决公司代码架构上的诸多问题，也是自己做一个笔记，文章内如有错误，还请各位指出。</p>
 <p>Tips：该环境并不适用于个人用户以及小微企业，适用于项目众多且开发人员大于30人的公司</p>
 <h2 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h2><ul>
-<li>服务器1     ：Virmach 水牛城 RAM1.8G 2C 10GSSD（黑五机器）</li>
-<li>操作系统    ：Ubuntu16.04</li>
-<li>部署环境    ：LNMP1.6 （我是军哥铁粉）</li>
+<li>服务器1  ：Virmach 水牛城 RAM1.8G 2C 10GSSD（黑五机器）</li>
+<li>操作系统  ：Ubuntu16.04</li>
+<li>部署环境  ：LNMP1.6 （我是军哥铁粉）</li>
 </ul>
-<p>这里说明一下，两台服务器是为了解耦，说是解耦，实则认为承受不住，且大部分公司已经有一套完整的git服务器了，现在要做的就是加个自动构建而已，git服务器可自选环境</p>
-<p><strong>服务器1的配置属于中下配置，该机型一年 13刀，属于大部分人都承受的起的价格，可以部署 一到两个 小中型 项目</strong></p>
-<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><p>Docker可以说是非常的牛X了，关于他的概念不多说，牛就牛在管理太方便了，就好像是 WHMCS 用母鸡开小鸡一样，母鸡永远不考虑小鸡的运作，只需要配合就好，Docker也一样，我们只需要创建容器，管理容器就够了，剩下的交给Docker来处理，且Docker可以做负载均衡，后续做架构的时候可以开多个Docker做集群，按需来做</p>
+<p>这里说明一下，多台服务器是为了解耦，说是解耦，实则认为承受不住，且大部分公司已经有一套完整的git服务器了，本节要做的就是加个自动构建而已，git服务器可自选环境，后面会讲如何搭建Gogs，如果有高配置服务器的公司或个人，可以尝试使用单服务器多部署，本文所需共三台服务器。</p>
+<p>服务器1：搭建Jenkins中转服务器，做代码自动构建使用<br>服务器2：生产环境服务器，实则测试服务器，部署代码使用<br>服务器3：Gogs服务器，Git版本库服务器，做代码版本控制使用</p>
+<p><strong>服务器1的配置属于中下配置，该机型一年 13刀，属于大部分人都承受的起的价格，请注意，本文标注的配置仅用于配置自动构建服务器，并不用于部署代码以及Git服务，个人用户小鸡多的可以尝试</strong></p>
+<h2 id="Ubuntu16-04-Ubuntu18-04-安装-Docker"><a href="#Ubuntu16-04-Ubuntu18-04-安装-Docker" class="headerlink" title="Ubuntu16.04/Ubuntu18.04 安装 Docker"></a>Ubuntu16.04/Ubuntu18.04 安装 Docker</h2><p>Docker可以说是非常的牛X了，关于他的概念不多说，牛就牛在管理太方便了，就好像是 WHMCS 用母鸡开小鸡一样，母鸡永远不考虑小鸡的运作，只需要配合就好，Docker也一样，我们只需要创建容器，管理容器就够了，剩下的交给Docker来处理，且Docker可以做负载均衡，后续做架构的时候可以开多个Docker做集群，按需来做</p>
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>删除旧版本，更新apt-get，安装docker<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker docker-engine docker-ce docker.io</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install docker.io</span><br></pre></td></tr></table></figure></p>
 <h3 id="启动Docker并查看版本"><a href="#启动Docker并查看版本" class="headerlink" title="启动Docker并查看版本"></a>启动Docker并查看版本</h3><p>启动docker<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br><span class="line">systemctl enable docker</span><br><span class="line">docker --version</span><br></pre></td></tr></table></figure></p>
 <p>我这里安装的是 18.09版本</p>
@@ -252,14 +253,23 @@
 <p>输入命令进入 Docker内部<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it jenkins bash</span><br><span class="line"><span class="meta">#</span> 获取密码</span><br><span class="line">cat /var/jenkins_home/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure></p>
 <p>重启Docker<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart [CONTAINER ID]</span><br></pre></td></tr></table></figure></p>
 <p>[CONTAINER ID] 为当前Jenkins的版本号 例如 2.164.3 则输入 docker restart 2.164.3</p>
-<h3 id="Nginx反代Jenkins，绑定域名"><a href="#Nginx反代Jenkins，绑定域名" class="headerlink" title="Nginx反代Jenkins，绑定域名"></a>Nginx反代Jenkins，绑定域名</h3><p>由于众所周知的水牛城服务器卡，国内环境必须搭配CloudFlare才可以使用，否则太卡了，因此安装LNMP环境，后续自动构建时也可以构建到这里<br>LNMP环境安装教程 : <a href="https://lnmp.org/install.html" target="_blank" rel="noopener">LNMP一键安装包 - 安装教程</a></p>
+<h3 id="Nginx反代Jenkins，绑定域名"><a href="#Nginx反代Jenkins，绑定域名" class="headerlink" title="Nginx反代Jenkins，绑定域名"></a>Nginx反代Jenkins，绑定域名</h3><p>由于众所周知的水牛城服务器卡，国内环境必须搭配CloudFlare才可以使用，否则太卡了，因此安装LNMP环境，后续自动构建时也可以构建到这里</p>
+<ul>
+<li>安装方法一：</li>
+</ul>
+<p>LNMP环境安装教程 : <a href="https://lnmp.org/install.html" target="_blank" rel="noopener">LNMP一键安装包 - 安装教程</a></p>
 <p>懒得打开的话，可以直接输入<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://soft.vpser.net/lnmp/lnmp1.6.tar.gz -cO lnmp1.6.tar.gz &amp;&amp; tar zxf lnmp1.6.tar.gz &amp;&amp; cd lnmp1.6 &amp;&amp; ./install.sh lnmp</span><br></pre></td></tr></table></figure></p>
 <p>我这里安装的是 1.6稳定版，需要其他版本的可以自行修改版本号安装</p>
-<p>打开NGINX配置文件目录，创建一个新的配置文件</p>
+<ul>
+<li>安装方法二：</li>
+</ul>
+<p>apt-get安装，建议先更新apt-get<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install nginx</span><br></pre></td></tr></table></figure></p>
+<p>打开NGINX配置文件目录，创建一个新的配置文件(这里是lnmp环境的配置文件地址，apt-get安装的nginx配置文件存放于 /etc/nginx/conf.d 中)</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/local/nginx/conf/vhost/jenkins.conf</span><br></pre></td></tr></table></figure>
 <p>输入以下内容，请注意替换掉下面的 jenkins.0161.org<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  jenkins.0161.org;</span><br><span class="line">        client_max_body_size 60M;</span><br><span class="line">        client_body_buffer_size 512k;</span><br><span class="line">        location / &#123;</span><br><span class="line">                proxy_pass</span><br><span class="line">                http://localhost:8081;</span><br><span class="line">                proxy_redirect  off;</span><br><span class="line">                proxy_set_header Host $host;</span><br><span class="line">                proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>重启lnmp使配置生效<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lnmp reload</span><br></pre></td></tr></table></figure></p>
 <p>打开CloudFlare绑定域名，增加CDN支持，此处比较简单，不多赘述</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>一个完整的架构，需要很多的付出，并非一朝一夕，本文所属架构并不适用于所有公司或者个人，大型公司还需要K8s集群，承受多少并发取决于很多因素，任何架构都不能通杀所有类型的公司</p>
 
         </div>
 
@@ -268,7 +278,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-12-09T11:49:20.000Z" itemprop="dateUpdated">2019-12-09 19:49:20</time>
+    最后更新时间：<time datetime="2019-12-10T11:07:37.000Z" itemprop="dateUpdated">2019-12-10 19:07:37</time>
 </span><br>
 
 
@@ -349,7 +359,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/12/10/gogs_docker.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)</h4>
+      </a>
+    </div>
   
 
   
