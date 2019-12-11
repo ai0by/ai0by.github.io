@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>公司代码架构 - Docker + Jenkins + Gogs + Portainer(三) | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="优化,版本控制,架构">
+    <meta name="description" content="配置Jenkins实现自动构建介绍前面已经搭建好了基本环境，剩下的就是自动构建了，这里就需要使用我们的构建工具Jenkins，Jenkins是一个非常牛逼的东西，它可以实现代码同步构建，当你修改你的代码并传到git时，Jenkins可以自动将你的代码同步到服务器上面，当然这只是Jenkins的基本功能之一，他还有非常多的东西值得我们学习~ 搭建环境 服务器2     ：Pacificrack 洛杉">
+<meta name="keywords" content="优化,版本控制,架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)">
+<meta property="og:url" content="https://sbcoder.cn/2019/12/11/jenkins_docker.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="配置Jenkins实现自动构建介绍前面已经搭建好了基本环境，剩下的就是自动构建了，这里就需要使用我们的构建工具Jenkins，Jenkins是一个非常牛逼的东西，它可以实现代码同步构建，当你修改你的代码并传到git时，Jenkins可以自动将你的代码同步到服务器上面，当然这只是Jenkins的基本功能之一，他还有非常多的东西值得我们学习~ 搭建环境 服务器2     ：Pacificrack 洛杉">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/nRy9qOexkG3fw7N.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/47gwD95NBtXfOQb.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/LdAF3eXkqrQmuDR.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/JhEOstraiI5Lqd4.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/7uaGjQWqImfYXry.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/vloscVY6eJtIK1q.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/dAXcI6Y3asNbQgv.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/LX5pBVqgk7du6no.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/11/QsEMVA.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/11/QsV5wj.png">
+<meta property="og:updated_time" content="2019-12-11T11:10:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)">
+<meta name="twitter:description" content="配置Jenkins实现自动构建介绍前面已经搭建好了基本环境，剩下的就是自动构建了，这里就需要使用我们的构建工具Jenkins，Jenkins是一个非常牛逼的东西，它可以实现代码同步构建，当你修改你的代码并传到git时，Jenkins可以自动将你的代码同步到服务器上面，当然这只是Jenkins的基本功能之一，他还有非常多的东西值得我们学习~ 搭建环境 服务器2     ：Pacificrack 洛杉">
+<meta name="twitter:image" content="https://i.loli.net/2019/12/11/nRy9qOexkG3fw7N.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api">
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                Link
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-12-11T11:09:38.000Z" itemprop="datePublished" class="page-time">
+  2019-12-11
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/架构/">架构</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#配置Jenkins实现自动构建"><span class="post-toc-number">1.</span> <span class="post-toc-text">配置Jenkins实现自动构建</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#介绍"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">介绍</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#搭建环境"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">搭建环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#生产环境搭建"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">生产环境搭建</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装LNMP"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">安装LNMP</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装Java8"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">安装Java8</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Jenkins配置"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Jenkins配置</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装必要的插件"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">安装必要的插件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#增加节点"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">增加节点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置Gogs-WebHook"><span class="post-toc-number">1.4.3.</span> <span class="post-toc-text">配置Gogs WebHook</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置Jenkins任务"><span class="post-toc-number">1.4.4.</span> <span class="post-toc-text">配置Jenkins任务</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#配置上线"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">配置上线</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Nginx配置"><span class="post-toc-number">1.5.1.</span> <span class="post-toc-text">Nginx配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#构建"><span class="post-toc-number">1.5.2.</span> <span class="post-toc-text">构建</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#自动构建"><span class="post-toc-number">1.5.3.</span> <span class="post-toc-text">自动构建</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结语"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">结语</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-公司代码架构-Docker-Jenkins-Gogs-Portainer-三" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-12-11 19:09:38" datetime="2019-12-11T11:09:38.000Z" itemprop="datePublished">2019-12-11</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/架构/">架构</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="配置Jenkins实现自动构建"><a href="#配置Jenkins实现自动构建" class="headerlink" title="配置Jenkins实现自动构建"></a>配置Jenkins实现自动构建</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>前面已经搭建好了基本环境，剩下的就是自动构建了，这里就需要使用我们的构建工具Jenkins，Jenkins是一个非常牛逼的东西，它可以实现代码同步构建，当你修改你的代码并传到git时，Jenkins可以自动将你的代码同步到服务器上面，当然这只是Jenkins的基本功能之一，他还有非常多的东西值得我们学习~</p>
+<h2 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h2><ul>
+<li>服务器2     ：Pacificrack 洛杉矶 RAM2G 2C 35GSSD（圣诞机器）18刀</li>
+<li>操作系统    ：CentOS7.5</li>
+<li>部署环境    ：LNMP1.6 （我是军哥铁粉） + Java8</li>
+</ul>
+<p>服务器1：搭建Jenkins中转服务器，做代码自动构建使用<br>服务器2：生产环境服务器，实则测试服务器，部署代码使用<br>服务器3：Gogs服务器，Git版本库服务器，做代码版本控制使用</p>
+<h2 id="生产环境搭建"><a href="#生产环境搭建" class="headerlink" title="生产环境搭建"></a>生产环境搭建</h2><p>服务器2的生产环境搭建。</p>
+<p>生产环境，主要就是LNMP和Java8，LNMP是可选的，看需要部署的程序环境，例如需要部署node.js则只需要node.js环境即可，其他同理，我这边是准备自动部署PHP程序，因此就还是使用LNMP；</p>
+<p>Java8是必须的，Jenkins使用SSH连接到服务器时是需要源服务器有Java环境的</p>
+<h3 id="安装LNMP"><a href="#安装LNMP" class="headerlink" title="安装LNMP"></a>安装LNMP</h3><p>LNMP环境安装教程 : <a href="https://lnmp.org/install.html" target="_blank" rel="noopener">LNMP一键安装包 - 安装教程</a></p>
+<h3 id="安装Java8"><a href="#安装Java8" class="headerlink" title="安装Java8"></a>安装Java8</h3><p>Jenkins连接节点的服务器必须安装！其他服务器无需安装！</p>
+<p>首先更新 yum 源<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum update</span><br></pre></td></tr></table></figure></p>
+<p>安装 jdk1.8<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java-1.8.0-openjdk java-1.8.0-openjdk-devel</span><br></pre></td></tr></table></figure></p>
+<p>这里注意，是可以选择Java版本的，我这里使用了8所以按照8的方式安装的</p>
+<p>可以搜索yum选择需要安装的版本<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum search java | grep jdk</span><br></pre></td></tr></table></figure></p>
+<p>一般 使用上面方法安装的Java配置文件都在 /etc/profile</p>
+<p>编辑配置<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p>在末尾添加 环境变量，注意修改自己的版本号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JAVA_HOME=/user/lib/jvm/java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64</span><br><span class="line">JRE_HOME=$JAVA_HOME/jre</span><br><span class="line">CLASS_PATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib</span><br><span class="line">PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin</span><br><span class="line">export JAVA_HOME JRE_HOME CLASS_PATH PATH</span><br></pre></td></tr></table></figure></p>
+<p>重置 profile<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p>查看Java版本<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure></p>
+<h2 id="Jenkins配置"><a href="#Jenkins配置" class="headerlink" title="Jenkins配置"></a>Jenkins配置</h2><h3 id="安装必要的插件"><a href="#安装必要的插件" class="headerlink" title="安装必要的插件"></a>安装必要的插件</h3><p>打开Jenkins登录后 打开 系统管理 - 插件管理 - 可选插件</p>
+<p>搜索 安装 以下插件</p>
+<p>汉化语言包(可选)</p>
+<ul>
+<li>Locale plugin      </li>
+<li>Localization: Chinese (Simplified)</li>
+</ul>
+<p>Docker容器(可选)</p>
+<ul>
+<li>Docker Pipeline</li>
+</ul>
+<p>远程连接(必须)</p>
+<ul>
+<li>SSH plugin</li>
+<li>SSH Slaves plugin</li>
+<li>Oracle Java SE Development Kit Installer Plugin</li>
+</ul>
+<p>Git服务(推荐)</p>
+<ul>
+<li>GitHub plugin</li>
+<li>Gogs plugin</li>
+</ul>
+<p>推荐安装(可选)</p>
+<ul>
+<li>bouncycastle API Plugin</li>
+<li>Branch API Plugin</li>
+<li>Command Agent Launcher Plugin</li>
+</ul>
+<p>插件属于按需配置，不适合自己的插件无需安装</p>
+<h3 id="增加节点"><a href="#增加节点" class="headerlink" title="增加节点"></a>增加节点</h3><p>增加节点必须要先在节点服务器配置Java环境，参照上面的配置Java8环境配置！<br>如果没有配置Java环境则会报错！</p>
+<p>增加节点必须要有SSH插件，因此如果界面与我不一样请检查自己是否安装了上面的插件</p>
+<p>打开Jenkins 系统管理 - 节点管理 - 新建节点<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/11/nRy9qOexkG3fw7N.png" alt="1.png" title>
+                </div>
+                <div class="image-caption">1.png</div>
+            </figure></p>
+<p>新建节点页面如下<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/11/47gwD95NBtXfOQb.png" alt="2.png" title>
+                </div>
+                <div class="image-caption">2.png</div>
+            </figure></p>
+<p>如果没有设置过凭证则选择添加，界面如下<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/11/LdAF3eXkqrQmuDR.png" alt="3.png" title>
+                </div>
+                <div class="image-caption">3.png</div>
+            </figure></p>
+<p>全部设置完点保存，他会自动启动代理节点</p>
+<p>首页左下角会显示状态<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/11/JhEOstraiI5Lqd4.png" alt="4.png" title>
+                </div>
+                <div class="image-caption">4.png</div>
+            </figure></p>
+<p>或者在节点管理里面也可以看到</p>
+<h3 id="配置Gogs-WebHook"><a href="#配置Gogs-WebHook" class="headerlink" title="配置Gogs WebHook"></a>配置Gogs WebHook</h3><p>根据上一节我们配置好的Gogs，新建一个仓库，这里不多说，直接点加号就行，用过Github的都懂</p>
+<p>可以选择公有仓库或者私有仓库，我这里都是私有仓库，也可以使用Gogs的迁移外部仓库功能直接迁移，迁移时可能会出现504错误，这是因为Nginx的反向代理时有超时设置，超过指定时间则直接504，我们在迁移仓库时经常会超时，因此建议修改一下默认超时时间，具体配置可以自行搜索，不多赘述。</p>
+<p>找到需要自动构建的仓库，选择 仓库设置 - 管理 Web 钩子 - 添加Web钩子</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/11/7uaGjQWqImfYXry.png" alt="6.png" title>
+                </div>
+                <div class="image-caption">6.png</div>
+            </figure>
+<p>注意：图中红框处的test需要跟后面配置的Jenkins对应，例如我创建的Jenkins任务名为 test 则此处填写test，修改域名为你的Jenkins域名，其他格式一致</p>
+<p>注意：图中秘钥可随便填写，记录下来，配置Jenkins任务时会用到</p>
+<h3 id="配置Jenkins任务"><a href="#配置Jenkins任务" class="headerlink" title="配置Jenkins任务"></a>配置Jenkins任务</h3><p>打开 Jenkins  新建任务，如果以前没有任务则首页会显示 创建一个新任务<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/11/vloscVY6eJtIK1q.png" alt="5.png" title>
+                </div>
+                <div class="image-caption">5.png</div>
+            </figure></p>
+<p>配置Jenkins任务<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/11/dAXcI6Y3asNbQgv.png" alt="7.png" title>
+                </div>
+                <div class="image-caption">7.png</div>
+            </figure></p>
+<p>描述部分可随便填写，这里主要配置一下 Gogs Webhook</p>
+<p>勾选 Use Gogs secret，Secret填写上面创建Gogs WebHook时的秘钥</p>
+<p>勾选 限制项目的运行节点 ，标签表达式填写你的节点名字，例如我这里的节点名字就是我的服务器ip地址，直接填写ip地址即可</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2019/12/11/LX5pBVqgk7du6no.png" alt="8.png" title>
+                </div>
+                <div class="image-caption">8.png</div>
+            </figure>
+<p>源码管理选择Git，Repository URL选择需要自动构建的Git项目地址，http形式的，Credentials处为验证，如果是公共仓库则无需配置，如果是私有库则需要填写登录到 Gogs 的账户和密码，配置与之前的节点配置凭据一样，不多赘述</p>
+<p>指定分支填写需要自动构建的分支，我这里填写的是dev分支，用来做开发版测试使用，根据自己情况来即可</p>
+<h2 id="配置上线"><a href="#配置上线" class="headerlink" title="配置上线"></a>配置上线</h2><h3 id="Nginx配置"><a href="#Nginx配置" class="headerlink" title="Nginx配置"></a>Nginx配置</h3><p>由于我创建的节点 目录地址是 /home/wwwroot</p>
+<p>在项目自动构建时，则会自动创建目录 /home/wwwroot/workspace/[JOB NAME]<br>JOB NAME 为 任务名，例如我的 test 则自动创建目录 /home/wwwroot/workspace/test</p>
+<p>Nginx则只需要配置  域名解析即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lnmp vhost add</span><br></pre></td></tr></table></figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/12/11/QsEMVA.png" alt="9.png" title>
+                </div>
+                <div class="image-caption">9.png</div>
+            </figure>
+<p>按图上配置即可，建议增加SSL证书，增加证书前记得先把域名解析到指定服务器IP上，否则会生成证书失败</p>
+<p>记得给文件夹加上权限，755</p>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>返回Jenkins，点击立即构建，第一次构建时间可能会长一些，等待即可!</p>
+<p>构建完成后则会在 配置的目录下创建workspace目录，并将代码放入 /home/wwwroot/workspace/test 目录中，根据自己的配置自行修改目录</p>
+<p>由于我的程序涉及到跨目录访问，因此需要更改 fastcgi.conf 文件，与本文无关这里不多说~</p>
+<p>附一张成功截图，由于我这是前后端分离项目，因此没有界面~<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/12/11/QsV5wj.png" alt="10.png" title>
+                </div>
+                <div class="image-caption">10.png</div>
+            </figure></p>
+<h3 id="自动构建"><a href="#自动构建" class="headerlink" title="自动构建"></a>自动构建</h3><p>上面已经配置好了自动构建，我们每次合并代码或者提交代码变更到dev分支时，Gogs则会以Webhook的形式将内容推送到Jenkins上面去，实现每次更新代码自动构建服务器代码。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>目前搭建好的架构，适合还在开发测试程序的开发小组，配合测试人员使用，也能让产品们在汇报工作进度的时候更得心应手，了解开发进度，当然也不是特别准确的开发进度，摸鱼还是要摸的。后面应该会写一下 Portainer + Swarm 管理Docker集群，慢慢写~</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-12-11T11:10:26.000Z" itemprop="dateUpdated">2019-12-11 19:10:26</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构/">架构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/版本控制/">版本控制</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/12/11/jenkins_docker.html&title=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/12/11/jenkins_docker.html&title=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/12/11/jenkins_docker.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/12/11/jenkins_docker.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/12/11/jenkins_docker.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/12/10/gogs_docker.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">公司代码架构 - Docker + Jenkins + Gogs + Portainer(二)</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/12/11/jenkins_docker.html&title=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/12/11/jenkins_docker.html&title=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/12/11/jenkins_docker.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/12/11/jenkins_docker.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/12/11/jenkins_docker.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMElEQVR42u3aQW7DMAwEwPz/0+k1h8pdknEBS6NT4Sa2xgVYiuTrFa/3x0qurNbqk6t7fnlhYGA8ljF58DX183oCSD6/3AMGBsYBjNW2eluZvKDrey6vY2BgYARBtpc+Jq8MAwMDYx5wr4+d159MUkkMDAyMPIG7DqN3bP2WszgGBsYDGXnV/f9/vqW/gYGB8SjGu7jmxf1bdoWBgbE1Iw9wvYPrPIjnwx8YGBi7Mqql/GS7vWNwPq7xyxUMDIytGfmXq+W2vD1QbX8W/iYYGBibMvKi/LdGJXrN0ai/gYGBsR0jCZ3VxmSeLI7GLDAwMA5g9A6f1YQyPxJPRtAwMDD2Y+RHynnAnb+U5d0wMDAOYFQTuF5ToVpuKzwdAwPjAEavKJ8nfNfhshpql9MiGBgYmzKSlT+4l0T2SmwYGBjnMOYl/pxUTTQLGAwMjK0ZvRJbtXxfHpto/TPAwMDYldE7xPbGyJJSXa+lioGBsTdjMuJwdyOhnIxiYGAcw+gV96+Dcv7byfEYAwPjBEYvdvVI1UNs9F0MDIxjGL2tV9ucvYGJP8IxBgbGpox3cVWPpnnBrneHqHeBgYHxcEYv2E3Gv76Vbo5m3DAwMB7IyMcp8of1kr9qclmeWcPAwHg4Iw981UNpdZijF/oxMDAw8pA6H6dIktFm9wADA+MYRqHnEBfakjS00N/AwMDYlJEX65OH5cjCRq8TRAwMjK0Z+dGxN5wx38TXGpkYGBjPY/wAjfQ39TmgJFsAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
