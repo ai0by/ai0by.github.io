@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>公司代码架构-Docker-Jenkins-Gogs-Portainer-四 | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="优化,版本控制,架构">
+    <meta name="description" content="Portainer + Swarm 管理Docker集群介绍Portainer是一个Docker管理工具，它支持多种方式，我们这里只写，远程链接形式和本地形式 搭建环境 服务器1     ：Virmach 水牛城 RAM1.8G 2C 10GSSD（黑五机器） 操作系统    ：Ubuntu16.04 部署环境    ：LNMP1.6 （我是军哥铁粉）  服务器1：搭建Jenkins中转服务器，做">
+<meta name="keywords" content="优化,版本控制,架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="公司代码架构-Docker-Jenkins-Gogs-Portainer-四">
+<meta property="og:url" content="https://sbcoder.cn/2019/12/14/docker_swarm.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="Portainer + Swarm 管理Docker集群介绍Portainer是一个Docker管理工具，它支持多种方式，我们这里只写，远程链接形式和本地形式 搭建环境 服务器1     ：Virmach 水牛城 RAM1.8G 2C 10GSSD（黑五机器） 操作系统    ：Ubuntu16.04 部署环境    ：LNMP1.6 （我是军哥铁粉）  服务器1：搭建Jenkins中转服务器，做">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/12/QyJgud.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/11/Qsn7bF.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/12/QyYn2D.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/12/QyYDZn.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/12/QycbMn.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/13/QcH3Tg.png">
+<meta property="og:updated_time" content="2019-12-13T23:35:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="公司代码架构-Docker-Jenkins-Gogs-Portainer-四">
+<meta name="twitter:description" content="Portainer + Swarm 管理Docker集群介绍Portainer是一个Docker管理工具，它支持多种方式，我们这里只写，远程链接形式和本地形式 搭建环境 服务器1     ：Virmach 水牛城 RAM1.8G 2C 10GSSD（黑五机器） 操作系统    ：Ubuntu16.04 部署环境    ：LNMP1.6 （我是军哥铁粉）  服务器1：搭建Jenkins中转服务器，做">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/12/12/QyJgud.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api">
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                Link
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">公司代码架构-Docker-Jenkins-Gogs-Portainer-四</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">公司代码架构-Docker-Jenkins-Gogs-Portainer-四</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-12-13T23:35:13.000Z" itemprop="datePublished" class="page-time">
+  2019-12-14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/架构/">架构</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Portainer-Swarm-管理Docker集群"><span class="post-toc-number">1.</span> <span class="post-toc-text">Portainer + Swarm 管理Docker集群</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#介绍"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">介绍</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#搭建环境"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">搭建环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#配置Portainer"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">配置Portainer</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#开放DockerAPI端口"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">开放DockerAPI端口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装Portainer"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">安装Portainer</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建Swarm集群"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">创建Swarm集群</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结语"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">结语</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-公司代码架构-Docker-Jenkins-Gogs-Portainer-四" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">公司代码架构-Docker-Jenkins-Gogs-Portainer-四</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-12-14 07:35:13" datetime="2019-12-13T23:35:13.000Z" itemprop="datePublished">2019-12-14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/架构/">架构</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Portainer-Swarm-管理Docker集群"><a href="#Portainer-Swarm-管理Docker集群" class="headerlink" title="Portainer + Swarm 管理Docker集群"></a>Portainer + Swarm 管理Docker集群</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Portainer是一个Docker管理工具，它支持多种方式，我们这里只写，远程链接形式和本地形式</p>
+<h2 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h2><ul>
+<li>服务器1     ：Virmach 水牛城 RAM1.8G 2C 10GSSD（黑五机器）</li>
+<li>操作系统    ：Ubuntu16.04</li>
+<li>部署环境    ：LNMP1.6 （我是军哥铁粉）</li>
+</ul>
+<p>服务器1：搭建Jenkins中转服务器，做代码自动构建使用<br>服务器2：生产环境服务器，实则测试服务器，部署代码使用<br>服务器3：Gogs服务器，Git版本库服务器，做代码版本控制使用</p>
+<h2 id="配置Portainer"><a href="#配置Portainer" class="headerlink" title="配置Portainer"></a>配置Portainer</h2><h3 id="开放DockerAPI端口"><a href="#开放DockerAPI端口" class="headerlink" title="开放DockerAPI端口"></a>开放DockerAPI端口</h3><p>将需要加入Portainer管理的服务器（需要安装过Docker），打开2375端口，方便管理</p>
+<p>创建一个备份，并编辑配置文件<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /lib/systemd/system/docker.service /lib/systemd/system/docker.service.bak </span><br><span class="line">vi /lib/systemd/system/docker.service</span><br></pre></td></tr></table></figure></p>
+<p>方法一：<br>在ExecStart整行后面添加 <figure class="highlight plain"><figcaption><span>tcp://0.0.0.0:2375```，有的时候他可能不止一行，则在最后面增加这一段即可，如下</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">![2.png](https://s2.ax1x.com/2019/12/11/QsKW60.png)</span><br><span class="line">:wq 保存退出</span><br><span class="line"></span><br><span class="line">方法二（推荐）：</span><br><span class="line">本方法并不适用于所有的Docker版本</span><br><span class="line">```shell</span><br><span class="line">vi /etc/docker/daemon.json</span><br></pre></td></tr></table></figure></p>
+<p>复制以下内容<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"hosts"</span>: [</span><br><span class="line">        <span class="string">"tcp://0.0.0.0:2375"</span>,</span><br><span class="line">        <span class="string">"unix:///var/run/docker.sock"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>配置完后重启Docker<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload </span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure></p>
+<p>这里推荐大家使用iptables防火墙限制一下2375端口的访问，如果将2375暴露在公网则可能出现一系列安全问题，如果是国内的腾讯或者阿里，则可以直接在后台配置安全组，安全组里限制 指定IP访问指定端口即可，如果将2375暴露在外，则可能受到黑客恶意攻击！</p>
+<p>如果不是国内机器，也可以通过iptables限制访问<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -s 107.173.XXX.XXX -p tcp --dport 2375 -j ACCEPT</span><br><span class="line">systemctl iptables.service save</span><br><span class="line">systemctl restart iptables.service</span><br><span class="line"><span class="meta">#</span> systemctl stop iptables.service 如果配置有误可以停止iptables尝试</span><br></pre></td></tr></table></figure></p>
+<p>非常不推荐直接将2375暴露在公网，秒被黑~</p>
+<p>配置后的效果如下图<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/12/12/QyJgud.png" alt="3.png" title>
+                </div>
+                <div class="image-caption">3.png</div>
+            </figure></p>
+<h3 id="安装Portainer"><a href="#安装Portainer" class="headerlink" title="安装Portainer"></a>安装Portainer</h3><p>创建数据<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create portainer_data</span><br></pre></td></tr></table></figure></p>
+<p>创建Portainer并运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8000:8000 -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer</span><br></pre></td></tr></table></figure></p>
+<p>执行后访问 <a href="http://ip:9000" target="_blank" rel="noopener">http://ip:9000</a>即可看到<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/12/11/Qsn7bF.png" alt="1.png" title>
+                </div>
+                <div class="image-caption">1.png</div>
+            </figure><br>刚创建完会提示创建一个管理员用户，按照提示创建即可</p>
+<p>选择创建Docker时使用Remote，远程连接，按下图填写<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/12/12/QyYn2D.png" alt="4.png" title>
+                </div>
+                <div class="image-caption">4.png</div>
+            </figure></p>
+<p>添加完成后如下图，点击访问创建好的节点则可以操作里面的内容<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/12/12/QyYDZn.png" alt="5.png" title>
+                </div>
+                <div class="image-caption">5.png</div>
+            </figure></p>
+<h3 id="创建Swarm集群"><a href="#创建Swarm集群" class="headerlink" title="创建Swarm集群"></a>创建Swarm集群</h3><p>在管理节点上增加Swarm集群manager节点<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init --advertise-addr [IP ADDRESS]</span><br><span class="line"><span class="meta">#</span> 例如 docker swarm init --advertise-addr 107.173.XXX.XXX</span><br></pre></td></tr></table></figure></p>
+<p>返回结果如下，为了安全，关键位置已打码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Swarm initialized: current node (mjjrpuemaukx5a185iqd54mka) is now a manager.</span><br><span class="line"></span><br><span class="line">To add a worker to this swarm, run the following command:</span><br><span class="line"></span><br><span class="line">    docker swarm join --token SWMTKN-1-1zd********2oci43nbf1jjhlng8k********fhfzqw2-1ywv79qnvmlb*******h3gs35r 107.173.XXX.XXX:2377</span><br><span class="line"></span><br><span class="line">To add a manager to this swarm, run &apos;docker swarm join-token manager&apos; and follow the instructions.</span><br></pre></td></tr></table></figure></p>
+<p>当Manager节点增加完成后，可以在子节点中输入上面提示的命令以worker形式加入集群<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm join --token SWMTKN-1-1zd********2oci43nbf1jjhlng8k********fhfzqw2-1ywv79qnvmlb*******h3gs35r 107.173.XXX.XXX:2377</span><br></pre></td></tr></table></figure></p>
+<p>子节点加入成功后可以在父节点中查看子节点信息<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker node ls</span><br></pre></td></tr></table></figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/12/12/QycbMn.png" alt="6.png" title>
+                </div>
+                <div class="image-caption">6.png</div>
+            </figure>
+<p>如果在Portainer增加manager节点，则会自动出现 Swarm 和 Service选项，如图<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/12/13/QcH3Tg.png" alt="7.png" title>
+                </div>
+                <div class="image-caption">7.png</div>
+            </figure></p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本次搭建过程就基本完成了，我们可以通过Portainer管理之前搭建的一系列环境，至此，一套简单的公司架构就完成了，生产环境也可以做到实时构建，只需要在Gogs上面发布版本就可以了，选择手动构建，构建时选择版本号即可，这样做的好处是如果正式环境有bug时可以随时回滚到稳定版本，当然，发布版本也是建立在测试完后的场景！</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-12-13T23:35:55.000Z" itemprop="dateUpdated">2019-12-14 07:35:55</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构/">架构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/版本控制/">版本控制</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/12/14/docker_swarm.html&title=《公司代码架构-Docker-Jenkins-Gogs-Portainer-四》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/12/14/docker_swarm.html&title=《公司代码架构-Docker-Jenkins-Gogs-Portainer-四》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/12/14/docker_swarm.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《公司代码架构-Docker-Jenkins-Gogs-Portainer-四》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/12/14/docker_swarm.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/12/14/docker_swarm.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/12/11/jenkins_docker.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/12/14/docker_swarm.html&title=《公司代码架构-Docker-Jenkins-Gogs-Portainer-四》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/12/14/docker_swarm.html&title=《公司代码架构-Docker-Jenkins-Gogs-Portainer-四》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/12/14/docker_swarm.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《公司代码架构-Docker-Jenkins-Gogs-Portainer-四》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/12/14/docker_swarm.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/12/14/docker_swarm.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMklEQVR42u3ay26DQAwF0Pz/T6dSV5Va4NqGqAxnVlF4HhbW+PF6xev9vX7+/r22rto6M/nn5IWBgXFbxnt3VV996/zk0+Sf7I97YmBgPICRB9kkKO//k98neTcMDAyM5NaTbeI+HgMDA2PCyDHJRnP/TAwMDIw8iZ28bjVxvTAXx8DAuCGj1xj4zO/L+xsYGBj/nvEurvn2sdccPXgrDAyMpRnJVm8y27B/1ST0RztcDAyMpRn5yEXewuw1L/Nwj4GBsTajmsROgmO19J8X7DAwMFZlTBoASZDN2wPVEY1X7wEYGBg3ZCQBrpqyToLs/CgGBsZ6jCR0Voe6qinrCSMXGBgYD2BUR76S7WACq24rN8/HwMBYmpFs5qqJbq+FmY9lRMMWGBgYizLyh+XNzrxVmRw9eAoGBsYDGL0yWZ4GVwcyTpgZwcDAWIIRNQUvC5eTlicGBgZGdfyi1xiYj30UMmMMDIzlGNXV21xOEuCDFiYGBsZCjGpimRfdqkG8mvoWqoYYGBg3Z0yqdNUxsuoIRaH9gIGB8XhG7zHXbToPklgMDIzlGPPhrUKnNB7/6iXMGBgYqzLODZ15cS25qjCogYGBsTRjPmDRK7Tlm9G8bIeBgbE2I791r/Nw1kjHwSfDwMB4AKMXZPMNYrWoV02wMTAwMPICXF7bmzRQo5kRDAyMxzN66WjeHC2HXQwMjAcw8iR2Upq/cJgDAwNjacakMXDC8FZrNqR5fwwMjPsxvgCUDsxSLa6YegAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
