@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Canal 根据 binlog日志数据同步 | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="数据库,优化">
+    <meta name="description" content="创建mysql账户如果使用的是root用户，则不需要操作这个步骤 grant all privileges on  . to  ‘jcc’@’%’ identified by ‘jcc’;flush privileges; 配置mysql (参见canal　Quickstart)启用binlog日志打开 mysql.cnf 文件1234[mysqld] log-bin=mysql-bin binl">
+<meta name="keywords" content="数据库,优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Canal 根据 binlog日志数据同步">
+<meta property="og:url" content="https://sbcoder.cn/2020/01/22/canal_go.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="创建mysql账户如果使用的是root用户，则不需要操作这个步骤 grant all privileges on  . to  ‘jcc’@’%’ identified by ‘jcc’;flush privileges; 配置mysql (参见canal　Quickstart)启用binlog日志打开 mysql.cnf 文件1234[mysqld] log-bin=mysql-bin binl">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-21T23:33:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Canal 根据 binlog日志数据同步">
+<meta name="twitter:description" content="创建mysql账户如果使用的是root用户，则不需要操作这个步骤 grant all privileges on  . to  ‘jcc’@’%’ identified by ‘jcc’;flush privileges; 配置mysql (参见canal　Quickstart)启用binlog日志打开 mysql.cnf 文件1234[mysqld] log-bin=mysql-bin binl">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api">
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                Link
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Canal 根据 binlog日志数据同步</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Canal 根据 binlog日志数据同步</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-01-21T23:32:09.000Z" itemprop="datePublished" class="page-time">
+  2020-01-22
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建mysql账户"><span class="post-toc-number">1.</span> <span class="post-toc-text">创建mysql账户</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#配置mysql-参见canal-Quickstart"><span class="post-toc-number">2.</span> <span class="post-toc-text">配置mysql (参见canal　Quickstart)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#添加slave权限"><span class="post-toc-number">3.</span> <span class="post-toc-text">添加slave权限</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建canal-server-服务端"><span class="post-toc-number">4.</span> <span class="post-toc-text">创建canal server 服务端</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#canal-客户端"><span class="post-toc-number">5.</span> <span class="post-toc-text">canal 客户端</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Docker启动canal客户端"><span class="post-toc-number">6.</span> <span class="post-toc-text">Docker启动canal客户端</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#FAQ问题解决"><span class="post-toc-number">7.</span> <span class="post-toc-text">FAQ问题解决</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Canal-根据-binlog日志数据同步" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Canal 根据 binlog日志数据同步</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-01-22 07:32:09" datetime="2020-01-21T23:32:09.000Z" itemprop="datePublished">2020-01-22</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="创建mysql账户"><a href="#创建mysql账户" class="headerlink" title="创建mysql账户"></a>创建mysql账户</h2><p>如果使用的是root用户，则不需要操作这个步骤</p>
+<p>grant all privileges on  <em>.</em> to  ‘jcc’@’%’ identified by ‘jcc’;<br>flush privileges;</p>
+<h2 id="配置mysql-参见canal-Quickstart"><a href="#配置mysql-参见canal-Quickstart" class="headerlink" title="配置mysql (参见canal　Quickstart)"></a>配置mysql (参见canal　Quickstart)</h2><p>启用binlog日志<br>打开 mysql.cnf 文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[mysqld] </span><br><span class="line">log-bin=mysql-bin </span><br><span class="line">binlog-format=ROW #选择row模式 </span><br><span class="line">server_id=9527 #配置mysql replaction需要定义，不能和canal的slaveId重复</span><br></pre></td></tr></table></figure></p>
+<h2 id="添加slave权限"><a href="#添加slave权限" class="headerlink" title="添加slave权限"></a>添加slave权限</h2><p>如果使用的是root用户，则不需要操作这个步骤<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> canal <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'canal'</span>;  </span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span>, <span class="keyword">SHOW</span> <span class="keyword">VIEW</span>, <span class="keyword">REPLICATION</span> <span class="keyword">SLAVE</span>, <span class="keyword">REPLICATION</span> <span class="keyword">CLIENT</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'canal'</span>@<span class="string">'%'</span>;<span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="创建canal-server-服务端"><a href="#创建canal-server-服务端" class="headerlink" title="创建canal server 服务端"></a>创建canal server 服务端</h2><p>需要提前安装好Docker，如果不会安装，可以参考我之前写的文章 <a href="https://sbcoder.cn/2019/12/10/gogs_docker.html#CentOS7-%E5%AE%89%E8%A3%85-Docker">CentOS7 安装 Docker</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 11111:11111 -e canal.auto.scan=false -e canal.instance.master.address=127.0.0.1:3306 -e canal.instance.dbUsername=test -e canal.instance.dbPassword=test -e canal.instance.connectionCharset=UTF-8 -e canal.instance.tsdb.enable=true -e canal.instance.gtidon=false -e canal.instance.filter.regex=.*\\..* -e canal.destinations=test  -d canal/canal-server</span><br></pre></td></tr></table></figure>
+<p>需要替换以下参数</p>
+<ul>
+<li>canal.instance.master.address=127.0.0.1:3306  地址ip更换（尽量用内网）  </li>
+<li>canal.instance.dbUsername=test     数据库账户  </li>
+<li>canal.instance.dbPassword=test      数据库密码</li>
+<li>canal.destinations=test          test为名称 可以修改</li>
+<li>11111:11111       服务器端口：docker端口</li>
+</ul>
+<p>需要注意的是，所填写的数据库账户必须拥有数据库的操作权限，如果不知道权限如何配置，则建议直接使用root用户</p>
+<h2 id="canal-客户端"><a href="#canal-客户端" class="headerlink" title="canal 客户端"></a>canal 客户端</h2><p>我们这里使用Go客户端，因为Go语言的特性，可以很好的运行在Docker上</p>
+<p>canal-go 文档: <a href="https://github.com/withlin/canal-go" target="_blank" rel="noopener">withlin/canal-go</a></p>
+<p>开发过程可以参照文档</p>
+<h2 id="Docker启动canal客户端"><a href="#Docker启动canal客户端" class="headerlink" title="Docker启动canal客户端"></a>Docker启动canal客户端</h2><p>推荐使用Jenkins配置 canal-go<br>构建成功后执行shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t canal_prod:v1 $&#123;WORKSPACE&#125;</span><br><span class="line">docker service update --image canal_prod:v1 --force --no-resolve-image canal_prod</span><br></pre></td></tr></table></figure>
+<p>如果看过我之前的 代码架构文章，可以在Portainer中看到打印在控制台的文字，也可以看到运行状态</p>
+<h2 id="FAQ问题解决"><a href="#FAQ问题解决" class="headerlink" title="FAQ问题解决"></a>FAQ问题解决</h2><p>Q:如果服务停止了，如何解决<br>A:链接到canal-server的Docker内部，查看 canal-server - logs 中的日志</p>
+<p>Q:如果数据同步失败了如何解决<br>A:很大可能是由于改变了数据库结构导致的，需要重启客户端和服务端尝试</p>
+<p>Q:一开始数据就不同步<br>A:查看你的数据库账户是否有权限，如无权限则修改服务端启动时附带的数据库账户参数</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-01-21T23:33:46.000Z" itemprop="dateUpdated">2020-01-22 07:33:46</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2020/01/22/canal_go.html&title=《Canal 根据 binlog日志数据同步》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2020/01/22/canal_go.html&title=《Canal 根据 binlog日志数据同步》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2020/01/22/canal_go.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Canal 根据 binlog日志数据同步》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2020/01/22/canal_go.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2020/01/22/canal_go.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/01/22/aria_goindex.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Aria2 + Rclone + Goindex 实现离线下载在线观看</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/01/07/rabbitmq_thinkphp.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">ThinkPHP使用RabbitMQ进行数据解耦 从安装到监听完全版</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2020/01/22/canal_go.html&title=《Canal 根据 binlog日志数据同步》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2020/01/22/canal_go.html&title=《Canal 根据 binlog日志数据同步》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2020/01/22/canal_go.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Canal 根据 binlog日志数据同步》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2020/01/22/canal_go.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2020/01/22/canal_go.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3au3KlMBAFQP//T9vJBjcBnzOAt5Ca6JaMkZpgah58fcXX98eVrBxdn3ce/f5cufnCwMB4LSPfOL/n+kq+LwYGxj6Mowh2dM+V7c+fdr7v4ToGBgZGTHoi4GJgYGDMGHnBmdz/3wIuBgbGqxhtg+wckBz6/H8frMUxMDBeyMi77n//+5H5BgYGxqsY3+V1JUA/cZ5/T8bAwFiakW/Tpnr5M9vE8fA8GBgYizKS7fOCM2+cJYPM4lQYGBibMZK215XSNx925qNTDAyMPRmzz7nuGljWI0wMDIylGXnJmqSA7aGfK3ExMDBWYuSl5qwld/0D1igxxcDAWJoxa4TNGnCz11TshYGBsQ0jiWN5lGtX8rFEPYnFwMB4LSO3Xh92tsOGIuhjYGAszZiNG9sWf5sstukmBgbGDozZwLJN4+4aMPxSxGJgYCzKuJKQ5Udvh5dtoomBgbEqY5a0naeDs9Rw1mjDwMDYgdE295Or/RQjD/e/hGMMDIxtGHnxmbfqrr+sohbHwMBYmpEEuyspY53qtQUwBgbGBoxZ0222fduAi/qFGBgYizKuF6ht8peMLfPkEgMDYwdGG+Dy7fMntK8mmsRiYGAsx2hbXbNR5ax4Lt43BgbGBox7BwNtyZofN/rYAgMDY3tGm9i1w8thIw8DAwMjGGTeO/Ks98LAwNiA0bbS7lpp7zz8KwYGxtKMWS9r9qB8MDALzRgYGMsxfgAHu9sZ/9Js4gAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
