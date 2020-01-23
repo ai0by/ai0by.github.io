@@ -68,9 +68,9 @@
       <category term="优化" scheme="https://sbcoder.cn/categories/%E4%BC%98%E5%8C%96/"/>
     
     
-      <category term="优化" scheme="https://sbcoder.cn/tags/%E4%BC%98%E5%8C%96/"/>
-    
       <category term="数据库" scheme="https://sbcoder.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+      <category term="优化" scheme="https://sbcoder.cn/tags/%E4%BC%98%E5%8C%96/"/>
     
   </entry>
   
@@ -297,13 +297,13 @@
       <category term="PHP" scheme="https://sbcoder.cn/categories/PHP/"/>
     
     
+      <category term="优化" scheme="https://sbcoder.cn/tags/%E4%BC%98%E5%8C%96/"/>
+    
       <category term="PHP" scheme="https://sbcoder.cn/tags/PHP/"/>
     
       <category term="Laravel" scheme="https://sbcoder.cn/tags/Laravel/"/>
     
       <category term="Redis" scheme="https://sbcoder.cn/tags/Redis/"/>
-    
-      <category term="优化" scheme="https://sbcoder.cn/tags/%E4%BC%98%E5%8C%96/"/>
     
   </entry>
   
