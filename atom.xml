@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2020-02-19T01:52:10.000Z</updated>
+  <updated>2020-05-01T01:40:37.265Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://sbcoder.cn/2020/02/19/2020.html"/>
     <id>https://sbcoder.cn/2020/02/19/2020.html</id>
     <published>2020-02-19T01:50:52.000Z</published>
-    <updated>2020-02-19T01:52:10.000Z</updated>
+    <updated>2020-05-01T01:40:37.265Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="开源项目计划"><a href="#开源项目计划" class="headerlink" title="开源项目计划"></a>开源项目计划</h2><h3 id="vFeedBack整合，重构vFeedBack项目，完善系统"><a href="#vFeedBack整合，重构vFeedBack项目，完善系统" class="headerlink" title="vFeedBack整合，重构vFeedBack项目，完善系统"></a>vFeedBack整合，重构vFeedBack项目，完善系统</h3><ul><li>vFeedBack准备列入我的第一个商业系统</li><li>vFeedBack将更适合企业应用</li><li>vFeedBack将区分商业和个人版</li><li>企业可以单独运营vFeedBack项目</li><li>我自己也将独立运营<h3 id="Pollos网址导航暂停"><a href="#Pollos网址导航暂停" class="headerlink" title="Pollos网址导航暂停"></a>Pollos网址导航暂停</h3></li><li>Pollos是一个坑爹的项目</li><li>数据库丢失，继续下去需要很多的人力物力，需要重理思路逻辑</li><li>后台模板可能涉及侵权问题，需要重写<h3 id="写一个通用的后台管理系统"><a href="#写一个通用的后台管理系统" class="headerlink" title="写一个通用的后台管理系统"></a>写一个通用的后台管理系统</h3></li><li>支持前后端分离项目</li><li>预备将Pollos的管理系统修改为这个新的管理系统</li><li>预备要做的很多</li><li>暂定名字为 easyAdmin，基于Laravel5.8以上</li></ul><h2 id="前端知识补充"><a href="#前端知识补充" class="headerlink" title="前端知识补充"></a>前端知识补充</h2><ul><li>学习VUE，刻不容缓</li><li>Element UI学习，前后端分离，VUE</li></ul><h2 id="知识补充"><a href="#知识补充" class="headerlink" title="知识补充"></a>知识补充</h2><ul><li>学习Socket相关知识</li><li>laravel深入了解</li><li>Golang加深</li><li>Docker加深，k8s，Rancher(想去面试)</li></ul><h2 id="某事结束后"><a href="#某事结束后" class="headerlink" title="某事结束后"></a>某事结束后</h2><ul><li>争取今年自己还房贷 2333</li><li>把xnbox做一做，没准能赚点外快</li><li>玩个网游，下班无聊时还能看一看</li></ul><h2 id="找个女朋友"><a href="#找个女朋友" class="headerlink" title="找个女朋友"></a>找个女朋友</h2><p>老生常谈，不知道能不能行，我得抓紧了</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="开源项目计划"><a href="#开源项目计划" class="headerlink" title="开源项目计划"></a>开源项目计划</h2><h3 id="vFeedBack整合，重构vFeedBack项目，完善系统"><a href="#vFeedBack整合，重构vFeedBack项目，完善系统" class="headerlink" title="vFeedBack整合，重构vFeedBack项目，完善系统"></a>vFeedBack整合，重构vFeedBack项目，完善系统</h3><ul><li>vFeedBack准备列入我的第一个商业系统</li><li>vFeedBack将更适合企业应用</li><li>vFeedBack将区分商业和个人版</li><li>企业可以单独运营vFeedBack项目</li><li>我自己也将独立运营<h3 id="Pollos网址导航暂停"><a href="#Pollos网址导航暂停" class="headerlink" title="Pollos网址导航暂停"></a>Pollos网址导航暂停</h3></li><li>Pollos是一个坑爹的项目</li><li>数据库丢失，继续下去需要很多的人力物力，需要重理思路逻辑</li><li>后台模板可能涉及侵权问题，需要重写<h3 id="写一个通用的后台管理系统"><a href="#写一个通用的后台管理系统" class="headerlink" title="写一个通用的后台管理系统"></a>写一个通用的后台管理系统</h3></li><li>支持前后端分离项目</li><li>预备将Pollos的管理系统修改为这个新的管理系统</li><li>预备要做的很多</li><li>暂定名字为 easyAdmin，基于Laravel5.8以上</li></ul><h2 id="前端知识补充"><a href="#前端知识补充" class="headerlink" title="前端知识补充"></a>前端知识补充</h2><ul><li>学习VUE，刻不容缓 （进行中）</li><li>Element UI学习，前后端分离，VUE</li></ul><h2 id="知识补充"><a href="#知识补充" class="headerlink" title="知识补充"></a>知识补充</h2><ul><li>学习Socket相关知识</li><li>laravel深入了解</li><li>Golang加深</li><li>Docker加深，k8s，Rancher(想去面试)</li></ul><h2 id="某事结束后"><a href="#某事结束后" class="headerlink" title="某事结束后"></a>某事结束后</h2><ul><li>~~ 争取今年自己还房贷 2333 ~~</li><li>把xnbox做一做，没准能赚点外快</li><li>~~ 玩个网游，下班无聊时还能看一看 ~~ （不执行）</li></ul><h2 id="找个女朋友"><a href="#找个女朋友" class="headerlink" title="找个女朋友"></a>找个女朋友</h2><p>老生常谈，不知道能不能行，我得抓紧了（暂缓执行）</p><h2 id="减肥20斤"><a href="#减肥20斤" class="headerlink" title="减肥20斤"></a>减肥20斤</h2><p>肚子大了，今年目标20斤，干掉肚腩</p>]]></content>
     
     <summary type="html">
     
