@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2020-05-01T01:43:27.538Z</updated>
+  <updated>2020-05-09T13:53:34.444Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>UnblockNeteaseMusic 解锁网易云音乐灰色歌曲</title>
+    <link href="https://sbcoder.cn/2020/05/09/UnblockNeteaseMusic.html"/>
+    <id>https://sbcoder.cn/2020/05/09/UnblockNeteaseMusic.html</id>
+    <published>2020-05-09T13:52:19.000Z</published>
+    <updated>2020-05-09T13:53:34.444Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Docker-安装运行服务端"><a href="#Docker-安装运行服务端" class="headerlink" title="Docker 安装运行服务端"></a>Docker 安装运行服务端</h2><p>基于<a href="https://github.com/nondanee/UnblockNeteaseMusic" target="_blank" rel="noopener">nondanee/UnblockNeteaseMusic</a>的音乐解锁代理服务</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name=unblockneteasemusic -d -p 8888:8080 nondanee/unblockneteasemusic</span><br></pre></td></tr></table></figure><p>日志界面 </p><p><img src="https://s1.ax1x.com/2020/05/09/YQcznA.png" alt="Docker内部日志"></p><h2 id="配置客户端"><a href="#配置客户端" class="headerlink" title="配置客户端"></a>配置客户端</h2><table><thead><tr><th style="text-align:left">平台</th><th style="text-align:left">基础设置</th></tr></thead><tbody><tr><td style="text-align:left">Windows</td><td style="text-align:left">设置 &gt; 工具 &gt; 自定义代理 (客户端内)</td></tr><tr><td style="text-align:left">UWP</td><td style="text-align:left">Windows 设置 &gt; 网络和 Internet &gt; 代理</td></tr><tr><td style="text-align:left">Linux</td><td style="text-align:left">系统设置 &gt; 网络 &gt; 网络代理</td></tr><tr><td style="text-align:left">macOS</td><td style="text-align:left">系统偏好设置 &gt; 网络 &gt; 高级 &gt; 代理</td></tr><tr><td style="text-align:left">Android</td><td style="text-align:left">WLAN &gt; 修改网络 &gt; 高级选项 &gt; 代理</td></tr><tr><td style="text-align:left">iOS</td><td style="text-align:left">无线局域网 &gt; HTTP 代理 &gt; 配置代理</td></tr></tbody></table><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/05/09/YQcvXd.png" alt="Windows配置截图" title>                </div>                <div class="image-caption">Windows配置截图</div>            </figure><p>将ip设置为服务器ip即可，映射内部的8080到外部8888端口</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/05/09/YQcj6H.png" alt="效果" title>                </div>                <div class="image-caption">效果</div>            </figure><p>当播放或者下载时，日志会记录，解析过程</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;Docker-安装运行服务端&quot;&gt;&lt;a href=&quot;#Docker-安装运行服务端&quot; class=&quot;headerlink&quot; title=&quot;Docker 安装运行服务端&quot;&gt;&lt;/a&gt;Docker 安装运行服务端&lt;/h2&gt;&lt;p&gt;基于&lt;a href=&quot;https://git
+      
+    
+    </summary>
+    
+      <category term="折腾" scheme="https://sbcoder.cn/categories/%E6%8A%98%E8%85%BE/"/>
+    
+    
+      <category term="Docker" scheme="https://sbcoder.cn/tags/Docker/"/>
+    
+      <category term="音乐" scheme="https://sbcoder.cn/tags/%E9%9F%B3%E4%B9%90/"/>
+    
+  </entry>
   
   <entry>
     <title>2020年计划</title>
