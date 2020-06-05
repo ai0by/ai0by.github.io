@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="风向标 | 分享与创造">
 <meta property="og:description" content="创建 uploads.ini12345file_uploads = Onmemory_limit = 64 Mupload_max_filesize = 20Mpost_max_size = 20Mmax_execution_time = 600 创建 Dockerfile1234567891011121314151617FROM php:7.3-fpmRUN apt-get updateRUN">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-06-03T08:59:47.493Z">
+<meta property="og:updated_time" content="2020-06-05T09:10:42.132Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker 安装 PHP-fpm">
 <meta name="twitter:description" content="创建 uploads.ini12345file_uploads = Onmemory_limit = 64 Mupload_max_filesize = 20Mpost_max_size = 20Mmax_execution_time = 600 创建 Dockerfile1234567891011121314151617FROM php:7.3-fpmRUN apt-get updateRUN">
@@ -174,7 +174,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建-uploads-ini"><span class="post-toc-number">1.</span> <span class="post-toc-text">创建 uploads.ini</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建-Dockerfile"><span class="post-toc-number">2.</span> <span class="post-toc-text">创建 Dockerfile</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Docker-build"><span class="post-toc-number">3.</span> <span class="post-toc-text">Docker build</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行容器"><span class="post-toc-number">4.</span> <span class="post-toc-text">运行容器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Nginx配置"><span class="post-toc-number">5.</span> <span class="post-toc-text">Nginx配置</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建-uploads-ini"><span class="post-toc-number">1.</span> <span class="post-toc-text">创建 uploads.ini</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建-Dockerfile"><span class="post-toc-number">2.</span> <span class="post-toc-text">创建 Dockerfile</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Docker-build"><span class="post-toc-number">3.</span> <span class="post-toc-text">Docker build</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行容器"><span class="post-toc-number">4.</span> <span class="post-toc-text">运行容器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Nginx配置"><span class="post-toc-number">5.</span> <span class="post-toc-text">Nginx配置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MySQL-Docker启动"><span class="post-toc-number">6.</span> <span class="post-toc-text">MySQL Docker启动</span></a></li></ol>
         </nav>
     </aside>
 
@@ -208,6 +208,8 @@
 <p>LNMP用户 修改 <code>/usr/local/nginx/conf/enable-php-pathinfo.conf</code></p>
 <p>将 <code>fastcgi_pass  unix:/tmp/php-cgi.sock;</code> 修改为 <code>fastcgi_pass  127.0.0.1:9002;</code></p>
 <p>其他环境与此类似，直接改即可</p>
+<h2 id="MySQL-Docker启动"><a href="#MySQL-Docker启动" class="headerlink" title="MySQL Docker启动"></a>MySQL Docker启动</h2><p>自行修改 挂载路径 以及 密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --restart=always --name mysql5.7 -p 3306:3306 -v /Users/XXX/Downloads/Docker/mysql5.7:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci</span><br></pre></td></tr></table></figure></p>
+<p>Nginx 个人不习惯扔Docker中，因此暂时不管</p>
 
         </div>
 
@@ -216,7 +218,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-06-03T08:59:47.493Z" itemprop="dateUpdated">2020-06-03 16:59:47</time>
+    最后更新时间：<time datetime="2020-06-05T09:10:42.132Z" itemprop="dateUpdated">2020-06-05 17:10:42</time>
 </span><br>
 
 
