@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2020-06-04T08:31:49.232Z</updated>
+  <updated>2020-06-06T06:42:56.000Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>我的MAC电脑环境记录</title>
+    <link href="https://sbcoder.cn/2020/06/06/myMacOptionPHP.html"/>
+    <id>https://sbcoder.cn/2020/06/06/myMacOptionPHP.html</id>
+    <published>2020-06-06T06:36:36.000Z</published>
+    <updated>2020-06-06T06:42:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">  <div class="hbe-input-container">  <input type="password" id="hbePass" placeholder="" />    <label for="hbePass">Hey, password is required here.</label>    <div class="bottom-line"></div>  </div>  <script id="hbeData" type="hbeData" data-hmacdigest="a3f06f555213340cc384d95a014fa4c3800074c1343a9e088364913f795e2d9d">91380cc92a8d30e36eb1f29d05848a5d07f25252816ad7ebdd15eaa580161fc44b711c0fe0b732c54b8c630c92cd3a0206debdf80f9500f81c9eda0038afaa5abaa98e3da8cf435050088541e23c5f09c6b66320a9dca7ba2d391c392b3066757bce8ceb433e29d6eabf9502c31b1a865ce8ce26480c2b3651a02d74e0a7ce70a9ee5b6db44a1870e6ca7aedf4b00f3cec043c7152d98d61a1212fd13720055687b3ce39ae15f81099f94d6605933adc2204646f0187888f5c136e52f8cb04cd796bd502bac4627540219996cb70fccd8388bf36e721dd6f8349cba819a6d88d4f667de02092412f91d84766b8a2280a422fb7e70e0bc39bcae798ac747012e6e2ed57cf472e34826a304e9bd829faacaf317c5fef9e039c1227efa0bf03ecfdb9c87b1bcd896d31ad99aa235eb299d35cbf1a894fe489def3e2a66045caed009655475f4cc8603da3b9b3b2588e762efa626956773e907abf3d5516c0930efee901b143f924f0b2e77c4da40a1d5086a47b83e1325cd908837e451ec35585b8d2e09830865a0fbc72458d93d95bf1f8041d481121707cae85725ea177ac082f7eb4a2d108faa22b2d8656af906db054f592b7000c9651c9f7c203cc53b117c1484ee0b76587256a21893f81233c2c59ee8b8e55d27cad982d8e4e3ebfcae1c52307f6646a344b171657c6692e26d1c82136fb2cef78d3fc794121af3f0bb203abc2aa315c9a2d064a929e87f3bd604769693e87d62e5f6c4584f54148bd89faec4771aec625c9a3a4bbb07751b69b44c7f064379815bc2b509aedc1a02db3026bdc3319ebbfe2e6ebcad9f2bba9a7884feed4a0f8492374237b7692e7a8017c3bf2ace473be6d847ee17d89e69691c663d16fc07f52cd866a6b8e924114a5fd3d82f1f57b7e4ce0163e8e8812bbd5e6f25cdc72110de39baeea10209a556ed0b4eb2b0c28b3c41afca7281df22cf43ae34e23891088e886296772e155586d46de30ee6a30f9421962e440b7cbd4641c9beeec5e11aa4693b86797a9b2b84f0797cd524a00b80e80244bb3b8667fb0bdd69e6ef02585e0fe61cbbc3f09c57311ad3ad3d427d29aef76fc1f2400ec63b32f93922919c9c3cbd552404ecc32b077d9ae759b439e39a8a282b1a1708e231e</script></div><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+    
+    <summary type="html">
+    
+      Here&#39;s something encrypted, password is required to continue reading.
+    
+    </summary>
+    
+      <category term="note" scheme="https://sbcoder.cn/categories/note/"/>
+    
+    
+      <category term="note" scheme="https://sbcoder.cn/tags/note/"/>
+    
+  </entry>
   
   <entry>
     <title>ElasticSearch &amp; ELK日志分析 从零开始搭建到使用</title>
@@ -561,29 +583,6 @@
       <category term="笔记" scheme="https://sbcoder.cn/tags/%E7%AC%94%E8%AE%B0/"/>
     
       <category term="正则表达式" scheme="https://sbcoder.cn/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>博客迁移说明</title>
-    <link href="https://sbcoder.cn/2019/03/25/Hello_world.html"/>
-    <id>https://sbcoder.cn/2019/03/25/Hello_world.html</id>
-    <published>2019-03-25T05:12:58.000Z</published>
-    <updated>2019-04-12T14:57:49.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="关于迁移"><a href="#关于迁移" class="headerlink" title="关于迁移"></a>关于迁移</h2><p>博客总是在起起伏伏，关了又开，开了又关中反复，这一次，我将风向标博客放在了Github Page上。<br>程序采用了当下比较流行的静态博客程序 Hexo ，Hexo其实是一个非常好的程序，但由于我经常换电脑，以前用hexo搭建的博客数据丢失了很多次，后经过更换为Wordpress，Typecho之类的开源博客程序后，我又回到了 Hexo 的怀抱，可能是真的懒得折腾了，上了年纪？<br>这次我将源代码都备份好了，应该会长期更新，有什么好的东西我应该会分享出来，主打原创~<br>可能之前认识我的人也很少，但我这个域名还是很好记的，sb coder 也是一种自嘲吧，有想跟我交流技术或者有外包工作介绍给我的，我的微信与域名同号~<br>多的不说了，我将尽我所能，一周至少写一篇文章，可能有时候晚上回家写一点，一天写一点，一周下来也能写不少，希望各位监督~</p><h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><p>我是谁，职业是PHP，爱好Python，云服务器爱好者<br>支付接口对接，可以定制各类免签约支付接口，微信支付宝，有想法的朋友可以联系我 Telegram : ai0by</p><h2 id="承接业务"><a href="#承接业务" class="headerlink" title="承接业务"></a>承接业务</h2><p>支付相关业务，爬虫(几乎不要钱，练手)，PHP程序开发<br>服务器环境配置，PHP程序修改，PHP BUG排查</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;关于迁移&quot;&gt;&lt;a href=&quot;#关于迁移&quot; class=&quot;headerlink&quot; title=&quot;关于迁移&quot;&gt;&lt;/a&gt;关于迁移&lt;/h2&gt;&lt;p&gt;博客总是在起起伏伏，关了又开，开了又关中反复，这一次，我将风向标博客放在了Github Page上。&lt;br&gt;程序采用了当下比
-      
-    
-    </summary>
-    
-    
-      <category term="ai0by" scheme="https://sbcoder.cn/tags/ai0by/"/>
     
   </entry>
   
