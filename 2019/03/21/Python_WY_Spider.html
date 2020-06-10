@@ -21,21 +21,18 @@
     
     
     <meta name="keywords" content="Python,爬虫,网银,selenium">
-    <meta name="description" content="Python获取WY数据的方法总结： 由于WY控件加密方式相比较一般网站比较特殊，需在驱动层进行操作 由于WY控件的特殊性，获取交易数据的时候需要传递KEY (以CCB为例) 由于取数据时的问题，所有操作均应该在驱动层完成 要想实现实时更新数据，需要不断地登录，大部分WY都有强制退出操作  理清思路登录的过程中，由于安全控件的限制，需要绕过登录限制，此处思路借鉴了 爬虫应对银行安全控件，由此可知，">
+    <meta name="description" content="该文章涉及内容较为隐私，请输入密码后查看">
 <meta name="keywords" content="Python,爬虫,网银,selenium">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python+selenium针对网银控件过登录取数据">
 <meta property="og:url" content="https://sbcoder.cn/2019/03/21/Python_WY_Spider.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
-<meta property="og:description" content="Python获取WY数据的方法总结： 由于WY控件加密方式相比较一般网站比较特殊，需在驱动层进行操作 由于WY控件的特殊性，获取交易数据的时候需要传递KEY (以CCB为例) 由于取数据时的问题，所有操作均应该在驱动层完成 要想实现实时更新数据，需要不断地登录，大部分WY都有强制退出操作  理清思路登录的过程中，由于安全控件的限制，需要绕过登录限制，此处思路借鉴了 爬虫应对银行安全控件，由此可知，">
+<meta property="og:description" content="该文章涉及内容较为隐私，请输入密码后查看">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://qiniu.xnbox.cn/2019/03/22/5c9438269d9c1.jpg">
-<meta property="og:image" content="http://qiniu.xnbox.cn/2019/03/22/5c944f127c9cc.jpg">
-<meta property="og:updated_time" content="2020-05-17T05:21:49.068Z">
+<meta property="og:updated_time" content="2020-06-10T00:44:46.802Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python+selenium针对网银控件过登录取数据">
-<meta name="twitter:description" content="Python获取WY数据的方法总结： 由于WY控件加密方式相比较一般网站比较特殊，需在驱动层进行操作 由于WY控件的特殊性，获取交易数据的时候需要传递KEY (以CCB为例) 由于取数据时的问题，所有操作均应该在驱动层完成 要想实现实时更新数据，需要不断地登录，大部分WY都有强制退出操作  理清思路登录的过程中，由于安全控件的限制，需要绕过登录限制，此处思路借鉴了 爬虫应对银行安全控件，由此可知，">
-<meta name="twitter:image" content="http://qiniu.xnbox.cn/2019/03/22/5c9438269d9c1.jpg">
+<meta name="twitter:description" content="该文章涉及内容较为隐私，请输入密码后查看">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
     
@@ -174,13 +171,6 @@
 
 <div class="container body-wrap">
     
-    <aside class="post-widget">
-        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
-            <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Python获取WY数据的方法总结："><span class="post-toc-number">1.</span> <span class="post-toc-text">Python获取WY数据的方法总结：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#理清思路"><span class="post-toc-number">2.</span> <span class="post-toc-text">理清思路</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#综上所述，我们可以将交易流程如此划分："><span class="post-toc-number">3.</span> <span class="post-toc-text">综上所述，我们可以将交易流程如此划分：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#成果演示"><span class="post-toc-number">4.</span> <span class="post-toc-text">成果演示</span></a></li></ol>
-        </nav>
-    </aside>
-
 
 <article id="post-Python-selenium针对网银控件过登录取数据" class="post-article article-type-post fade" itemprop="blogPost">
 
@@ -202,50 +192,15 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h2 id="Python获取WY数据的方法总结："><a href="#Python获取WY数据的方法总结：" class="headerlink" title="Python获取WY数据的方法总结："></a>Python获取WY数据的方法总结：</h2><ul>
-<li>由于WY控件加密方式相比较一般网站比较特殊，需在驱动层进行操作</li>
-<li>由于WY控件的特殊性，获取交易数据的时候需要传递KEY (以CCB为例)</li>
-<li>由于取数据时的问题，所有操作均应该在驱动层完成</li>
-<li>要想实现实时更新数据，需要不断地登录，大部分WY都有强制退出操作</li>
-</ul>
-<h2 id="理清思路"><a href="#理清思路" class="headerlink" title="理清思路"></a>理清思路</h2><p>登录的过程中，由于安全控件的限制，需要绕过登录限制，此处思路借鉴了 <a href="https://blog.csdn.net/Bone_ACE/article/details/80765299" target="_blank" rel="noopener">爬虫应对银行安全控件</a>，由此可知，需要绕过登陆限制需从驱动层入手</p>
-<p>两种方案</p>
-<ul>
-<li>Python可以使用 Win32api 模块来模拟键盘指令，类似于按键精灵的概念</li>
-<li>Python使用 Photomjs 无界面浏览器配合Selenium Webdirver</li>
-</ul>
-<p>尝试使用Win32api时，由于需要配合鼠标操作，需要获取句柄坐标，且开发难度较高，尝试更换另一种方式<br>更换 Photomjs ，模拟登录时发现 Photomjs 并没有附带安全控件，所传输的值不会自动加密，尝试更换为 ChromDriver<br>使用 ChromDriver 尝试模拟登陆</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">username = browser.find_element_by_name(<span class="string">'USERID'</span>)</span><br><span class="line">username.send_keys(username)</span><br><span class="line">password = browser.find_element_by_name(<span class="string">'LOGPASS'</span>)</span><br><span class="line">password.send_keys(password)</span><br><span class="line">tjButton = browser.find_element_by_id(<span class="string">'loginButton'</span>)</span><br><span class="line">tjButton.click()</span><br></pre></td></tr></table></figure>
-<p>登录成功！</p>
-<p>当越过了登录后就需要获取交易信息，交易信息这一块，CCB的查询地址附带了一个SKEY，每次查询信息的时候都需要一个SKEY验证，如果不正确将不会返回正确的结果！<br>如何获取SKEY，涉及到WY的信息，这里不便细说（PS：细心地同学一定可以找到）</p>
-<p>取到SKEY后即可构造查询地址，然后使用WebDriver模拟访问<br>需要注意的一点是，WY的大部分数据均是用iframe嵌套的，因此需要多处过iframe</p>
-<p>演示代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定位到iframe</span></span><br><span class="line">iframe = browser.find_element_by_id(<span class="string">"iframe"</span>)</span><br><span class="line"><span class="comment"># 切换到iframe</span></span><br><span class="line">browser.switch_to_frame(iframe)</span><br></pre></td></tr></table></figure></p>
-<p>取数据这一块不多说，每个WY也都不同<br>获取到数据后就是数据处理了，根据系统不同，我这里直接使用Python向固定地址POST传值</p>
-<p>取数据后为了获取实时数据，需要定时向固定地址提交数据，大部分的WY都有长时间自动登出的骚操作，对此，思路也很多</p>
-<p>大致几个想法</p>
-<ul>
-<li>自动刷新，保持登录状态</li>
-<li>重复登录，更换SKEY，反复操作</li>
-<li>模拟点击，保持登录状态</li>
-</ul>
-<p>自动刷新方案在一开始就失败了，多次频繁的刷新，会导致弹出手机验证码<br>重复登录，由于上次的失败，设置了延时，效果还可以，只是数据总会有延迟<br>模拟点击，无效，仍然会自动登出</p>
-<p>采用重复登录的方式，递归实现！</p>
-<h2 id="综上所述，我们可以将交易流程如此划分："><a href="#综上所述，我们可以将交易流程如此划分：" class="headerlink" title="综上所述，我们可以将交易流程如此划分："></a>综上所述，我们可以将交易流程如此划分：</h2><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://qiniu.xnbox.cn/2019/03/22/5c9438269d9c1.jpg" alt="WY数据.jpg" title>
-                </div>
-                <div class="image-caption">WY数据.jpg</div>
-            </figure>
-<h2 id="成果演示"><a href="#成果演示" class="headerlink" title="成果演示"></a>成果演示</h2><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://qiniu.xnbox.cn/2019/03/22/5c944f127c9cc.jpg" alt="WY演示.jpg" title>
-                </div>
-                <div class="image-caption">WY演示.jpg</div>
-            </figure>
-<p>Tips:本文仅做思路分享，切勿用在实际生产环境！</p>
-
+            <div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder>
+    <label for="hbePass">该文章涉及内容较为隐私，请输入密码后查看</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="bdb1acba469a98d09d942296e842335ca1c925b14c6639dc0f20b155333e9898">f7304c97e1b81b4cd5950d7a7dcc89086cf6c1bccc45945a5aa980758c10d184b2abf0790163c17427eba731d8aeb07c0c4f9a48335a0941c4eeb925e69b35f7eedcbbe3b570495aad136b7e306c5d85dd0e1ab561a3e65c4d0197c41e0b13b6c8d8f193c934af9ba6164a067512c5bc5c47fbe5154bb4fdf2b80675403b6a0cbb10d42b41f62a2f65e8b381ff5add4709393d95c42c9972e7da83fd49d7f1b5ae4c83520e66814b889b27f4580b93d8680918150abaccae26ce30a0af8b70d0b2d8c047c34c3f5c488d7d3dc0d3df87b8206431994d25e26e0a28f32f21998b6e93fad78edb84d769572f818d7a4feea3b0c5e5c7cacbc7c4dd1cf380d3c9a26fae7558f4a1b79e93ea6f3bbcdf19c30336757df89b0285f738b9721d926045614ac14b5384e6443bb4653a44d6c72d96476bed15d7289c4cc8139691e9d69724de949a73808a9305e90725229ab26fc60505ebd23d0a185c787bd0e34b898c6c9e8174eb0020e5c0f4bd5dbd06c26e3b08878b562fae48906d88d4101d7cc97f5460503647c5af57c2c774eb26747be0bf4b6c4cabf0bc09e9c908db8477b3a72ecfb3848aece66c8d741a88188c0b1035be407024f1ccd4f19df5a981171621eadb8ff6b6064e4d6348f7bbc1fedf8803b2f2d943656bfcd6d5426af3f0364c45956d90856ee324d50ca0f5d4527390d3033fe6e1e6a653e568aa6d7b84500d27160b10d39b3bca8d7ace2af227e0696878247ec8671e9ffc2c0e8595891706d13fe2da85e2e485d8cb9fb8cb740770e434235912dc8e346984c964bc3ae9972e4a5b3182e72e2ab73c6863dbd0ee2768ea8122011086cf0915b4a07b33adbe3304abef2ec1c1e9a99d59e5e4990d3f59c7f309ff4da575bd912e8b06819bad97d1771ac62de7a45ab707ea1deb3f2b89a351b48c4b1433c04b044c3baab2c76263c7df09922b65ad08aaa8b49d1c130bf793c949a7652646c5dbe6056d8f2d4dc143368c9767daba0ac034523080d2bf852c6288d0fbde34766b13bb3baa4903e191e3d55181bb28ecd6312cd949fafab24ab0b3a4b557e6159e5c6f912cbee4f36f7b485632832025dd7662deb4512df08906608efd3a7303f1b8b8e0c01db6a6453fe15b4d33305749f6aa0892d27a2f542941604f0b2193029e00b74354f5594109a8a3085d13cc202b867e5cc7ca3c83c174e7541e627f2b8d7cc28a974861aad3ae6bb8b345b0669602de8d28850f7c48471dfd98d2ff90994290234a8313fa6eb734346433eaf73e3349070b3798e3b9f03be66834ab030188d51c7433f23e34acd6f20bdcb83886e4063c8835c759b14581e21f9a850c7b38451ebea01c13e6510206a8b89075d04ccfac6f7d36ee49ba66b49233bddc1d17cc7ff1687e5fce2ad8143589593d38a68b29a17042473305ae42cc805772cb690fe40e63980150a19d86286452ba678ec750175452b9b81e1bec3438891751d07e80f341e7549b59f1cb16cd194369eb25e6787dadba7f0c5602e5af576f83f401a675076333cd3ade3c7b515072177a1ec453a78efcc43603bf45c5e1a517c390a44a4f522742189e9f9130adb8ab7eacd4c348c8475e3345fcfaca3027dcb8e5f57c1c5236b99139eff2c9ad317af81dc438230afe82164e5fca7aadbb157ed7bd3c58770555baf4adeaa0d1ea25d0935a19aa35f2f9aa89117d16294931a60ad1c9a0340d1b304b96208a862abc66e33b3bb082e8185b72bcd4a24154eeeadd63eed151cb71c17c9e7dcab1e22821b73a085f24038187620272b1cad7e5df14f85d3198b9dd6c4cd86c26fcae2f093ce17618fcc770a40817d1c26317437b617f4cd0c6025c408d19e1887dac29e3682fd43309f053677d2c0b3aa93cb778a2c81e981e7fe2063f5dd88ba2f9f6539b01716e6478c02ecc7736b5b428e1e15772d3a64e36bea83e1053f4eb15322b9965522bb105a1930f1b76ff4ce4b819da0f12edc8151513ee104e8fea06435bb47ce262574eb9178021d8ac945f3fde6b7a00b81b25fd16ab165088ce5facb20d9f21581a7b0e4e19cb05fafe6377919896c150ed33ce4244821ca922162c8e476bb296a12005425e2fe910e2a23d099a3c7f7de1c18c7305c9b41d9c1c01495b714f08dcc2a3631c4a4dd8caa28dc2297fe2fb62fbaf79ab02a2a7f264fed384d88efab0f808efa61d9045997d190b1707c9c9f496a4f40d2a577ece1e768714ffb14ec3f6eec0b0d1904c625d44fb3e4983e52d5fb36b8e902b87d9d224c90cd9362427de339eac6beae51eb7865dbb060bab0e5f770a1aa6f2fd7de786a436b703c9009844717d4718f0e6de6ed621acaf4a5631ee5dde0dc99b0cd2aca2ec27e9286a982f8be3fdb7216f1b4082cbb583d773b5cf18479c2325900ab08d57489c040f8109cf278e509b93677ff2e36f2e8718d59d86b0f3c0bef66a19b721e87a415f8784ee6f32fc906069ca4958395bb51efe0ed6211f7ee4193c84fc4f661d2ef4b179bb1832cf9528032205f5dd5c9dc56f64aa0c81875debc73d34eb76dc0b9d6fcc59fc144e92e562a9760620b328d39e914e5cf3eb02eb8b1a413e546a0bfc13074c2e6fa87f9776abe41234eda946cf0a5b46d613d9cf31854d520ba8af78b757131b067b11a0cb09d5ea43373cba39c5c0ae6f1cb99854d9e1a09e637a9f585fd4d1151ea004bde022b61efc64cce882fabf1836f830ce73a1e24e8b21941e0c893ddbbee30873bad71473be57d3171a43775cb8b455ad823c4c139246652bc7bfd4895b01b381afa581e194888c8aa5e1fd3146717bbff389d838abf4643a8576e2088b42780a145f93f287eeb2fe1c6ee5444e3bc9e057d86c33fa546226432fe164c822a04368f030467cd8927b0daeafe6e100d4c44faee8e179af08198a1f05b3e917bf0d0c8c34669268893076108e2e910fbfb5edfd9eee1be4b9211e96847e9946e76ee5bf68d05da67c31740d93e02481e8c75ea3686abdb287861706cec2faf6a70d88281ccd48f3f5809baf70af36148ebde247bca6020e30282df87b84821f8cbda0ff92c77c60ef9ec3a30f3e7604d946def2868f9c6d3d4d2e72b19abcb474192cb7aaa1eb2dccd8db0e8446d061b5d0c22aac317b4ca35c847f0714b9a5ebb6ac251acd6a944dc8ced881b811588213dab7250576592ce309ed67941f68006e32998d719e00500cc3297489a16ad71ef43fb8671187befd6cd0ec7c0b7846a05a8aeca31317f9065dcb4b643d906cb2ec9d2d50049e3347a736fd33cae223d54ae54b67b73ac6d74c2e0631998cbd3bc5d23f1e8bbf60e0d8861a6d07d60f2b82b652009d6a5c27e639cc827fe5551d6f049e2f0c1faaf57d881ac909834efead2986dffda86381b843cd55e5efc989e9e46d9875c96bce30ac44b25bd8f04ca56e677188089691bd339935ff315b29b24347db411638e3b172be2f33b0999e7e2ee879927487bc093588ea7162766fed610df731bf386037bd853ce09e948c77a60bc2e61f2b1ef3ed3b355eefbb88d35dab7e03b58887ab5cfbac9ce0cbfe6af8ff89e64fa3df9841622aa370d1fc5d9d49d20b538e2eb7016164a19b071150ba2f5c2bceaca0ef3f9ebce1afe6a0e05da04892f43bc6605a0b6ab2f3c39db323278b5825ebd01185c6eaf22ca659c801b15c5650a245c32314c0d26530433235673ef626cfcd292d187ee86508e836442bbc249a1af35c1ee52473eafcc1421a3ecd725cc2855292af859da9e88304cdb95510e1fede9f5e980560262a6f35b8a3f690f2d56eb741c25e8960277eb4298c7332a0d3ec6fb8d2fcb7017c6c81b002ca5e80ae9dde52f7ed8549750d08f5f9a656a9f893e2eac7c470281e2ca3793eeaad740d41d74de9bcd7d369bc061ef2511f3326d3db0e7d5b337f7894170ea9c7912e5918a16caa4b782605d0f5d22947ced56cce3d70b9dd11b499e3b5760738d85277f8f58d6e2609ba3af4a6102eb4e017eff0aa9319b1c0c493594a36f7fed510327dddddbed9d2f5bf24214448d9730cea53b95fbb584aec09799f1139732ba88774754449ce90b6ed4dfd1356aa6e02d4803559c4a85d74871c10ba4f10ab1218c18ecd43817ae9295344e0d6c4b670612c7569e7886039127c1f93840d45d15eec81a4c2d5498c139e5b755695102d7cb7224b144b8139e739c8efb6b5cf89dba7e640dba664715b34a73e25d954e57eed7cfc8246bb01a86f307528e8865ce20d0aa82982fa82e9c7b31c8f65b95698d4171231d4243649b782777aa521ae388b5bd425c9cd28a50ca693f3f166ea0f9b8420194edefaf52eef44d5f7a8687e0d63aae124f3ab573da170146f4e9e1529f32c40735313f918a901415085797f5a4a3bed4d645148ec18bdee763b9bea49e948cc900a5952020f3cbdafa06a7c1aa5ae54f0819426313fa2f7593a6a89a65e47c313041b05bfe39a533d0532e3530b263188663169dbddddd557f2c97f4b6353b8e879c40b68a6f7fb44387cd4747a4b147594f0979e6bcea982506b509f0f7cbf10631ea66964386327205dfc8a40504927499bd4a660410c7ff1b89e7cc413044d33bbcb7a1c94778c4bc86733adba4d7308fbf14aae53308a8d874b588786712e574d1becd945425740b3ba3f381f4cf65406b306fefc6245d271be6458d08ae488b66eb1dbaa2c2fe431ac870b548862ce0422d6d466ea7dc0ab423f31ed883c459cb30a626e6895654ccdb8c081d6abd126c17ed9222c3b0614f9a5aa57886bfe8078275e0e0287f5f8f3d003ac6912050f973296c2d48a6e9d9208aa8e666017448a8e63b68d23efdaa49754e6a0dcc02de6f28ad93995341a4e468ba80f3193ea4c9de4cc6248d5b05292a13b9d72416765719f0060bc963a92c7294c710c1d6126b23e5bafaaff9f9ec33224574ca8a28711232cb98ba754dd634d5cb1e34e661a9c573e3e9005b7bbca500e6491e0d74134db0a3def77492b7671421751a8d281810e55f8927c313b00557d4f3948cdf15b624abe43b4ff6e0d8a6154e252bc1f9361755c0cd7a104fec521026f91ad341b19782a25bb76cd3096e3a1b3eab706526c9f86b4ad88be25713af6b3944da7f605b795d44c6ab43f599dd28606be5ded829e5e539098bbd1866e777986a6a3668e9c006f0bbd50e21313c3683f481e47b621697c32fee6be82a0022374862a117dd79600632d917cd47dc59e8be1087281e192ace5c4a157419ede2f26c794db3e7410fd55d3bc2f18dfe068e19841af632e1bc4d4a359be02265aac65c577898edda3bc118b185959ddf3c6a84a66aed9dcbd50c9058baceec758433fc4d01188d3f78e5212318e0e9077258977e3f4afa1cb7b96fcf3799fdd1bedbf328ba8bb2a04f634594f6d653ad437fe9138e199bbd1454426c62fbe3a9ec85868b812021d08e7c670d0c75f95f1b2c597d943c86d98c2840063cf7136ca57f0af01276f35e3dee1f02b3758ca2e50b50a0dd3c4bcf37a11b93dbf9b8d3273192ed70d0a3d82a5a62a7b37882359779b1cade460a7b7ece3fdc305f8c4db165b34684fe99f61b60fa484b8990fa93d434eb4df73ffa7b424a1ddac6f638db9721267402c1f50e8b75ffef236884009290bb29fd5be59fc7c70b718a855e2cd3c74e32b1800841de4ebf78f5d459be22c5be030b8f815dfcfe565a63356b0979a00db5a9cfda7436cae82e96ed498b4456cc0c5d3c6e2287719c40d290d8f01de163773c90e5a2075c4c226ea8f9384eb72822a33bb2402e2d4dfd7051405490157ecb971f5009c5aff1cf31b508478bb32a6b7566377e94efb2c540bd51b282a1f6fc97f696fb871a9aff953deb1678dc395e95fd3202be37f49362732fff5497a0142768cbdbe5c91f8a1ccf30425721ac060acc02a20a1e24be387665ade562af5d4751e6ee611e3dfbd645ee484030f58c5c6f55f07678e794f764f8af88bdd373f397a1ebdf91b882e7d0957006dcc2c98fb449427d557c87d0b842c1d64d18acf3d7d5ed49c6fc02c9474e5f3db89a7d9f3e1110620538cefeccf2aa5d8553d9efd626d17c6407ac645a900732b6896c5334aba83cd31be38651e6c531a32548d1c3cf00cf29a89c165d9996ed379210cac890108fa5010209d69e8bd07bcbce10127c2ea37f6b1e77b87e98561b2972f940a87a171102293c041100e8b57cace9a2010a76cd08d4bc254200b1fd7895a38976c034cb0baf14c843e6ae873e47b80eee25a260efd9c91b6f7e89563b171762ea122fb6a83b5f7e6586924357f8f8e981e6f91ae1f99d5cd95fb9cbc77e6d3a0831968ee4eaa37e226f1f17f952756519fd853f1a1925e6e3e83230172554ce64a27d4436d70c031cf88f65906f15fc3fb5c1fc5773cdbbb49d3b5c59b9592979c9e3cce8c4c845e38f27aa3be4a8a267d6cd023da0ed761ce4574f3317667e7b6a8e1c8e587b6e0f384e2a9a0ba2a99d273882b47f78ea19315623ed3f6911b7e1412e7fa022b72d12bdc1741ac5d69769a9e254227642610a33ea04ea8697ea29332ae083d7a423d53146dc1a8008b965e782c02d001cf88f5670d375a96f4aef3927cfcdc24bd8e6157184d15aa762f2afeedd441225d8934baddcdb296627b5b42f7245aaccec0f066dffae28619c068cca13ae1fbe61cad3369fcbe7f541c3addd35e27134b7fc3996726fbd68b3bd236ef8f27a5978af544d0aa01b7ebce63af901f84178753d25a57cebcac70c815e67eb15ab4e90331072fe28b9c25565b3692d68bf60164ede8fb61b463493c59296e0a6b040a34b80e3d9ebd658c53afb980c5cdde645ab5b976a64d9bc653a17bea32eb15388b5cda0665dd3ebe8f6653564e50f02ada1a4d5fc870bd04f86b8a9b1852fb8647032970b8a4fac27d8d9b69a92d033e53944188d7ab22e738476b4c76a0bfe1dcb5899c3d69279498cba4ee5d97e134f52f8ed7c4120bad959c69b6565575dca6adaa381fe210c08551ea455835f66cc259f94762f3de4f753ae59f4bd4dc851c816f393c28cd90569ddf3a38e7788a17c770789a5d2ea5d112da7adefda5e74a0014698c9b6a5c6012d7752bcc7e671f7a69aa06afaabc7677eae75b8b47d5530753b3301dedbe416d20ab40dfeee1099aea64426edc3de760eca6127204eb09aeae5f398c8a1ce3d4788bdc7474f50e1359d8f4528c9131f1d8da4870439663c00b94aa04e11d9da3ed12516fea71c2986b156c601e152dbfad9963287410439ebf94d64a718c57c1dc4041bfb13f152a827e0cddb9f6a1ce800b33ca646f5eca433602ab3254e26888e108c4f464770b36ad24717f37e12447727cbdfa3fdaf3b12e5f7e5df96db8eda139463d3badb918233ed603dea9291f9177ff8c93a5a58b0eb000ff73334c902ad422bd775986a65f521442667ddcd9e4d5491f70eda851ccc9fd2d83b207a24c0425d5eb6112f170ca790982e0325f8cf49c3d06a41ddeae7a04a9e12d7b7f6e4080f044dc3c25a04991434fca1d23b9586e30d0e4d7bcefb79cc13dd3c62dda897a46e5b74340765146661b4b4cf7049459bc9bbc8bb5f85a29b37a82969d4ab02fb122eda697144ae816e09a9966dad9eabb4910a54454017b1d83896dc5b586f794a0d08d2a6c9d42c55f4e9adb18d94a0083a68afd220116a9e1e48fc5146ed2da735cf87580a00de6029501838a2c6820cf23b0ebede8a0913988a5</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
         </div>
 
         <blockquote class="post-copyright">
@@ -253,7 +208,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-17T05:21:49.068Z" itemprop="dateUpdated">2020-05-17 13:21:49</time>
+    最后更新时间：<time datetime="2020-06-10T00:44:46.802Z" itemprop="dateUpdated">2020-06-10 08:44:46</time>
 </span><br>
 
 
@@ -299,7 +254,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html&title=《Python+selenium针对网银控件过登录取数据》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html&title=《Python+selenium针对网银控件过登录取数据》 — 风向标 | 分享与创造&source=该文章涉及内容较为隐私，请输入密码后查看" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -474,7 +429,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html&title=《Python+selenium针对网银控件过登录取数据》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html&title=《Python+selenium针对网银控件过登录取数据》 — 风向标 | 分享与创造&source=该文章涉及内容较为隐私，请输入密码后查看" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
