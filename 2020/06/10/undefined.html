@@ -14,26 +14,24 @@
     
     
     
-    <title>api | 风向标 | 分享与创造</title>
+    <title>Redis持久化及数据备份 | 风向标 | 分享与创造</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
     <meta name="keywords" content>
-    <meta name="description" content="二维码生成介绍使用场景很多，简单来讲，给我地址，我给你图，直接将地址放在img标签内即可~ 参数说明以GET的方式提交到：https://api.0161.org/qrcode/qrcode.php    参数 数值类型 示例 是否必传      url String https://sbcoder.cn 是   err String L (L,M,Q,H四种对应容错级别，不传默认L) 否   s">
-<meta property="og:type" content="website">
-<meta property="og:title" content="api">
-<meta property="og:url" content="https://sbcoder.cn/api/qrcode.html">
+    <meta name="description" content="Redis持久化Redis作为内存数据库，数据的安全性一定要得到确切的保障，很多情况下，Redis是作为存储数据库来用的，如果遇到断电，关机等突发情况，则容易丢失关键数据，对此，Redis的持久化就显得尤为关键，甚至某些情况下，需要定时去做备份">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis持久化及数据备份">
+<meta property="og:url" content="https://sbcoder.cn/2020/06/10/undefined.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
-<meta property="og:description" content="二维码生成介绍使用场景很多，简单来讲，给我地址，我给你图，直接将地址放在img标签内即可~ 参数说明以GET的方式提交到：https://api.0161.org/qrcode/qrcode.php    参数 数值类型 示例 是否必传      url String https://sbcoder.cn 是   err String L (L,M,Q,H四种对应容错级别，不传默认L) 否   s">
+<meta property="og:description" content="Redis持久化Redis作为内存数据库，数据的安全性一定要得到确切的保障，很多情况下，Redis是作为存储数据库来用的，如果遇到断电，关机等突发情况，则容易丢失关键数据，对此，Redis的持久化就显得尤为关键，甚至某些情况下，需要定时去做备份">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://api.0161.org/qrcode.php?url=https://sbcoder.cn">
-<meta property="og:updated_time" content="2020-06-19T08:25:27.843Z">
+<meta property="og:updated_time" content="2020-06-11T03:34:16.704Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="api">
-<meta name="twitter:description" content="二维码生成介绍使用场景很多，简单来讲，给我地址，我给你图，直接将地址放在img标签内即可~ 参数说明以GET的方式提交到：https://api.0161.org/qrcode/qrcode.php    参数 数值类型 示例 是否必传      url String https://sbcoder.cn 是   err String L (L,M,Q,H四种对应容错级别，不传默认L) 否   s">
-<meta name="twitter:image" content="https://api.0161.org/qrcode.php?url=https://sbcoder.cn">
+<meta name="twitter:title" content="Redis持久化及数据备份">
+<meta name="twitter:description" content="Redis持久化Redis作为内存数据库，数据的安全性一定要得到确切的保障，很多情况下，Redis是作为存储数据库来用的，如果遇到断电，关机等突发情况，则容易丢失关键数据，对此，Redis的持久化就显得尤为关键，甚至某些情况下，需要定时去做备份">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
     
@@ -96,7 +94,7 @@
               </a>
             </li>
         
-            <li class="waves-block waves-effect active">
+            <li class="waves-block waves-effect">
               <a href="/api">
                 <i class="icon icon-lg icon-api"></i>
                 API
@@ -128,7 +126,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">api</div>
+        <div class="flex-col header-title ellipsis">Redis持久化及数据备份</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -147,11 +145,17 @@
         
     </div>
 </header>
-<header class="content-header page-header">
+<header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">api</h1>
+        <h1 class="title">Redis持久化及数据备份</h1>
         <h5 class="subtitle">
+            
+                <time datetime="2020-06-10T08:14:42.000Z" itemprop="datePublished" class="page-time">
+  2020-06-10
+</time>
+
+
             
         </h5>
     </div>
@@ -163,66 +167,68 @@
 
 
 <div class="container body-wrap">
-    <article class="page-article fade" itemprop="blogPage">
-        <div class="post-content page-content" id="page-content" itemprop="pageContent">
-            <h2 id="二维码生成"><a href="#二维码生成" class="headerlink" title="二维码生成"></a>二维码生成</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>使用场景很多，简单来讲，给我地址，我给你图，直接将地址放在img标签内即可~</p>
-<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><p>以GET的方式提交到：<a href="https://api.0161.org/qrcode.php" target="_blank" rel="noopener">https://api.0161.org/qrcode/qrcode.php</a></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数</th>
-<th style="text-align:center">数值类型</th>
-<th style="text-align:center">示例</th>
-<th style="text-align:center">是否必传 </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">url</td>
-<td style="text-align:center">String</td>
-<td style="text-align:center"><a href="https://sbcoder.cn">https://sbcoder.cn</a></td>
-<td style="text-align:center">是</td>
-</tr>
-<tr>
-<td style="text-align:center">err</td>
-<td style="text-align:center">String</td>
-<td style="text-align:center">L (L,M,Q,H四种对应容错级别，不传默认L)</td>
-<td style="text-align:center">否</td>
-</tr>
-<tr>
-<td style="text-align:center">size</td>
-<td style="text-align:center">String</td>
-<td style="text-align:center">7 (可以选择1~9999之间的值，对应不同大小，默认7)</td>
-<td style="text-align:center">否</td>
-</tr>
-<tr>
-<td style="text-align:center">logo</td>
-<td style="text-align:center">String</td>
-<td style="text-align:center"><a href="https://sbcoder.cn/img/avatar.jpg">https://sbcoder.cn/img/avatar.jpg</a></td>
-<td style="text-align:center">否</td>
-</tr>
-</tbody>
-</table>
-<p>返回值类型 : 直接返回图片</p>
-<h3 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h3><p>直接访问以下地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://api.0161.org/qrcode/qrcode.php?url=https://sbcoder.cn</span><br><span class="line">https://api.0161.org/qrcode/qrcode.php?url=https://sbcoder.cn&amp;err=L&amp;size=7&amp;logo=https://sbcoder.cn/img/avatar.jpg</span><br></pre></td></tr></table></figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://api.0161.org/qrcode.php?url=https://sbcoder.cn" alt="示例图片" title>
-                </div>
-                <div class="image-caption">示例图片</div>
-            </figure>
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Redis持久化"><span class="post-toc-number">1.</span> <span class="post-toc-text">Redis持久化</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Redis持久化及数据备份" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Redis持久化及数据备份</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-06-10 16:14:42" datetime="2020-06-10T08:14:42.000Z" itemprop="datePublished">2020-06-10</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="Redis持久化"><a href="#Redis持久化" class="headerlink" title="Redis持久化"></a>Redis持久化</h2><p>Redis作为内存数据库，数据的安全性一定要得到确切的保障，很多情况下，Redis是作为存储数据库来用的，如果遇到断电，关机等突发情况，则容易丢失关键数据，对此，Redis的持久化就显得尤为关键，甚至某些情况下，需要定时去做备份</p>
+
         </div>
 
+        <blockquote class="post-copyright">
+    
+    <div class="content">
         
-        <div class="card page-about-me flex-row">
-            <a href="/" class="avatar waves-effect waves-circle waves-light"><img src="/img/avatar.jpg"></a>
-            <div class="content flex-col">
-                <p><strong>ai0by</strong></p>
-                <p><em></em></p>
-                <p>承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~</p>
-            </div>
+<span class="post-time">
+    最后更新时间：<time datetime="2020-06-11T03:34:16.704Z" itemprop="dateUpdated">2020-06-11 11:34:16</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
 
             
 <div class="page-share-wrap">
@@ -231,7 +237,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/api/qrcode.html&title=《api》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2020/06/10/undefined.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -241,22 +247,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/api/qrcode.html&title=《api》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2020/06/10/undefined.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/api/qrcode.html" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2020/06/10/undefined.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《api》 — 风向标 | 分享与创造&url=https://sbcoder.cn/api/qrcode.html&via=https://sbcoder.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Redis持久化及数据备份》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2020/06/10/undefined.html&via=https://sbcoder.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/api/qrcode.html" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2020/06/10/undefined.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -273,16 +279,25 @@
 
 
         </div>
-        
+    </div>
 
-        
-<div class="page-reward">
-    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
-</div>
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/06/10/MySQL-Cluster-MySQLProxy.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">MySQL主从同步 读写分离 集群部署</h4>
+      </a>
+    </div>
+  
+</nav>
 
 
 
-        
+    
 
 
 
@@ -327,8 +342,8 @@
 
 
 
-    </article>
-    
+</article>
+
 <div id="reward" class="page-modal reward-lay">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <h3 class="reward-title">
@@ -353,6 +368,7 @@
         
     </div>
 </div>
+
 
 
 </div>
@@ -396,7 +412,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/api/qrcode.html&title=《api》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2020/06/10/undefined.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -406,22 +422,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/api/qrcode.html&title=《api》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2020/06/10/undefined.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/api/qrcode.html" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2020/06/10/undefined.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《api》 — 风向标 | 分享与创造&url=https://sbcoder.cn/api/qrcode.html&via=https://sbcoder.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Redis持久化及数据备份》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2020/06/10/undefined.html&via=https://sbcoder.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/api/qrcode.html" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2020/06/10/undefined.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -432,7 +448,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABy0lEQVR42u3aQW7DMAxEUd//0s4Bisp/SFFxi69V0TbOsxcEOfR14XMvz/pT66tdE0euXLltLqGsf59+y8/PBo9Drly5B7nrMsSJHEGuKVeu3L/CXVP4DcuVK/c/cUkbREYduXLlvp/LWxASdtSGqM2zmly5chtcHmrM/TyS78qVK7fEvcPTuY3+kStX7hkuLyi11qQWhTwMTnLlyv0Sl4Qd6V9r61iU4siVK3crN1118NuoPQjUkcmVK3eYm65AanEqb3TQNeXKlTvMTUeX2lCUhiO/PjK5cuUe5HaKTudWW8OPXLlyx7h8sUpGmnQcIjcWoOXKlbuJuy5k6QudaagaL13kypV7hMvLUDqodNojtGSVK1fuMDctK7U2KF3NPlxHrly5w1webXSWrOTK6FvkypV7kMvjS9KUpElMPPzIlSv3OJdQCJ03PcF/ypUrd5h7h6fzKgZveq5OTZUrV26bW3slIg1JeVlMAxS5cuXOcdPilbZEtcJXbHTkypW7lZuuNGqNEamgD1GLXLlyX8mtBaB8ACumJnLlyn0ZN12gprPX5kImV65czE0DDtL08CCVPCC5cuWe5G7Y04ZtEHlpY0O+K1eu3Ar3A3E+2FcSFfYTAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3awXLrIAwF0P7/T+fNdG/36pL01XC8yiQOcFhoJMTXV/y8vp/889Wv3TtvezAwMB7LeN0+yTv5CN023Y+MgYFxDiMZOlnc1TfRUoIgfvk9BgYGxltJeWqIgYGB0TFWqPeB+FcDLgYGxgMZ6yVosvQksH68FsfAwHgg4xONgXd9/s/9DQwMjD/A6I74p+ljV/oOVoWBgbE1YzrBdJokfK/cqSj3CQMD41GMTxzcJyVo99/L7cDAwDiGMT2gv0/pumWVbQMMDIwDGN2h/P0WTA/vpvNe1uIYGBjbMboWY1KUTi9bdCOP610MDIwtGO8qU/OQOm2URhgMDIyNGF0R2+1Tl0pGK8TAwNiakbcqu0P/PLmcMqJGJgYGxtaMlaRtvTxONi4KuBgYGBsxkjA3bisu39caXLbAwMDYmpErV47P8gDabSsGBsYJjKQQ7S6N3QfN/NJYVL5iYGBsyugOv6bXwvI2Z7dBGBgY5zCmid00KSzTvqB1gYGBsTdjJeVK3p8WsUk4xsDAOJmRJ4LTErQLxElaiYGBcQIjSdfy4bpD//zSBgYGxpmM1/DJy9eu8TBNEDEwME5gTFsC3cWvLtHMr31gYGCcwOhSvWm4nB7J5WvAwMA4hzENst0B3Ar4h/IYAwMDI5iyC9bd+EsBFwMD4xhGMmUyWt7g/GF2DAyMAxhdEdtdCOuujmFgYJzMWGkMTPsM04nfBsDAwHgq4x9vczziVHQ3jQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 
