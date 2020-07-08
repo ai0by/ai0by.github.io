@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2020-06-11T03:34:16.704Z</updated>
+  <updated>2020-07-08T01:25:06.542Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://sbcoder.cn/2020/06/10/undefined.html"/>
     <id>https://sbcoder.cn/2020/06/10/undefined.html</id>
     <published>2020-06-10T08:14:42.000Z</published>
-    <updated>2020-06-11T03:34:16.704Z</updated>
+    <updated>2020-07-08T01:25:06.542Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Redis持久化"><a href="#Redis持久化" class="headerlink" title="Redis持久化"></a>Redis持久化</h2><p>Redis作为内存数据库，数据的安全性一定要得到确切的保障，很多情况下，Redis是作为存储数据库来用的，如果遇到断电，关机等突发情况，则容易丢失关键数据，对此，Redis的持久化就显得尤为关键，甚至某些情况下，需要定时去做备份</p>]]></content>
     
