@@ -20,16 +20,17 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content>
+    <meta name="keywords" content="数据库,Redis">
     <meta name="description" content="Redis持久化Redis作为内存数据库，数据的安全性一定要得到确切的保障，很多情况下，Redis是作为存储数据库来用的，如果遇到断电，关机等突发情况，则容易丢失关键数据，对此，Redis的持久化就显得尤为关键，甚至某些情况下，需要定时去做备份 RDB可以在每隔一段时间执行一次备份操作，性能比AOF方式更好，RDB是紧凑型文件，但是最多可以执行到5分钟左右，如果再低可能会影响性能RDB相当于 备份">
+<meta name="keywords" content="数据库,Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis持久化及数据备份">
-<meta property="og:url" content="https://sbcoder.cn/2020/06/10/undefined.html">
+<meta property="og:url" content="https://sbcoder.cn/2020/06/10/Redis-Backup.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
 <meta property="og:description" content="Redis持久化Redis作为内存数据库，数据的安全性一定要得到确切的保障，很多情况下，Redis是作为存储数据库来用的，如果遇到断电，关机等突发情况，则容易丢失关键数据，对此，Redis的持久化就显得尤为关键，甚至某些情况下，需要定时去做备份 RDB可以在每隔一段时间执行一次备份操作，性能比AOF方式更好，RDB是紧凑型文件，但是最多可以执行到5分钟左右，如果再低可能会影响性能RDB相当于 备份">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/09/UeweFP.png">
-<meta property="og:updated_time" content="2020-07-14T08:12:11.563Z">
+<meta property="og:updated_time" content="2020-07-23T07:15:15.894Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis持久化及数据备份">
 <meta name="twitter:description" content="Redis持久化Redis作为内存数据库，数据的安全性一定要得到确切的保障，很多情况下，Redis是作为存储数据库来用的，如果遇到断电，关机等突发情况，则容易丢失关键数据，对此，Redis的持久化就显得尤为关键，甚至某些情况下，需要定时去做备份 RDB可以在每隔一段时间执行一次备份操作，性能比AOF方式更好，RDB是紧凑型文件，但是最多可以执行到5分钟左右，如果再低可能会影响性能RDB相当于 备份">
@@ -158,6 +159,8 @@
 </time>
 
 
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
             
         </h5>
     </div>
@@ -186,6 +189,8 @@
             <time class="post-time" title="2020-06-10 16:14:42" datetime="2020-06-10T08:14:42.000Z" itemprop="datePublished">2020-06-10</time>
 
             
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
 
 
             
@@ -219,6 +224,7 @@
                 </div>
                 <div class="image-caption">1.png</div>
             </figure>
+<p>未完！！！</p>
 
         </div>
 
@@ -227,7 +233,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-07-14T08:12:11.563Z" itemprop="dateUpdated">2020-07-14 16:12:11</time>
+    最后更新时间：<time datetime="2020-07-23T07:15:15.894Z" itemprop="dateUpdated">2020-07-23 15:15:15</time>
 </span><br>
 
 
@@ -253,6 +259,8 @@
 
         <div class="post-footer">
             
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
+
 
             
 <div class="page-share-wrap">
@@ -261,7 +269,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2020/06/10/undefined.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2020/06/10/Redis-Backup.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -271,22 +279,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2020/06/10/undefined.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2020/06/10/Redis-Backup.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2020/06/10/undefined.html" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2020/06/10/Redis-Backup.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Redis持久化及数据备份》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2020/06/10/undefined.html&via=https://sbcoder.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Redis持久化及数据备份》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2020/06/10/Redis-Backup.html&via=https://sbcoder.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2020/06/10/undefined.html" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2020/06/10/Redis-Backup.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -443,7 +451,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2020/06/10/undefined.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2020/06/10/Redis-Backup.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -453,22 +461,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2020/06/10/undefined.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2020/06/10/Redis-Backup.html&title=《Redis持久化及数据备份》 — 风向标 | 分享与创造&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2020/06/10/undefined.html" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2020/06/10/Redis-Backup.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Redis持久化及数据备份》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2020/06/10/undefined.html&via=https://sbcoder.cn" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Redis持久化及数据备份》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2020/06/10/Redis-Backup.html&via=https://sbcoder.cn" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2020/06/10/undefined.html" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2020/06/10/Redis-Backup.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -479,7 +487,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3awXLrIAwF0P7/T+fNdG/36pL01XC8yiQOcFhoJMTXV/y8vp/889Wv3TtvezAwMB7LeN0+yTv5CN023Y+MgYFxDiMZOlnc1TfRUoIgfvk9BgYGxltJeWqIgYGB0TFWqPeB+FcDLgYGxgMZ6yVosvQksH68FsfAwHgg4xONgXd9/s/9DQwMjD/A6I74p+ljV/oOVoWBgbE1YzrBdJokfK/cqSj3CQMD41GMTxzcJyVo99/L7cDAwDiGMT2gv0/pumWVbQMMDIwDGN2h/P0WTA/vpvNe1uIYGBjbMboWY1KUTi9bdCOP610MDIwtGO8qU/OQOm2URhgMDIyNGF0R2+1Tl0pGK8TAwNiakbcqu0P/PLmcMqJGJgYGxtaMlaRtvTxONi4KuBgYGBsxkjA3bisu39caXLbAwMDYmpErV47P8gDabSsGBsYJjKQQ7S6N3QfN/NJYVL5iYGBsyugOv6bXwvI2Z7dBGBgY5zCmid00KSzTvqB1gYGBsTdjJeVK3p8WsUk4xsDAOJmRJ4LTErQLxElaiYGBcQIjSdfy4bpD//zSBgYGxpmM1/DJy9eu8TBNEDEwME5gTFsC3cWvLtHMr31gYGCcwOhSvWm4nB7J5WvAwMA4hzENst0B3Ar4h/IYAwMDI5iyC9bd+EsBFwMD4xhGMmUyWt7g/GF2DAyMAxhdEdtdCOuujmFgYJzMWGkMTPsM04nfBsDAwHgq4x9vczziVHQ3jQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACGUlEQVR42u3aQY6DMAwF0N7/0ow021Hp/06nUpOXFSoIeCxcx/bjEa/rd7Vnryfr79lnv7x5YWBgfC3jul3PrmkB9/j74/t3w8DAOIeRPCb5JY+KSfhO3g0DAwMjuXUeXpPQiYGBgfEZRh6sZ0EcAwPjTEbyKm3alwfTj+7FMTAwvpDRNgY+efyP/Q0MDIwvYVzlanltkneNFgYGxt6MlfZkkvzNGgPD1gIGBsYBjKRw1l7fjnwlJbmnnwwDA2NrRh46Z49pU8b202BgYGCsF8tWAnG9tcbAwNiUkT84D8qz0tvso2BgYJzGyAFJSW6WOA5HLjAwMA5jJKEwCYKz7evwDhgYGJsy/iNczu6ZNDVfzIxgYGBszWibi+uvlYfd6CwGBsbWjLa8VbQSR+lg0cfAwMA4hpGPNbSBOG9VzrayGBgY5zBmgbUt3z+CNdsAY2BgnMzIH9wG2Xv20rAFBgbG1oyVtuV6mextQ2kYGBibMmbJXFsga0t4GBgYGG25bWXkK080Vwp8GBgYezNWRiveVfRvAcXfAwYGxhaMq1xtApdT2zJclBpiYGBswZglbe3tVja9bVEPAwNjV8Z6kE3uMxsgyzfVGBgYJzBm4xTJ0MaseVCX2zAwMDDK9kBS22uvj1JDDAwMjDJc5sW4pPH5AoyBgXEAo21Sts3IWfuz2BhjYGBszZg1BtpW5fqzljobGBgY38r4AVZuHfMvnR19AAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
 
 
