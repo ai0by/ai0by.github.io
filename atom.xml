@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2020-07-23T06:03:37.256Z</updated>
+  <updated>2020-07-24T03:34:48.050Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用Rancher快速部署k8s集群</title>
+    <link href="https://sbcoder.cn/2020/07/24/rancher-install.html"/>
+    <id>https://sbcoder.cn/2020/07/24/rancher-install.html</id>
+    <published>2020-07-24T03:32:57.000Z</published>
+    <updated>2020-07-24T03:34:48.050Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="安装Rancher"><a href="#安装Rancher" class="headerlink" title="安装Rancher"></a>安装Rancher</h2><p><strong>注意</strong>：最低配置为 2H4G1M  本教程使用 2H8G5M Ubuntu18.04<br>卸载旧版Docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br></pre></td></tr></table></figure></p><p>脚本安装Docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun</span><br></pre></td></tr></table></figure></p><p>更换阿里云源<br>登录 <a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p><p>找到 加速地址，或者使用我的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&apos;EOF&apos;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://p4sew3ge.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure></p><p>安装Rancher<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d --restart=unless-stopped -v /home/rancher:/var/lib/rancher/ -p 80:80 -p 443:443 rancher/rancher:stable</span><br></pre></td></tr></table></figure></p><p>打开 https://&lt;你的IP&gt;<br>忽略掉证书提示，继续进入<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/UXXLLt.png" alt="1.png" title>                </div>                <div class="image-caption">1.png</div>            </figure></p><h2 id="添加集群"><a href="#添加集群" class="headerlink" title="添加集群"></a>添加集群</h2><p>Step1.设置语言<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/UXjlO1.png" alt="2.png" title>                </div>                <div class="image-caption">2.png</div>            </figure></p><p>Step2.选择右上角添加集群，选择自定义<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/UXjctS.png" alt="3.png" title>                </div>                <div class="image-caption">3.png</div>            </figure></p><p>Step3.设置好集群名字后直接点击下一步</p><p>Step4.配置节点<br>按照需要配置，我这里选择全部<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/UXvRUK.png" alt="4.png" title>                </div>                <div class="image-caption">4.png</div>            </figure></p><p>Step5.配置公网IP<br>云主机需要配置<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/UXxexJ.png" alt="5.png" title>                </div>                <div class="image-caption">5.png</div>            </figure></p><p>Step6.复制命令执行<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/UXxwZt.png" alt="6.png" title>                </div>                <div class="image-caption">6.png</div>            </figure><br>执行后会启动一个容器<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/UXxhd0.png" alt="7.png" title>                </div>                <div class="image-caption">7.png</div>            </figure></p><p>Step7.集群部署节点完成<br>准备中…<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/UXzPQH.png" alt="8.png" title>                </div>                <div class="image-caption">8.png</div>            </figure><br>完成部署<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/UXznfS.png" alt="9.png" title>                </div>                <div class="image-caption">9.png</div>            </figure></p><h2 id="增加节点"><a href="#增加节点" class="headerlink" title="增加节点"></a>增加节点</h2><p>选择主机 - 编辑集群<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/UjC13T.png" alt="11.png" title>                </div>                <div class="image-caption">11.png</div>            </figure><br>拉到最下面，与上面添加节点方式一样，修改为子节点的ip，然后在子节点运行该命令<br>等待添加完成<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s1.ax1x.com/2020/07/24/Uj9r0s.png" alt="10.png" title>                </div>                <div class="image-caption">10.png</div>            </figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;安装Rancher&quot;&gt;&lt;a href=&quot;#安装Rancher&quot; class=&quot;headerlink&quot; title=&quot;安装Rancher&quot;&gt;&lt;/a&gt;安装Rancher&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：最低配置为 2H4G1M  本教程使用 2H
+      
+    
+    </summary>
+    
+      <category term="架构" scheme="https://sbcoder.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+    
+    
+      <category term="Docker" scheme="https://sbcoder.cn/tags/Docker/"/>
+    
+      <category term="运维" scheme="https://sbcoder.cn/tags/%E8%BF%90%E7%BB%B4/"/>
+    
+  </entry>
   
   <entry>
     <title>Ubuntu18.04部署Kubernetes(k8s)集群可视化界面Dashboard</title>
@@ -91,9 +118,9 @@
       <category term="优化" scheme="https://sbcoder.cn/categories/%E4%BC%98%E5%8C%96/"/>
     
     
-      <category term="MySQL" scheme="https://sbcoder.cn/tags/MySQL/"/>
-    
       <category term="运维" scheme="https://sbcoder.cn/tags/%E8%BF%90%E7%BB%B4/"/>
+    
+      <category term="MySQL" scheme="https://sbcoder.cn/tags/MySQL/"/>
     
   </entry>
   
@@ -539,40 +566,11 @@
     
       <category term="优化" scheme="https://sbcoder.cn/tags/%E4%BC%98%E5%8C%96/"/>
     
+      <category term="Redis" scheme="https://sbcoder.cn/tags/Redis/"/>
+    
       <category term="PHP" scheme="https://sbcoder.cn/tags/PHP/"/>
     
       <category term="Laravel" scheme="https://sbcoder.cn/tags/Laravel/"/>
-    
-      <category term="Redis" scheme="https://sbcoder.cn/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>tuwan（兔玩）全站妹子图爬虫可多窗口</title>
-    <link href="https://sbcoder.cn/2019/05/13/tuwan_spider.html"/>
-    <id>https://sbcoder.cn/2019/05/13/tuwan_spider.html</id>
-    <published>2019-05-13T15:01:00.000Z</published>
-    <updated>2019-05-13T15:29:23.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>兔玩是一个非常不错的妹子图网站，跟曾经的PR社有异曲同工之处，花少量的钱可以看Coser的图片，但是tuwan的妹子还是很正经的哟~<br>兔玩官网 <a href="https://www.tuwanjun.com/" target="_blank" rel="noopener">tuwanjun.com</a><br>以下是网站截图<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://i.loli.net/2019/05/13/5cd987f05d3b167053.jpg" alt="tuwan" title>                </div>                <div class="image-caption">tuwan</div>            </figure><br>兔玩的更新速度还是不错的呢~</p><h2 id="破解"><a href="#破解" class="headerlink" title="破解"></a>破解</h2><p>看到官网的套图打开后，一般是有几张可以看得图，也有一堆尺寸小的预览图，地址很相似，例如这张<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://img4.tuwandata.com/v3/thumb/jpg/YjAzYiwxNTgsMTU4LDksMywxLC0xLE5PTkUsLCw5MA==/u/GLDM9lMIBglnFv7YKftLBuvzpwYbEIoBh8ap84BsgXdniTdx80UqsXLdP5yaJZklUj09PvGO8IYpAC3nOanE0EHpB9bCnRKUnvdbAJH6CcXC.jpg</span><br></pre></td></tr></table></figure></p><p><font color="#FF0000">YjAzYiwxNTgsMTU4LDksMywxLC0xLE5PTkUsLCw5MA==</font>这一串很容易看的出是base64加密过的串，经过解密获得<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">base64.b64decode(imgurl)</span><br><span class="line"><span class="comment"># b03b,158,158,9,3,1,-1,NONE,,,90</span></span><br></pre></td></tr></table></figure></p><p>这里的158,158就是缩略图的尺寸了，我们尝试修改缩略图尺寸然后在base64加密后就可以取得地址，经过尝试，修改为 0，0即可还原原图尺寸~<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">base64.b64encode(base64.b64decode(imgurl.encode(<span class="string">'utf-8'</span>)).replace(<span class="string">'158'</span>,<span class="string">'0'</span>))</span><br><span class="line"><span class="comment"># YjAzYiwwLDAsOSwzLDEsLTEsTk9ORSwsLDkw</span></span><br></pre></td></tr></table></figure></p><p>组合成原图地址：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://img4.tuwandata.com/v3/thumb/jpg/YjAzYiwwLDAsOSwzLDEsLTEsTk9ORSwsLDkw/u/GLDM9lMIBglnFv7YKftLBuvzpwYbEIoBh8ap84BsgXdniTdx80UqsXLdP5yaJZklUj09PvGO8IYpAC3nOanE0EHpB9bCnRKUnvdbAJH6CcXC.jpg</span><br></pre></td></tr></table></figure></p><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>源代码已经开源到Github上了<br>上一张测试图<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://i.loli.net/2019/05/13/5cd98d4c726e038815.jpeg" alt="测试图" title>                </div>                <div class="image-caption">测试图</div>            </figure></p><p>下载地址：<a href="https://github.com/ai0by/ai0by-spider/tree/master/tuwan" target="_blank" rel="noopener">tuwan_spider</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;兔玩是一个非常不错的妹子图网站，跟曾经的PR社有异曲同工之处，花少量的钱可以看Coser的图片，但是tuwan的妹子还是很正经的哟~&lt;br&gt;
-      
-    
-    </summary>
-    
-      <category term="Python" scheme="https://sbcoder.cn/categories/Python/"/>
-    
-    
-      <category term="Python" scheme="https://sbcoder.cn/tags/Python/"/>
-    
-      <category term="爬虫" scheme="https://sbcoder.cn/tags/%E7%88%AC%E8%99%AB/"/>
-    
-      <category term="福利" scheme="https://sbcoder.cn/tags/%E7%A6%8F%E5%88%A9/"/>
     
   </entry>
   
