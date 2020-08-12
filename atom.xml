@@ -91,9 +91,9 @@
       <category term="架构" scheme="https://sbcoder.cn/categories/%E6%9E%B6%E6%9E%84/"/>
     
     
-      <category term="Docker" scheme="https://sbcoder.cn/tags/Docker/"/>
-    
       <category term="运维" scheme="https://sbcoder.cn/tags/%E8%BF%90%E7%BB%B4/"/>
+    
+      <category term="Docker" scheme="https://sbcoder.cn/tags/Docker/"/>
     
   </entry>
   
