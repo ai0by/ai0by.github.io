@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Python+selenium针对网银控件过登录取数据 | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,爬虫,网银,selenium">
+    <meta name="description" content="Here&apos;s something encrypted, password is required to continue reading.">
+<meta name="keywords" content="Python,爬虫,网银,selenium">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python+selenium针对网银控件过登录取数据">
+<meta property="og:url" content="https://sbcoder.cn/2019/03/21/Python_WY_Spider.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="Here&apos;s something encrypted, password is required to continue reading.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-27T09:07:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python+selenium针对网银控件过登录取数据">
+<meta name="twitter:description" content="Here&apos;s something encrypted, password is required to continue reading.">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api"  >
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                Link
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/25/Hello_world.html"  >
+                <i class="icon icon-lg icon-user"></i>
+                About Me
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Python+selenium针对网银控件过登录取数据</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Python+selenium针对网银控件过登录取数据</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-03-21T08:53:30.000Z" itemprop="datePublished" class="page-time">
+  2019-03-21
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Python/">Python</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-Python-selenium针对网银控件过登录取数据"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Python+selenium针对网银控件过登录取数据</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-03-21 16:53:30" datetime="2019-03-21T08:53:30.000Z"  itemprop="datePublished">2019-03-21</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Python/">Python</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="77c4c6fd6c27b5d333a8dc689686875947ef286f2ed1b26c1d301414e58b38e2">8ad9776b9e3adf3c3a869363e1dea3820779a6263c38edd5817c839a47dbb23e9365acc6430c6fcab2a673a10de7bfe8b50e3447159116c06bfa52a1f9542019baef010ab7360c61553ee6a48e12ea68236e792a507adb2ae48fa85d8b244955339cf1ba32e108676ec8b93e26bc3edd123f150064a975940fbc5864387ecc35d1e78d020fc4a5f8d30afd89eed70926ba258c1b51515249c33b3d21c61a31fecc4f97a4271d3c23004dc9a27f7486bb986b447f8819ded08b52137f2d4d1117c66774cbb33c752dfb13db13d0914f4c5b050057693ba32da1a693f2d3a5f4cacf1640ef0a33f007e4e9ccbc02a3bd6f05c0c6c1ad1c7c96fc3ab88a123e7cf260b109d7069710dfe1723b1d71351ba8df5ad86c7be58ebce0a0fbb0cb904d0d3bb83bad3f10377dc36e84fb9c0830a4da88b39b3477f5f8b0a90d96686f2f08b73a2b4538d219ed402cf301f2c96b9636de72d3c6de8aa897159707f8297d6506171ae5148a9efcc3eb478b71508a4d60717e0462caf8ea1ffd82b2aed52943403edddb35e9e93ae9674630beb4caa8e51e0d97bab53221cdc91c0233e360020a1196c35f3a978e3755df95e6e74e9f13f1a49077aac6757ef58a9d16824ce86519c2ff4464c71f1f72d4607f7032a94666e9540089f4a4d9a93265d89e89d7c46e33156ce540c3e33af2f1d03c6337dfc41553ca808772913027135e702ebe2be07cb456a5352ba78f5215d3477a343da482910f05efea0a8893834c3c52923dc5b81a6d4fecf3523233c138bc8505a9ef030f7f2b9dd27cd8e4ea214ebc3b838d53a237af95a6cb4e25b350ac266f7c4a524e0115e9e45d5a747da1fb20024c67b14caa75a8f7ac5b37d39cd9e68676bec73e2039c1dc789319ac419bdcbbe41c1c78d23012c934cb75a39bb88d2b2518abdc96edb04d6a25f070eafc5c58e28cfcfb4f8a8d88a12e0c65f8da3889ad2aaf0269a96b040203184c22b43d9da97192d7c562cd211172142cf6c6b62bc4dc29e3fdab3d825bc4b577daee1fe75c81fe305755bd630f48f9591dcabf80cc4f83dbd8ec3ca531dd5e202ed1d7deb09903c43c1e56269838652e90a72691e8503b04c19f971f0b5e247322878e5d898f1579eff776206dc965e156547db85adbda19b63011f020618a24c767e8b290165572dac68c1087432cdea329be44908fe3e1d65af013eeb4ddd6a3da374a214d1eaceaa8a4964091505209ac255a9f18a1dd45b02e14052400408c74a7f012b215a2f034c8bc0ada22dd42a497a083b95d2d24d306bc800ef583c50a675f4d4575715f878a4fa428debec5f83ad35e3d14d63847bc640c7d5767840c8cd581e52a6d68527ed77a190cb1cb7e9d774a3da58a2dfecb969f19082e03442d863183c667c50ac8a789c6d533eaf460c1616973f676781d9497874a5e6199d6d7ad9b7ffc04e7cf2560b55cbd6df538eed12838c6d43735cec07552d94aecdd9dab9abb75e761f23af190f1fc32d9d8cd2e2724c6203df14a61491f740c35b168ed1f20cb3f08d67ebe220c14b806323b06f70e2948c3958638e863f3a125ccd618f06a21fb264cc5321f16e8ec579d08dae5028fb5cfe1963dcf7ad63ef9c7f5b03e916f8871d9ac9a7632b4368fa95a0347ec35d473d192ea749c2db190f44e098ea7e20cb192090711af49238f4705583efbc88f08a472b5153e020f662c64b9702f1e9ed8dcc16ecc9e6f88df7a0bcb5e101c5f42a169d7c62d4a794942689d942927771ab34b6d1460595e04f5ff060616a4d04b2d19f57b44e8479965fb3c606ec6b167ec7cc6debedfb65d9e28afbb715a1816087c6defe62c7882c91639a26ba0ce017d8d5965a9751c3e95c3fe7ec188ab3e6c619fc07224c2a6f2bad9fab83c078604748c0a559808e5108231ca20b76ff5b0ca2a3fe52caa1fffc9b778501ced744b79e23d1a0be897194e70f8b02dfc8129b9b226b20a242d4b0d40e7e491c721461e1dafe7367e620ceff105ca00c206c472ef34e959ad2e9a960dd46c428043cfaa13e2a70cf98e4e71941f3686b70b1981208a85c9fd49c2a21304d962aa23c0954910145a17cb61ab7d22337e3a07c3b342aeb5f0d2f170148a2d346d7a0904b9e758e78924e8781d41baa00a86817b0ee1d3d3f8465bc7da27e2e4836eb51b2516ed2c4faf6c16486e89502c850888d23f5eea4284735c6646081e165820f7d144765c608de8d57e5104eb8250d074197d5eb027ac49680cfb874340d98af3f3e2f87ce04cfc59d61e233599b71c5a0fab5a0d89eebb6ef64ccd5965f337bbb90aebbc57284f128d0365fe3e429eaa6fcc526dc580ca123cd902127fe1ddd2b5b0d4addf643e5aca881df5fac033e6117b71bdc70959543abbc41ae25c51b1c82d438067fba2b12db8d13b5bf11b9cf4f172e91db9146d0349693044a23a458436afad0a2a0c70a513579a7418bb3768ccd10e02cb379f5c17bf948c753b97ae7377b06d10a68fa2f81ad280fc268d80367afea6807a320027f1ac914d81e1c4b010b6a9b703ca0b3593c5cc40594d7567e0089572e6a412b21b662c59a4d1f6574bf0d3e009857bbdcea24bfc68ca349bf80c7d4880219f21f51ca7f21cf39c3b54a2ad32906dac76677a77b3e07436231277535d42a0233cce8e37925b56aa85b21104dfa2bf07711063e6ef6f045930d6d5b5100b6d524197a135b228f6a7af16d8f6f4e38e3605f07d2e52b8221eb2914330bf60592a05587b44d596e60f65b9a2a981cc1fcb82ab9424e2a5e1cefd44536c08ec3c393d786d66bb27bb2479f5b166f0881485e2f9ff6512ded4af15a83b5ab444d53049a8e7c14e3319675496a13a2ca0afd9be25d71c40b1ccba3a65e9aea3616a3399321358748e1722c10f2ceef2e391963f284d9a39ed87a926b37c45ef830ade0ad3c8c82ff52883d7ef282ed3b55c9e15a7c839893991886b412d517839f4138cf112b69bb8e56a7411227ac7c740698754c4c0be40b3b9dd85c6a90ca420e3a363d2db61a7ce89d5fbfb06b54e1fb9ce658e0055e83470bae3649cb8fe0af4a573436a8f321477443f420cf578b6531af3830329d81cbcabd99765fa0e356e115812e4d843d4357a93634605a4c0079a46b4d7e4ab439e7f2e8fdaf2e16cc512ca8812f6a673dbc3f98ff1595f980093c353107702849cd2bd1667e5cadddfa53aa487f7d0d1941a94bffc3b1c9ba06bd930a520454be138d06d43032f1cf55d01831d59f54bde802e3d0859849f6230eb49e0742a169a388f77ebf8e5f160dcc18531ad7e04d1878a0fc111f3cdba107779b4e36e1fda9681dcc0bb0077a03009458c0c7c69fdb8bfcfc057be854da20db617d9fa45767d962d7ae8e02cdf02ea8ada286f722514d65d7534c912b8e4bacb3a0002037fe397907655303af8beb18f3b5703cd7939ba151927a98ace695b0006037abafdee0f9d659dd7055eef520765d496d0b2b8495bb27c829b0d38ad1f81be907e98d523927695ff55230c816d6d47d68f32001c2bd347a8ff64ba3120bdd98ae32a66837db5198efb26b44b2fa840182ece0bfd8799adfce0758742e201fa46bbaa591e6c2f6857bedac5bde810c129a01d753e01c8b445f52e63349383d6ff5aeac19b557f8059ed8dfbdd8ff9aad995c45230fcef9f5b2b1a88ed0e1d59651ad3418a7aa96b9cadb06c61c6f5a34307d1afd7e5d34bcd30c3e7508f759622e649fa355b8315dbe88f105167fb2de329af29d95d338fd4350c99d44c8935f4c86ee98c1987ed394b239c66a7ded01d1fa950bc8a14554b643c87a0e0fe36b08810facb838796efbacb321a47af05d02b33550b4413811efb422df8ea8b4dec2d39ed0a4e720f41dbad7cf357b9a4d7e8ef30d9a73e140ed0a54bac26b0728218bcca02c175f604f6965c5d6f2095270270153cbc6179964cee531a69a78247dd72464aaba581b782b975a63d3af43e4a1aee8f5b6a6507fbe90f1c4e4b4e0090a5dacb65a02e09a98b93b01d58aed812637b51ffb60ce2492fec980ae378aeb11e656a0fe1609c8cd5ee84dbf51e3d14970ac19688873a5d371f6fa08807564d776b814eb58be041bebddb7d4641801b799420d807cc494fa7569991823ce03f4305a680fd8218d5aae510fe7d87d3436f880bdf1a1d9b892e60927a4193de2981faed645fd22a7b1ebc2bb1d5a02976e70bb1b2da53caf876a771b2ca03b33c97be35c76bea283591ef227eb0596ed16fca45abc4db86166f9ed6ee4a0fdedb85283771f7f1bf2ca1cf5ed2cb787b2e3a71bdbc0349901b292c6c30747098b009c550ea21183cdf3a697aa8ac78e609215fbfc6f4f01562be7c417dc949f879494ed0a3a91a81c458b8b79900ee04c4c818f06166ebc7c017aea24f590bb05c7861295c50f4079dc2e87392e1af9625676b0f17ae02fbb15a50b374239695bea5ab790c7381ab060bc760eafa895f56dfe189dccf40f98c1872eb6c341da2cbe27f193b139782868db1168f6bda1b5df93968630902f4e54bd113e80c9042ee8c728d85b410df3290af914352bd551ec4aac8bbb60d44f12f47b54c22ec5a10b2ae4f6c3e70f6a42b197aad886c5525c3eb5a3d2178f8f5d89165be868274df5defbc686d3efb3db3753c2cf831e1a9d57978225ea5477c493adfd14784cf76d023c5f76d156899bb4e9ea56ac3c37f36c7a95969eb5497a636774bbf95ac42e011b5d65d4ad8177a81c9ae6a78145fc283e4242258bd75e2c3b75171a982c0916f7afc4843b171a94bd692f3e3c34e25e84dca3382007f3444187161130f06ed78a49575eb33b216052f69cfe1e0267bdd327f76188f3feab7ff9e9189f0cd2e719b295b6be3fa2c43d1c8d9005e2d597059b33b22cff46730d2922812772306099a92346ef077adb642bbafc1d19ee6ee5975bd2365f5e8309b2f79bc5b680506d14496784d72076fd050f7826cdbc2e117d3442295fb0ab5dd835d1d7b4d4ea5fe1806f5f9cd440295cbc6212fa3240526e1fc1b859a9cfba98fb16635e9ca35104a5dcdf01a2a5da5c7e949040e7a38df22ed9ab19b692af32f262fc0aea47d59f0b205d8cc75abb1983cb1a943fd0a4a9b5d1995594a55254e6f59de9c53ab6a1b7a1ac3aad17d92b5203a1237450395ad8bf338e6beea1d57c5a8e4cdce5b2666802666c1a39822df220a0504735a2f15e29ff04c296c5200b1bd0a8d06d8e954fc2fc20ca32ff79eb063e86f718be468dedfa64921971d8bba9d793eab7f65336f0ce7e447cc3629aa2c641f39e679c629c1efaef6274bfea5e94e56e1b66bc926ed1a8b7edc02b2849edc318a93c9e52f90e7cd4cc5a225f75365ea3d86c4a5da7327cec093ac05b128e9a79bd2925f8541bd420dd519548c05ed3af1f0d344a5874f138f73742214c797f1badd756447093eb1e12fbadb1c70aa52881bf35cb3a027ccb731fa9072b1b638d1e134966911065aa1e5b583840877d8230baf3244d0827d6355632997e962078b86585ceff52bc51dfa408885f52ba93a2f3351dda8c3c187292048fb2cb27378c3c1177894c4a9d08ace462ace6a1e3967ef8ebcd2b6cdab7e3d5d3527a3a574f38aa687a11320f530e9eb0707c18fc8ca4bd8463fe43918dceba604f429ec4927af8dfbcfb5cd26fffb251c43160c68ef4eb47e9c2b977273354573c97f2c51beb52c480ee388e324f8bbf9cc21f230fc6c56d58bc9d96a50734e05db8a4a0eba108689a4455eadaca28c3e4f07ced925cb2a8362a25f2b450db3bf88d8dfe96d7582e7cb09a520c723d1c79c0f5f17e4df2c0f6d3ec89e3f4cb7700fb10b53fc2297c2dd0958c74d4fdce3f05f1e27ae2f6e12fced0f91568d42c52c5e96703a1e707c97639ff7d069f3fc76384d8ef308a5a1b14344d32daaf5ddf28fb75c980c66040027b6fd21b90fda371a39d8fcd385743eacc2d1438d138c5efbdf0b94860f4f69cc890ee72c4385a3bd09ebb9242e77806ed57536f63a8af3ac27bc06d850167d191c9dddf490f84e096ca435331b8758a544e4e8b71dc30e4ceaee5e176c9bf4fa4bd230a3e641b38e467317a336fb35a92e2b2d8d1b7e269914c3ba3257edb0af49a8d59a297bbd223430eb3e472ac490c781b543ad59aa28655468a8b022efbeef3dad74d53d4edb3f49a54bc98a1bf5da49ca2b9111f774162196a564c3a7ae889dd6d2b688c325dc4545d6ca933e8f1bc9cb55bcdf2602466a74a26d4f8ecc3d09bea915803e548a519edc2eb35a6f0c6601f4fc2cd8c3bd89030331d897759a71a9d45e0c29d9a0484c0473db4b77c9e6d7a7d9678b964918b092276a89a82f14aec37d9222107dc907ae1569f98c86a3f14162dcb4a1e83411cdb203ec11bb335668428f39a0829009e3edb9f66dd6c64cc67b05b28ff165098c03b5c6a07fdfb27e0c1610bc835d73b650839eae598d5cb50b3291b50dc0075c5bfcdcbec56b35d73cce74f8286e851cd13bcc38c43ca0d083a8f312d36e8995c1fb136bda736ba3d328bb896ab91a4275fbc5053974d036852cb5036d6920a30159aa485952fe21205ebcf02d01444a57d929db16c8c899b09beff54b5e7011f100db10049894f3b834a84915574d081d6f6e395fb85e165dcb840573f8a89905bef6e129d7905c9115930117a7bc115f073dc974c7aa325981a90ffa0f7e524daef4841a41924dc1426929f993c68c8a37a14dfd9cda1970acb04ce06113c75fa2f154dd8c7876787cb70ede6f34930cce08387bc9ebc546f6bffd7fb5114c10106fe0d22db59e5b8c35efdc07fe8d0c41150e89d5fb91373b54a1bb3bfab459e87523151243d06a5cbfeab62eba3cdd3d74241af4de5d3c8e59d65e95160ba1a9b9b65f9d0ac87e2c446ddc9691164a17c69e34ccfe99512ced3e07a25f54828321d504b901b120bcb4665141dd015cb2a79d691b47e7ca403c496c0416cbc432176d5ef1bf992268d3cb7213aeecbcd54dc9065de719871d8a0fc95428917a71148929e1bb6ba9bf359933dbb9a5c2009622aa1c4f7ef502b42657d1c865583709b37208834c33cde53a0a0b103afbb9430d1928e6cd3b482dbf43bb8a236a81d33b2f666c5e40a8af94f342f386857300bf348ba77974171549963b64896d0c14472f6e84b6ca5524a03fd13a2d6614d87cbe3bb95dbc93a5b0beab90b19600da039c2f84217449986e1b22b8e680150709579d71ba4b55fe659b8ac5114653fa3de4eef4ec86fd06ad94c0108c6c63416069bb8054c5f86fa3b792b876f28a43f673953cb414e98d29fe529c06ad57d6853f36c2cbf541cf8c3cde604815da0c05124af23d7fdbf98008699b618aabeb9c26a5727425d4af4d73ae2d4d8d5f7fcf27666ae2d8d05d9104daaa317a003b6a79697d7feb4b8f4ba426e3c8f15f89e5c3e9160ba3197657addaffa926b903fae66191b6205c9f6be696e798ec4f038a852d47cab510b6215b03540fdc88688e60b72097aa5b34aafc181b7968387c728b71171cc0e66ab1425c39ae5c68414afe5f22d9b0ce0e9d220bd3bc369b38e618189beacae2b985dc4e75496f49a436cecfe1133445de47c2b39b4d57145eb6992eb69d9fe95585fb10062f52238f9ba2b369b7078a20328cf4276a31b3bb020121d250c17022f29d690b31b15a1a51c9945785c607bc2d79eb7fce0134d7a4941dcbba7db4f04c1964c1047e72ff07e786f97cb3f0960e3a40691ad2865b0c6a630c870f99ce63f1f780c642ac8addaa9b</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-07-27T09:07:56.000Z" itemprop="dateUpdated">2020-07-27 17:07:56</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/selenium/">selenium</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网银/">网银</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html&title=《Python+selenium针对网银控件过登录取数据》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html&title=《Python+selenium针对网银控件过登录取数据》 — 风向标 | 分享与创造&source=Here's something encrypted, password is required to continue reading." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python+selenium针对网银控件过登录取数据》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/03/22/Japan_Twitter_Spider.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">岛国推特妹子图爬虫</h4>
+      </a>
+    </div>
+  
+
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html&title=《Python+selenium针对网银控件过登录取数据》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html&title=《Python+selenium针对网银控件过登录取数据》 — 风向标 | 分享与创造&source=Here's something encrypted, password is required to continue reading." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python+selenium针对网银控件过登录取数据》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2019/03/21/Python_WY_Spider.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aS3KDMBAFwNz/0s4BXMB7g50UUrNyuTBSsxhrPj8/8fV6u5J7jn51/vno+R+4MDAwHsvIF87veX9+e0++LgYGxj6Mowh2fk+yuWQTSWi+2DMGBgZGzDgPr7PDIgYGBkbLyHl5AnzOxsDAwGgLZElpLDkI/lsujoGB8UBGXnX/+89f6W9gYGA8ivEqrzvUNg0udoWBgbE0404i2h4lZ0G8aEVgYGAsypi1FZPiV176z1uhh99gYGAszcjLZ3WZviycta3NqD2AgYGxBCMvfuVvJQnTs3UvjoYYGBiLMs5DYZ7K5ge+O2tdhGAMDIwNGLOQ1w515duqWxQYGBgbMPLSfLLYnVQ2ecUX/xsYGBhLM9qifJLu5u2HtlWAgYGxG6N9dJsAt93GuqWKgYGxKCNPIGcF/XaMo22RYmBg7MOoC1tBGP1swzIatsDAwNiMkaeRebl/GEyTV4aBgbE0434zcjYc1jY7o5eCgYGxNGNWessbCXcGLzAwMDDyJPOz7cxZse9ihxgYGBswZsMQ3zgmDlNcDAyMbRiz491skCJZMelUYmBgrM14lVcy2zBLUNtRj3rYAgMD47GMtlmYL9k+4VN1MwwMjFUZeQBtS2n5gS9Pqg+fj4GBsQHjfIFki23KOjv2XeTiGBgYGGV4bcPunZeFgYGBkRfLkufkx9D8VxgYGDsw2kL/bJCiLcl9JRfHwMB4ICNPHdvjXTuC1q6OgYGxAeMXFJf6CEwj4HsAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
