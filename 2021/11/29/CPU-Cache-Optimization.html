@@ -31,7 +31,9 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://z3.ax1x.com/2021/11/29/oMLjgI.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/11/29/oMOIRs.png">
-<meta property="og:updated_time" content="2021-11-29T09:27:57.024Z">
+<meta property="og:image" content="https://z3.ax1x.com/2021/11/30/oleDCd.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/11/30/olnX9J.png">
+<meta property="og:updated_time" content="2021-11-30T01:06:04.766Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用CPU的特性开发更高效的代码">
 <meta name="twitter:description" content="CPU Cache是什么CPU Cache是在内存的基础上，可以被CPU直接读取的缓存，分为 L1,L2,L3 三层缓存级别，他的读取速度，是内存的100倍以上，我们都知道基于内存的数据库Redis，仅仅是使用了内存存储就很快了，CPU Cache则更快，利用好CPU Cache则可以让你编写的程序更快。 相比较各类IO操作，CPU Cache则是最底层的，分级一般为 L1 Cache &amp;gt;">
@@ -177,7 +179,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU-Cache是什么"><span class="post-toc-number">1.</span> <span class="post-toc-text">CPU Cache是什么</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU-Cache-Line"><span class="post-toc-number">2.</span> <span class="post-toc-text">CPU Cache Line</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU分支预测"><span class="post-toc-number">3.</span> <span class="post-toc-text">CPU分支预测</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU-Cache是什么"><span class="post-toc-number">1.</span> <span class="post-toc-text">CPU Cache是什么</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU-Cache-Line"><span class="post-toc-number">2.</span> <span class="post-toc-text">CPU Cache Line</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU分支预测"><span class="post-toc-number">3.</span> <span class="post-toc-text">CPU分支预测</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据类型和线程绑定"><span class="post-toc-number">4.</span> <span class="post-toc-text">数据类型和线程绑定</span></a></li></ol>
         </nav>
     </aside>
 
@@ -238,6 +240,34 @@
 <p>代码实现该如何做呢，当一个if语句大多数时间都是 <code>真</code> 的情况下，那么CPU的分支预测将在后续预测中更容易缓存 <code>真</code> 的数据，也可以说，我们的代码尽量让数据保持在一个分支中，可以避免重复读取操作</p>
 <p>除了这种CPU自动的分支预测，C语言也提供了一个方法可以告诉CPU大概的结果，从而使CPU更多的缓存某个分支的数据</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> likely(x) __builtin_expect(!!(x),1)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> unlikely(x) __builtin_expect(!!(x),0)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (likely(a == <span class="number">1</span>))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">/* code */</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="comment">/* code */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="数据类型和线程绑定"><a href="#数据类型和线程绑定" class="headerlink" title="数据类型和线程绑定"></a>数据类型和线程绑定</h2><p>一般情况下，<code>long</code> 类型 要占用更多的空间，所以很多人在使用时更愿意使用 <code>int</code>，但是在CPU Cache line 中确并不如此，如果一些相同的数据经常要一起使用，我们尽量需要把数据长度控制在特定长度之内或者将数据按照指定顺序来存储更好。</p>
+<p>数据类型会影响什么，真的是占用内存越小越好吗？</p>
+<p>并非如此，现在的服务器更多的是多核CPU，单核CPU则不需要特别注意，多核CPU在处理数据的时候，L1，L2 Cache是独立存在于各个CPU核心的，只有L3 Cache是共享的，既如此，那么L1 和L2的Cache是如何共享信息保持数据一致性？</p>
+<p>如果一个进程在不同核心 来回切换，各个核心的缓存命中率就会受到影响，当有多个同时执行「计算密集型」的线程，为了防止因为切换到不同的核心，而导致缓存命中率下降的问 题，我们可以把线程绑定在某一个 CPU 核心上</p>
+<p>在 Linux 上提供了 sched_setaffinity 方法，来实现将线程绑定到某个 CPU 核心这一功能，从某些程度上来说，亦可以保证数据的一致性问题</p>
+<p>多核多线程之间的数据一致性如何保证？现在市面上大多数的CPU核心是通过 <code>MESI</code> 协议来保持数据一致性的，是<code>Modified Exclusive Shared Invalidated</code>的缩写，即是： 已修改 独占 已共享 已失效</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/11/30/oleDCd.png" alt="oleDCd.png" title>
+                </div>
+                <div class="image-caption">oleDCd.png</div>
+            </figure>
+<p>如上，当两个线程都在操作时，A和B都是从内存取出一块儿数据来操作（CPU Cache Line），很多情况下，如果未能保证数据的连续性，A线程就容易拿到B的数据，B也会拿到A的数据，如果A线程操作变量内容时，那么B也需要同时修改才能保证数据的一致性</p>
+<p>那么数据的’锁‘该如何保证呢，则是 <code>MESI</code>协议来保证的。</p>
+<p>线程A操作变量发生变化时，线程A不会广播写入到内存，而是将数据标识为 <code>已修改</code>，而其他线程则是将数据标记为 <code>已失效</code>，当线程读取数据发现标识为已失效时才会重复读取数据更新数据，否则频繁的刷新数据则失去了CPU Cache的意义</p>
+<p>当线程A将已修改的数据写入到内存后，其他线程也更新完数据，那么，将会把数据标记为 已共享</p>
+<p>当线程A创建一个数据，其他线程缓存并不存在该数据时则该数据为 独占</p>
+<p>如上，当出现越来越多的数据在不断地变化，多个线程操作同一块儿缓存，即使有<code>MESI</code>协议的调度，也不免多了很多操作，所以有些人就想到了用占位更大的字符类型让一个变量占用更多的字节数，从而达到保证线程永远拿到这一块儿数据的时候不会有其他线程的共享数据，而实际上，在多核系统中，也提供了宏定义 <code>__cacheline_aligned_in_smp</code> 来保证数据的长度与CPU Cache Line 保持一致</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/11/30/olnX9J.png" alt="olnX9J.png" title>
+                </div>
+                <div class="image-caption">olnX9J.png</div>
+            </figure>
+<p>如上，A和B通过宏定义 <code>__cacheline_aligned_in_smp</code> 定义后，字节数会各自占用一块儿，则避免了数据频繁共享的问题</p>
+
         </div>
 
         <blockquote class="post-copyright">
@@ -245,7 +275,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2021-11-29T09:27:57.024Z" itemprop="dateUpdated">2021-11-29 17:27:57</time>
+    最后更新时间：<time datetime="2021-11-30T01:06:04.766Z" itemprop="dateUpdated">2021-11-30 09:06:04</time>
 </span><br>
 
 
