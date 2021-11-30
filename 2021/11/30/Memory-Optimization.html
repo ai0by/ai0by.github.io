@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>物理内存与虚拟内存与Swap内存 | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="优化">
+    <meta name="description" content="区别物理内存物理内存是真实的内存空间，通过物理内存地址，标记存储的数据，物理内存的实际大小也与内存条有关，由内核直接调用使用 虚拟内存虚拟内存是物理内存的映射关系，为了防止程序开辟不同的物理内存空间，或者多处占用，则由操作系统去调度，使得进程在调用使用内存时需要通过虚拟内存的映射找到对应的物理内存地址，最终才能使用存储数据 如下图所示">
+<meta name="keywords" content="优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="物理内存与虚拟内存与Swap内存">
+<meta property="og:url" content="https://sbcoder.cn/2021/11/30/Memory-Optimization.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="区别物理内存物理内存是真实的内存空间，通过物理内存地址，标记存储的数据，物理内存的实际大小也与内存条有关，由内核直接调用使用 虚拟内存虚拟内存是物理内存的映射关系，为了防止程序开辟不同的物理内存空间，或者多处占用，则由操作系统去调度，使得进程在调用使用内存时需要通过虚拟内存的映射找到对应的物理内存地址，最终才能使用存储数据 如下图所示">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://z3.ax1x.com/2021/11/30/olRoWT.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/11/30/olWiOH.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/11/30/olj5DI.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/11/30/o1pdmj.png">
+<meta property="og:updated_time" content="2021-11-30T06:11:22.495Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="物理内存与虚拟内存与Swap内存">
+<meta name="twitter:description" content="区别物理内存物理内存是真实的内存空间，通过物理内存地址，标记存储的数据，物理内存的实际大小也与内存条有关，由内核直接调用使用 虚拟内存虚拟内存是物理内存的映射关系，为了防止程序开辟不同的物理内存空间，或者多处占用，则由操作系统去调度，使得进程在调用使用内存时需要通过虚拟内存的映射找到对应的物理内存地址，最终才能使用存储数据 如下图所示">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/11/30/olRoWT.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api">
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                Link
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/25/Hello_world.html">
+                <i class="icon icon-lg icon-user"></i>
+                About Me
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">物理内存与虚拟内存与Swap内存</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">物理内存与虚拟内存与Swap内存</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-11-30T03:48:38.000Z" itemprop="datePublished" class="page-time">
+  2021-11-30
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#区别"><span class="post-toc-number">1.</span> <span class="post-toc-text">区别</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#物理内存"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">物理内存</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#虚拟内存"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">虚拟内存</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Swap内存空间"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Swap内存空间</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#总结"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#划分空间"><span class="post-toc-number">2.</span> <span class="post-toc-text">划分空间</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#C语言中的空间划分"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">C语言中的空间划分</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-物理内存与虚拟内存与Swap内存" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">物理内存与虚拟内存与Swap内存</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-11-30 11:48:38" datetime="2021-11-30T03:48:38.000Z" itemprop="datePublished">2021-11-30</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><h3 id="物理内存"><a href="#物理内存" class="headerlink" title="物理内存"></a>物理内存</h3><p>物理内存是真实的内存空间，通过物理内存地址，标记存储的数据，物理内存的实际大小也与内存条有关，由内核直接调用使用</p>
+<h3 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h3><p>虚拟内存是物理内存的映射关系，为了防止程序开辟不同的物理内存空间，或者多处占用，则由操作系统去调度，使得进程在调用使用内存时需要通过虚拟内存的映射找到对应的物理内存地址，最终才能使用存储数据</p>
+<p>如下图所示</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/11/30/olRoWT.png" alt="olRoWT.png" title>
+                </div>
+                <div class="image-caption">olRoWT.png</div>
+            </figure>
+<h3 id="Swap内存空间"><a href="#Swap内存空间" class="headerlink" title="Swap内存空间"></a>Swap内存空间</h3><p>Swap内存空间，顾名思义就是交换内存的空间，它的空间是硬盘空间，他是一个很有意思的东西，我们真实的内存空间存储时也是分一段一段去存储的，由于无法连续，那么可能也就无法让性能最大化</p>
+<p>例如下图</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/11/30/olWiOH.png" alt="olWiOH.png" title>
+                </div>
+                <div class="image-caption">olWiOH.png</div>
+            </figure>
+<p>游戏，浏览器及音乐各占不同的内存空间，当浏览器进程退出时，操作系统会回收内存空间，但由于它是一段一段存储的，导致后来的程序想要占用200M的内存空间则无法实现，最多只能使用128M。</p>
+<p>而交换空间则应运而生，程序在发生浏览器退出时，会将后面的音乐占用内存放到交换空间中，而后清空游戏后面的内存，再将音乐内存直接放到游戏内存后面，而后面的下一个程序则可以直接占用内存200m</p>
+<p>所以交换空间配置适量的大小也很重要，太大没意义，太小则可能无法满足释放内存的需求，而由于交换空间是硬盘空间，速度显然不是很友好，因此相当大的程序释放（放入）时也许会造成程序卡顿。</p>
+<p>而这种分段的片段，也可以称之为内存分段</p>
+<p>由于内存分段的数量过于庞大，他需要每次程序释放时同时释放内存碎片，为了更好地释放内存，物理内存存储的也是映射关系，也称之为 内存分页，相当于一个索引，一个内存分页存储着不同内存分段的物理地址，而程序只需要通过内存分页即可找到真实的内存数据，由于现实场景中，进程数量的激增，一层分页也无法满足所有，需要每个进程都保存一份分页不太现实，就出现了多级分页，只存储顶级分页及常用的二级分页</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/11/30/olj5DI.png" alt="olj5DI.png" title>
+                </div>
+                <div class="image-caption">olj5DI.png</div>
+            </figure>
+<p>总结来说 Swap是硬盘空间，速度较差，它存储的进程数据一般是交换空间数据或者不活跃的进程数据</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>为了在多进程环境下，使得进程之间的内存地址不受影响，相互隔离，于是操作系统就为每个进程独立分 配一套虚拟地址空间，每个程序只关心自己的虚拟地址就可以，实际上大家的虚拟地址都是一样的，但分 布到物理地址内存是不一样的。作为程序，也不用关心物理地址的事情。</p>
+<p>每个进程都有自己的虚拟(内存)空间，而物理内存只有一个，所以当启用了大量的进程，物理内存必然会很紧 张，于是操作系统会通过内存交换技术，把不常使用的内存暂时存放到硬盘(换出)，在需要的时候再装 载回物理内存(换入)。</p>
+<h2 id="划分空间"><a href="#划分空间" class="headerlink" title="划分空间"></a>划分空间</h2><h3 id="C语言中的空间划分"><a href="#C语言中的空间划分" class="headerlink" title="C语言中的空间划分"></a>C语言中的空间划分</h3><p>C语言有着各式各样的内存清理问题，这也是各种C语言BUG的大头</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/11/30/o1pdmj.png" alt="o1pdmj.png" title>
+                </div>
+                <div class="image-caption">o1pdmj.png</div>
+            </figure>
+<p>C语言中，动态分配的内存（malloc，mmap）则是动态分配堆和文件的内存 </p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-11-30T06:11:22.495Z" itemprop="dateUpdated">2021-11-30 14:11:22</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2021/11/30/Memory-Optimization.html&title=《物理内存与虚拟内存与Swap内存》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2021/11/30/Memory-Optimization.html&title=《物理内存与虚拟内存与Swap内存》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2021/11/30/Memory-Optimization.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《物理内存与虚拟内存与Swap内存》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2021/11/30/Memory-Optimization.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2021/11/30/Memory-Optimization.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/11/29/CPU-Cache-Optimization.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">利用CPU的特性开发更高效的代码</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2021/11/30/Memory-Optimization.html&title=《物理内存与虚拟内存与Swap内存》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2021/11/30/Memory-Optimization.html&title=《物理内存与虚拟内存与Swap内存》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2021/11/30/Memory-Optimization.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《物理内存与虚拟内存与Swap内存》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2021/11/30/Memory-Optimization.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2021/11/30/Memory-Optimization.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3awY7DIAxF0f7/T2e23UDus9uOYi6rapoBTiohY/v1wuN6G+9/2T+5en7/eTXzB4YMGTIey7i2Y7/AfuHazKtvVzPIkCHjHMZqE/x47WyCHNM3e5YhQ4aM7dQkpCPHbvr6ZMiQISM9RvuX0n84cGXIkPEoBt8cPxbJRmuvTIYMGacx+PK///yV+oYMGTIexbjCkYZxPNRr7UqGDBmjGbWpO5fV4gWVhJgyZMgYzSBFxFrSv5bu319xb6gyZMgYx0hTbPvDlzdS8GdQyk+GDBmjGZ8tKKawtDhaCyJlyJAxg1ErEPIjMm0vS8NEGTJknMn4xtW0loALSgsyZMg4gJEm5dNyI3+eJ9qW9Q0ZMmSMY6SNDmk2Pg0fyWF9E8LKkCFjKCNNb9XCRL7iB34HGTJkjGDwgmInTEyvzYQkQ4aMkxm1Zoh06zUS6hmRIUPGOEanMFlcAIy0jCpDhozTGCQF32n24oVJcj2WIUPGOQwezHUwfP79xXg5swwZMo5kcCpP9HeaMG4wMmTIOICRtmrxq2ytSJCWCmTIkHECIw34OLiTUONXaxkyZExldAKyWpmzFiai30GGDBlDGbWyIkp+4cM6LUi0CqUyZMh4LCNNbNVawfib4/8lQ4aM0xi1ZgvO4MXRYiuYDBkyZLTLnPyl8FYMGTJkyEgbwkh4F7dQgOKoDBkyzmGkxYD0eO2w0auUIUPGaEbt6pg2k6XNFmlRU4YMGUMZfxkSiYepB0VNAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
