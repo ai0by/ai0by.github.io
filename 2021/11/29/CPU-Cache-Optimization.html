@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://z3.ax1x.com/2021/11/29/oMOIRs.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/11/30/oleDCd.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/11/30/olnX9J.png">
-<meta property="og:updated_time" content="2021-11-30T01:06:04.766Z">
+<meta property="og:updated_time" content="2021-11-30T01:35:29.251Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用CPU的特性开发更高效的代码">
 <meta name="twitter:description" content="CPU Cache是什么CPU Cache是在内存的基础上，可以被CPU直接读取的缓存，分为 L1,L2,L3 三层缓存级别，他的读取速度，是内存的100倍以上，我们都知道基于内存的数据库Redis，仅仅是使用了内存存储就很快了，CPU Cache则更快，利用好CPU Cache则可以让你编写的程序更快。 相比较各类IO操作，CPU Cache则是最底层的，分级一般为 L1 Cache &amp;gt;">
@@ -179,7 +179,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU-Cache是什么"><span class="post-toc-number">1.</span> <span class="post-toc-text">CPU Cache是什么</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU-Cache-Line"><span class="post-toc-number">2.</span> <span class="post-toc-text">CPU Cache Line</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU分支预测"><span class="post-toc-number">3.</span> <span class="post-toc-text">CPU分支预测</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据类型和线程绑定"><span class="post-toc-number">4.</span> <span class="post-toc-text">数据类型和线程绑定</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU-Cache是什么"><span class="post-toc-number">1.</span> <span class="post-toc-text">CPU Cache是什么</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU-Cache-Line"><span class="post-toc-number">2.</span> <span class="post-toc-text">CPU Cache Line</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU分支预测"><span class="post-toc-number">3.</span> <span class="post-toc-text">CPU分支预测</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据类型和线程绑定"><span class="post-toc-number">4.</span> <span class="post-toc-text">数据类型和线程绑定</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考"><span class="post-toc-number">5.</span> <span class="post-toc-text">参考</span></a></li></ol>
         </nav>
     </aside>
 
@@ -267,6 +267,10 @@
                 <div class="image-caption">olnX9J.png</div>
             </figure>
 <p>如上，A和B通过宏定义 <code>__cacheline_aligned_in_smp</code> 定义后，字节数会各自占用一块儿，则避免了数据频繁共享的问题</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>小林Coding（图解系统）</li>
+</ul>
+<p>近期写一写感谢大佬的电子图书笔记，小白受益良多</p>
 
         </div>
 
@@ -275,7 +279,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2021-11-30T01:06:04.766Z" itemprop="dateUpdated">2021-11-30 09:06:04</time>
+    最后更新时间：<time datetime="2021-11-30T01:35:29.251Z" itemprop="dateUpdated">2021-11-30 09:35:29</time>
 </span><br>
 
 
