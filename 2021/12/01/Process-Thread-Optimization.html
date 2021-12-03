@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>进程与线程,概念及优化空间 | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="优化">
+    <meta name="description" content="本文以Go语言为基础 进程基本概念将编译好的的二进制程序，在系统中执行起来的程序会被CPU装载到内存中，CPU会按照程序的指令去顺序执行程序，这个执行中的程序被称之为进程，多个程序同时执行则被称为多进程 单核CPU在执行任务过程中不能同时执行多余的任务，但是我们在实际场景中往往可以看到一台电脑有非常多的进程在运行，这就引出了进程的中断，当程序在读写硬盘这种慢IO操作时，当前进程会发出中断指令，使得">
+<meta name="keywords" content="优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程与线程,概念及优化空间">
+<meta property="og:url" content="https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="本文以Go语言为基础 进程基本概念将编译好的的二进制程序，在系统中执行起来的程序会被CPU装载到内存中，CPU会按照程序的指令去顺序执行程序，这个执行中的程序被称之为进程，多个程序同时执行则被称为多进程 单核CPU在执行任务过程中不能同时执行多余的任务，但是我们在实际场景中往往可以看到一台电脑有非常多的进程在运行，这就引出了进程的中断，当程序在读写硬盘这种慢IO操作时，当前进程会发出中断指令，使得">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://z3.ax1x.com/2021/12/01/o8RNHH.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/12/01/o8RSBQ.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/12/01/oG86l6.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/12/03/oa1uHf.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/12/03/oa38IO.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/12/03/oa89YD.png">
+<meta property="og:updated_time" content="2021-12-03T09:02:00.884Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="进程与线程,概念及优化空间">
+<meta name="twitter:description" content="本文以Go语言为基础 进程基本概念将编译好的的二进制程序，在系统中执行起来的程序会被CPU装载到内存中，CPU会按照程序的指令去顺序执行程序，这个执行中的程序被称之为进程，多个程序同时执行则被称为多进程 单核CPU在执行任务过程中不能同时执行多余的任务，但是我们在实际场景中往往可以看到一台电脑有非常多的进程在运行，这就引出了进程的中断，当程序在读写硬盘这种慢IO操作时，当前进程会发出中断指令，使得">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/12/01/o8RNHH.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api">
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                Link
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/25/Hello_world.html">
+                <i class="icon icon-lg icon-user"></i>
+                About Me
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">进程与线程,概念及优化空间</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">进程与线程,概念及优化空间</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-12-01T02:36:57.000Z" itemprop="datePublished" class="page-time">
+  2021-12-01
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程"><span class="post-toc-number">1.</span> <span class="post-toc-text">进程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本概念"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">基本概念</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程"><span class="post-toc-number">2.</span> <span class="post-toc-text">线程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本概念-1"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">基本概念</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#三种形式"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">三种形式</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#调度"><span class="post-toc-number">3.</span> <span class="post-toc-text">调度</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调度模型"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">调度模型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#通信"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">通信</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#思考"><span class="post-toc-number">4.</span> <span class="post-toc-text">思考</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-进程与线程与协程-协程GMP调度" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">进程与线程,概念及优化空间</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-12-01 10:36:57" datetime="2021-12-01T02:36:57.000Z" itemprop="datePublished">2021-12-01</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>本文以Go语言为基础</p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>将编译好的的二进制程序，在系统中执行起来的程序会被CPU装载到内存中，CPU会按照程序的指令去顺序执行程序，这个执行中的程序被称之为进程，多个程序同时执行则被称为多进程</p>
+<p>单核CPU在执行任务过程中不能同时执行多余的任务，但是我们在实际场景中往往可以看到一台电脑有非常多的进程在运行，这就引出了进程的中断，当程序在读写硬盘这种慢IO操作时，当前进程会发出中断指令，使得CPU去执行下一个进程，防止了阻塞等待的问题，而CPU的执行效率是非常快的，所以更多时候即使他是串行执行程序，但也可以完美接收并发任务</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/12/01/o8RNHH.png" alt="o8RNHH.png" title>
+                </div>
+                <div class="image-caption">o8RNHH.png</div>
+            </figure>
+<p>值得注意的是，并发和并行并非一样的东西，并发是代表一个CPU核心同时处理多个任务的情况，而并行是多个CPU核心处理多个任务</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/12/01/o8RSBQ.png" alt="o8RSBQ.png" title>
+                </div>
+                <div class="image-caption">o8RSBQ.png</div>
+            </figure>
+<p>当进程中有大量硬盘IO操作时，将会出现大量的进程阻塞行为，而这种情况可能会占用大量的物理内存，在虚拟内存中，则会将这种阻塞的进程物理内存地址转移至硬盘地址，直至阻塞结束后再替换回物理内存中</p>
+<p>而这种进程的执行过程也可以分为 创建、终止、阻塞、唤醒 的过程</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><h3 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h3><p>一个进程可以有一个或多个线程</p>
+<p>个人认为 ~ 线程是进程的抽象化，当一个进程只有一个线程时，那么这个线程就是进程</p>
+<p>线程与进程，进程容纳了所有的资源，内存文件及各种单位，线程则只有寄存器和栈，线程与进程相同，同样有 阻塞和唤醒。</p>
+<p>线程只有寄存器和栈的特性，以至于创建一个线程比创建进程更方便快捷，占用资源更少，当然前提是这些线程之间的共享资源大部分相同</p>
+<p>进程占用资源，线程执行过程，线程都是依托于进程的，线程之间可以共享进程的资源</p>
+<h3 id="三种形式"><a href="#三种形式" class="headerlink" title="三种形式"></a>三种形式</h3><ul>
+<li>用户线程 （User Thread）</li>
+<li>内核线程 （Kennel Thread）</li>
+<li>轻量线程 （LightWeight Thread）</li>
+</ul>
+<p>首先要明确一个事实，他们并不是同一个维度的，多个用户线程对应多个内核线程，也就是他们是多对多的关系（协程则相当于一个内核线程对应了多个用户线程）</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/12/01/oG86l6.png" alt="oG86l6.png" title>
+                </div>
+                <div class="image-caption">oG86l6.png</div>
+            </figure>
+<p>通常我们常说的线程大部分指的是内核线程 ~</p>
+<p>用户线程是由用户发起的调用，操作系统无法干预，当用户线程执行过程中，操作系统无法查看当前线程的情况也无法由操作系统关闭，即任务管理器也没用（协程则可以通过 pprof 之类的debug工具去测试）</p>
+<p>用户线程相当于用户自发开启的线程，不通过系统内核，也可以认为启动用户线程的速度要比内核线程要快的多，也因为如此，即使是不支持线程的系统，也能由用户自发开启的线程来开启用户线程无需兼容内核</p>
+<p>内核线程则是通过操作系统调用的，可以通过操作系统去管理该线程，相比于用户线程，内核线程的资源分配更加合理，且用户线程可能会因为阻塞导致多个线程同时阻塞，而内核线程的调度则由操作系统直接完成，无需考虑这一问题，但相比于用户线程，显然内核线程要更重量级一些</p>
+<p>轻量线程有多重解释，它相当于内核线程与用户线程的对应和结合，相当于用户线程与内核线程的桥梁或者中间层，与用户线程也是，多对多的关系，兼容三种模式 1:1 N:1 N:N</p>
+<p>1:1 一个用户线程 对应一个轻量线程 对应一个内核线程<br>N:1 多个用户线程对应一个轻量线程 对应一个内核线程<br>N:N 混合模式，前面两种方式的结合，多个用户线程对应多个轻量线程，由轻量线程找到内核线程一一对应</p>
+<h2 id="调度"><a href="#调度" class="headerlink" title="调度"></a>调度</h2><h3 id="调度模型"><a href="#调度模型" class="headerlink" title="调度模型"></a>调度模型</h3><p>进程调度，当出现IO请求的时候，调度会将当前执行的进程切换到另一个进程，并保留上下文，以便于稍后切换回来时能够继续执行之前的进程</p>
+<p>进程调度，当出现长时间占用CPU的进程时，造成系统吞吐量降低，调度会权衡任务完成数量</p>
+<p>如果一个进程本身计算不复杂，而占用时间长时，需要考虑是否是IO的调用导致的，频繁的IO请求会增加CPU的进程切换，也会加大程序的执行时长</p>
+<p>调度对于鼠标键盘等需要实时响应的程序会优先考虑</p>
+<p>进程如果处于就绪状态，调度会尽快让进程继续执行</p>
+<h3 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h3><p><strong>管道</strong><br>在Linux中我们常用的通信管道，<code>|</code>，如下命令中 <code>ps -ef |grep sbcoder</code> ，里面的符号位 <code>|</code> 就是一个管道，他代表将前一个进程中的数据带到下一个进程中</p>
+<p>这种没有命名的管道被称之为 匿名管道，匿名管道将在进程结束后释放，有匿名则也有有名字的管道 命名管道 ，Linux中通过关键字 <code>mkfifo</code> 创建命名管道 <code>mkfifo sbcoderChannel</code>，通过命令可以将数据传输至管道中，<code>echo &quot;sbcoder&quot; &gt; sbcoderChannel</code>，接着命令就卡住了，这与Go语言中的信道很类似，有阻塞的作用通过阻塞我们可以做很多事情，有入则有出，可以通过命令取出数据 <code>cat &lt; sbcoderChannel</code> 获取刚才echo进去的数据</p>
+<p>管道实际上是内核中的缓存，而读取管道数据则是在一个进程中fork出一个子进程去读取，而如果由一个进程同事负责读写则会非常混乱，所以如果需要双向通信则需要fork两个子进程，而创建子进程也会徒增负荷，也要尽可能避免此类操作</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/12/03/oa1uHf.png" alt="oa1uHf.png" title>
+                </div>
+                <div class="image-caption">oa1uHf.png</div>
+            </figure>
+<p><strong>消息队列</strong><br>消息队列是保存在内核中的消息链表，由于消息队列的特性，会出现通信不及时和大小限制问题，更适合小数据的场景</p>
+<p><strong>共享内存</strong><br>进程A与进程B都使用虚拟内存（只保存物理地址），则可以实现同一个数据块儿被两个进程同时使用</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/12/03/oa38IO.png" alt="oa38IO.png" title>
+                </div>
+                <div class="image-caption">oa38IO.png</div>
+            </figure>
+<p>当A和B同时操作一块儿内存时，则也会出现问题，很容易造成数据冲突，就出现了<code>lock</code>的概念，也被称为 <code>信号量</code>，A操作时将信号量数值更改，B同时操作时发现数值已经被更改则说明资源被占用，进程阻塞，A在操作完成后会将信号量数值再改回去，B此时即可继续执行</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/12/03/oa89YD.png" alt="oa89YD.png" title>
+                </div>
+                <div class="image-caption">oa89YD.png</div>
+            </figure>
+<p><strong>信号Signal</strong></p>
+<p>信号，也就是Signal，通过进程中的各种指令做通信，例如：程序接收到快捷键 <code>ctrl + c</code> 则会终止程序</p>
+<p>Go语言中的Signal同理~</p>
+<p><strong>socket</strong></p>
+<p>不同主机之间的socket通信，为了方便不同主机之间的进程通信，衍生出的通信方式，他可以借助 TCP以及UDP以及本地进程等方式通信，其中TCP和UDP更适用于远程主机通信，而本地通信可以借助本地进程通信（字节流，数据报）</p>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><ul>
+<li>高并发场景是否应该频繁读取硬盘信息呢</li>
+</ul>
+<p>个人感觉可以通过一个大文本读取至内存，然后并发处理的过程中将会很少产生阻塞行为，但也属于物理内存充足的情况下（空间换时间）</p>
+<ul>
+<li>如何更好的利用进程特性处理高并发任务</li>
+</ul>
+<p>我们了解并发实际也是自上至下的串行执行程序，那么也要适当地减少并发任务的复杂度和频繁的IO操作，但合理运用内存很重要，如果能计算出什么时间内物理内存的占用情况则更合理一些</p>
+<ul>
+<li>单内核多进程调度场景，如何设计更适合的程序结构</li>
+</ul>
+<p>个人认为，应该尽可能减少进程数量，在用户态之间搞定，类似Go的GMP调度，如果进程数量实在无法减少可以尝试将某些轻量级程序减负，让重量级的程序保持，多应用消息队列的方式进行通信（过多使用消息队列也是负担），需要综合考量异步的优缺点</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-12-03T09:02:00.884Z" itemprop="dateUpdated">2021-12-03 17:02:00</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html&title=《进程与线程,概念及优化空间》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html&title=《进程与线程,概念及优化空间》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《进程与线程,概念及优化空间》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/11/30/Memory-Optimization.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">物理内存与虚拟内存与Swap内存</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html&title=《进程与线程,概念及优化空间》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html&title=《进程与线程,概念及优化空间》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《进程与线程,概念及优化空间》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3aQW4DIQwF0Nz/0um6ijL5tietgDerqKLAY2EZ7Mcj/p7Bl4x8N+b1749vfBgYGMsyqgu//u/r7+sx+TzJ3jAwMM5hJMsny1QPKAnB13vDwMDAeDcmSeOq4F4Qx8DAwEjGXCd/1+B5uomBgXEOI7nEJgsnW/znuzgGBsaCjPzV/e9/f6W+gYGBsRTjWfxyap789Xbya1cYGBhbM/IAl19W7w3i+X4wMDB2ZVQf96tBtte6kQfoZo0CAwNjC0aveWIyvhfQPwRcDAyMLRjXS1af5quBtRqmm09vGBgYizMm5cBeU0V+WU2KqRgYGGcyqo0XzYVbR/N2HgwMjAMYE171vSufM58BAwPjBEY17E5CcC+hLJQwMTAwNmVMHsLyokKeSuatY4W+MwwMjGUZvStodcl5Q1h+3BgYGPsxegG3Gl6TQ0mC6YeeEQwMjE0Z1RStd63tbS4/GgwMjL0ZvXJjnj7msMl1GgMDY29GnsxVW8fy48i3Xp0fAwNjJ0b1uf+uBLHajlZIEDEwMA5gVC+ZyXbzA7ot4GJgYGzK6KVxvRJm9fJcqMFiYGBsxOglfHnbRNJUkQfoQp8IBgbGRozq89k8KE+aM5pvhxgYGFswJg9nSbicNFsU2tQwMDAOYOSBr1ekrDZbJKEfAwMDIw+48zLk9WwRFQMDA2NQ2uwdR/kyjIGBcQDje1fTedvZzXdxDAyMBRmjTo3W+EkT2KioiYGBsR7jB40uapjNC+TpAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
