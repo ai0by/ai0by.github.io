@@ -32,10 +32,11 @@
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/01/o8RNHH.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/01/o8RSBQ.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/01/oG86l6.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/12/03/oaUUtx.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/03/oa1uHf.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/03/oa38IO.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/03/oa89YD.png">
-<meta property="og:updated_time" content="2021-12-03T09:15:24.416Z">
+<meta property="og:updated_time" content="2021-12-03T09:18:25.051Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程与线程,概念及优化空间">
 <meta name="twitter:description" content="本文以Go语言为基础 进程基本概念将编译好的的二进制程序，在系统中执行起来的程序会被CPU装载到内存中，CPU会按照程序的指令去顺序执行程序，这个执行中的程序被称之为进程，多个程序同时执行则被称为多进程 单核CPU在执行任务过程中不能同时执行多余的任务，但是我们在实际场景中往往可以看到一台电脑有非常多的进程在运行，这就引出了进程的中断，当程序在读写硬盘这种慢IO操作时，当前进程会发出中断指令，使得">
@@ -257,6 +258,13 @@
 <p>进程如果处于就绪状态，调度会尽快让进程继续执行</p>
 <p>进程之间会通过内核的时间分片去模拟出并发场景，当单核CPU出现三个进程时，如果都没有阻塞，则调度会通过时间分片的方式先完成简单的程序然后再完成复杂程序，ABC三个进程同时存在时，按照进程顺序， A B C，内核会分配一个固定时间分片，例如 5ns，A执行5ns后执行B，B执行5ns后执行C，假设进程B执行完成时，则调度会继续A C之间的循环，B完成后执行C，C执行5ns后执行A，然后循环执行A C</p>
 <p>如上操作会出现一个问题就是内核会频繁的切换进程，我们知道上下文也是消耗资源的，那么内核会做一个递增时间分片的操作，例如一开始是5ns，后续可能就递增为 10ns 15ns，以便于尽早完成一个进程减少进程上下文</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://z3.ax1x.com/2021/12/03/oaUUtx.png" alt="oaUUtx.png" title>
+                </div>
+                <div class="image-caption">oaUUtx.png</div>
+            </figure>
 <h3 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h3><p><strong>管道</strong><br>在Linux中我们常用的通信管道，<code>|</code>，如下命令中 <code>ps -ef |grep sbcoder</code> ，里面的符号位 <code>|</code> 就是一个管道，他代表将前一个进程中的数据带到下一个进程中</p>
 <p>这种没有命名的管道被称之为 匿名管道，匿名管道将在进程结束后释放，有匿名则也有有名字的管道 命名管道 ，Linux中通过关键字 <code>mkfifo</code> 创建命名管道 <code>mkfifo sbcoderChannel</code>，通过命令可以将数据传输至管道中，<code>echo &quot;sbcoder&quot; &gt; sbcoderChannel</code>，接着命令就卡住了，这与Go语言中的信道很类似，有阻塞的作用通过阻塞我们可以做很多事情，有入则有出，可以通过命令取出数据 <code>cat &lt; sbcoderChannel</code> 获取刚才echo进去的数据</p>
 <p>管道实际上是内核中的缓存，而读取管道数据则是在一个进程中fork出一个子进程去读取，而如果由一个进程同事负责读写则会非常混乱，所以如果需要双向通信则需要fork两个子进程，而创建子进程也会徒增负荷，也要尽可能避免此类操作</p>
@@ -309,7 +317,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2021-12-03T09:15:24.416Z" itemprop="dateUpdated">2021-12-03 17:15:24</time>
+    最后更新时间：<time datetime="2021-12-03T09:18:25.051Z" itemprop="dateUpdated">2021-12-03 17:18:25</time>
 </span><br>
 
 
