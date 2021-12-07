@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>多线程中的资源竞争 | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="优化">
+    <meta name="description" content="资源竞争问题当我们有两个线程同时操作同一块儿内存空间时，就容易出现资源竞争问题，这种问题目前有各种各样的出现情况，但在分布式系统中，或者说多线程任务中都是需要处理的 多线程是线程阻塞通过调度器去协调处理的，那么按理说即使是多线程实际上也都是串行操作，为什么也会出现资源竞争呢？ 如下图">
+<meta name="keywords" content="优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程中的资源竞争">
+<meta property="og:url" content="https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="资源竞争问题当我们有两个线程同时操作同一块儿内存空间时，就容易出现资源竞争问题，这种问题目前有各种各样的出现情况，但在分布式系统中，或者说多线程任务中都是需要处理的 多线程是线程阻塞通过调度器去协调处理的，那么按理说即使是多线程实际上也都是串行操作，为什么也会出现资源竞争呢？ 如下图">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/06/osnXcQ.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/06/osKHSS.png">
+<meta property="og:updated_time" content="2021-12-07T02:37:21.882Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多线程中的资源竞争">
+<meta name="twitter:description" content="资源竞争问题当我们有两个线程同时操作同一块儿内存空间时，就容易出现资源竞争问题，这种问题目前有各种各样的出现情况，但在分布式系统中，或者说多线程任务中都是需要处理的 多线程是线程阻塞通过调度器去协调处理的，那么按理说即使是多线程实际上也都是串行操作，为什么也会出现资源竞争呢？ 如下图">
+<meta name="twitter:image" content="https://s4.ax1x.com/2021/12/06/osnXcQ.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api">
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                Link
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/25/Hello_world.html">
+                <i class="icon icon-lg icon-user"></i>
+                About Me
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">多线程中的资源竞争</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">多线程中的资源竞争</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-12-06T05:54:50.000Z" itemprop="datePublished" class="page-time">
+  2021-12-06
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#资源竞争问题"><span class="post-toc-number">1.</span> <span class="post-toc-text">资源竞争问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#解决策略"><span class="post-toc-number">2.</span> <span class="post-toc-text">解决策略</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#互斥"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">互斥</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#同步"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">同步</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#原子操作与锁"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">原子操作与锁</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#信号量"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">信号量</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#读写问题"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">读写问题</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#锁的安全性"><span class="post-toc-number">3.</span> <span class="post-toc-text">锁的安全性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#deadlock"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">deadlock</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#死锁解决策略"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">死锁解决策略</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#自旋锁还是互斥锁"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">自旋锁还是互斥锁</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#是否有必要读优先或者写优先"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">是否有必要读优先或者写优先</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#悲观锁和乐观锁"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">悲观锁和乐观锁</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-多线程中的资源竞争" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">多线程中的资源竞争</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-12-06 13:54:50" datetime="2021-12-06T05:54:50.000Z" itemprop="datePublished">2021-12-06</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="资源竞争问题"><a href="#资源竞争问题" class="headerlink" title="资源竞争问题"></a>资源竞争问题</h2><p>当我们有两个线程同时操作同一块儿内存空间时，就容易出现资源竞争问题，这种问题目前有各种各样的出现情况，但在分布式系统中，或者说多线程任务中都是需要处理的</p>
+<p>多线程是线程阻塞通过调度器去协调处理的，那么按理说即使是多线程实际上也都是串行操作，为什么也会出现资源竞争呢？</p>
+<p>如下图</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s4.ax1x.com/2021/12/06/osnXcQ.png" alt="osnXcQ.png" title>
+                </div>
+                <div class="image-caption">osnXcQ.png</div>
+            </figure>
+<p>当进入线程操作时，会先把变量存的值存入寄存器，待到处理完后在重新放回i的所属内存空间，那么当在放回内存时就有可能覆盖掉上一个线程操作的值，也就出现了资源竞争</p>
+<h2 id="解决策略"><a href="#解决策略" class="headerlink" title="解决策略"></a>解决策略</h2><h3 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h3><p>由于多线程执行操作共享变量的这段代码可能会导致竞争状态，因此我们将此段代码称为临界区(critical section)，它是访问共享资源的代码片段，一定不能给多线程同时执行。我们希望这段代码是互斥(mutualexclusion)的，也就说保证一个线程在临界区执行时，其他线程应该 被阻止进入临界区，说白了，就是这段代码执行过程中，最多只能出现一个线程。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s4.ax1x.com/2021/12/06/osKHSS.png" alt="osKHSS.png" title>
+                </div>
+                <div class="image-caption">osKHSS.png</div>
+            </figure>
+<p>这种行为也被称为 <code>互斥</code>，通过阻塞完成</p>
+<h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>另外还有一种Go语言中常用的操作是 <code>同步</code>，当任务一和任务二同时执行时，任务二的某处任务需要等到等到任务一执行完得到的数据才能继续执行任务二，相当于Go中的信道阻塞<code>select</code>，只有取到数据才执行否则就一直阻塞</p>
+<h3 id="原子操作与锁"><a href="#原子操作与锁" class="headerlink" title="原子操作与锁"></a>原子操作与锁</h3><p>原子操作，类似于事务，原子操作就是要么全部执行，要么都不执行，不能出现执行到一半的中间状态</p>
+<p>锁的概念与进程资源锁一样，进程中通过信号判断是否可以执行，而在线程中，可以通过代码来处理</p>
+<p>声明一个变量存储 0 1 为占用状态，为 0 时进入等待队列，使用while循环等待，直到为1时才可执行，这只是一种最简单的锁</p>
+<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>信号量则是一个类似线程池的概念，通过信号量控制线程数，当一个方法被多个线程调用时，每个线程进入方法时就增加信号量的值，直到一个负荷后阻塞后来的线程进入等待队列，当信号量发生变更时再决定是否要让新的线程进入</p>
+<p>而信号量同样可以适用于更丰富的场景，当程序需要同时执行两块儿代码段时，那就需要占两个锁，而进入第一个锁时，另外的程序占用了第二块儿程序，就无法出现同时占两个锁的情况，也有可能造成同时的阻塞，通过信号量则可以处理此类问题，将程序1加入信号量，程序2也加入信号量，当信号量为2时可以执行两个程序，如果线程1占用了一个锁，那么线程2看到自己没有抢到锁且信号量为1则直接进入等待队列，线程1则继续拿第二个锁，程序执行完时释放加回信号量即可</p>
+<h3 id="读写问题"><a href="#读写问题" class="headerlink" title="读写问题"></a>读写问题</h3><p>「读-读」允许:同一时刻，允许多个读者同时读<br>「读-写」互斥:没有写者时读者才能读，没有读者时写者才能写<br>「写-写」互斥:没有其他写者时，写者才能写</p>
+<p>通过信号量来处理读写问题，所有的操作都存储于队列，当写操作开始时，所有其他任务都终止。即当写操作的信号量为0时才可以进行读操作，读操作信号量不为0时写操作不允许执行，所有任务以队列形式进入，因此，此为公平的读写操作</p>
+<h2 id="锁的安全性"><a href="#锁的安全性" class="headerlink" title="锁的安全性"></a>锁的安全性</h2><h3 id="deadlock"><a href="#deadlock" class="headerlink" title="deadlock"></a>deadlock</h3><p>死锁，一个生产环境上最为可怕的错误之一，他的形成原因大概可以被解释为，程序1和程序2都在等待对方结束才可执行，结果造成了无限期的等待，程序就此卡死，典型的死锁场景</p>
+<p>死锁一般长出现于并发线程场景，满足如下条件时会发生</p>
+<ul>
+<li><code>互斥条件</code>，互相等待对方结束后才可继续执行，一次两个或多个线程同时阻塞</li>
+<li><code>持有并等待条件</code>，持有资源一后需要拿到资源二的时候发生，不释放资源一（参照哲学家就餐的问题，可以按照规定顺序拿资源解决，按场景使用信号量解决）</li>
+<li><code>不可剥夺条件</code>，当线程A持有资源时，必须等到线程A结束时线程B才可获取</li>
+<li><code>环路等待条件</code>，两个线程获取的资源形成环形链，死循环造成死锁</li>
+</ul>
+<p>在Go语言中可以使用pprof来跟踪堆栈获取死锁行为的信息</p>
+<h3 id="死锁解决策略"><a href="#死锁解决策略" class="headerlink" title="死锁解决策略"></a>死锁解决策略</h3><p>所有的资源全部按顺序获取，例如强制线程来的时候先拿A资源再拿B资源，当A信号量不足时线程阻塞等待，直到 A，B资源同时被上一个线程拿到后再释放信号量</p>
+<p>这么做的目的是为了资源的合理分配，而这种情况也会导致资源的缓慢阻塞问题，要最大化的利用则可以根据场景去制定更好的合理化资源分配方案</p>
+<h3 id="自旋锁还是互斥锁"><a href="#自旋锁还是互斥锁" class="headerlink" title="自旋锁还是互斥锁"></a>自旋锁还是互斥锁</h3><p>简单来说，互斥锁是通过内核态由CPU调度处理的锁，当程序没有拿到锁的时候会直接释放CPU，进入睡眠等待，也就是上下文切换，等到拿到锁的时候再唤醒</p>
+<p>自旋锁是发生于用户态的锁，由用户程序控制，通俗地讲使用<code>while</code>去轮询获取锁，也算是阻塞等待了，这种操作在Go语言中还挺常见的（所以我总是认为Go的设计理念很大部分都是基于用户态的），CPU提供了<code>PAUSE</code>函数去等待获取锁，相对于<code>while</code>他可以有效减少耗电量，自旋锁可以通过CPU去加锁，CPU提供了<code>CAS</code>函数来加锁，也可以用户自定义锁的方式来做</p>
+<h3 id="是否有必要读优先或者写优先"><a href="#是否有必要读优先或者写优先" class="headerlink" title="是否有必要读优先或者写优先"></a>是否有必要读优先或者写优先</h3><p>字面意思，读优先是，不管什么情况下，读写锁，只要有读操作的线程加入，那么写就要向后排，直到所有的读操作结束写操作才能结束，而写优先则反之</p>
+<p>这种情况可以有效地解决一些并发场景，但一昧的单条优先行为，可能会导致 读或者写长期阻塞（<code>饥饿</code>），这并不是开发者愿意看到的，所以使用这种读写优先锁，还是要谨慎</p>
+<h3 id="悲观锁和乐观锁"><a href="#悲观锁和乐观锁" class="headerlink" title="悲观锁和乐观锁"></a>悲观锁和乐观锁</h3><p>首先，为了安全性稳定性，我们上述的所有操作都属于悲观锁</p>
+<p>乐观锁是什么呢？它的工作方式是，先修改完共享资源，再验证这段时间内 有没有发生冲突，如果没有其他线程在修改资源，那么操作完成，如果发现有其他线程已经修改过这个资源，就放弃本次操作，释放寄存器。</p>
+<p>反之悲观锁是只要占用上就不能继续操作</p>
+<p>但某些场景下，为了效率，有的人也推荐使用乐观锁</p>
+<p>例如在线文档，如果使用悲观锁，那么有人进入文档操作时，剩下的人都得等待，直到编写完成后才能查看或写入，使用乐观锁则可以通过数据判断修改内容，达成在线多人文档的需求</p>
+<p>我们常用的<code>Git</code>和<code>Svn</code>等常见的版本控制工具也都是借鉴了这种想法思路</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-12-07T02:37:21.882Z" itemprop="dateUpdated">2021-12-07 10:37:21</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html&title=《多线程中的资源竞争》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html&title=《多线程中的资源竞争》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《多线程中的资源竞争》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/12/01/Process-Thread-Optimization.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">进程与线程,概念及优化空间</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html&title=《多线程中的资源竞争》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html&title=《多线程中的资源竞争》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《多线程中的资源竞争》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3aS27DMAxF0ex/0+60RWD5PtIuYOpqFCSppZMCBD/6fPA6fq2zT7+/+b3OvkN2uWHJkCHjtYzOxmcY/uSzHyJ9ggwZMnZgkDCaHnp9rPRvL84sQ4YMGcujdABkLxkyZMi4K+Cukevak+8rQ4aMnRmkiCXHIj2xWnC/rRaXIUPGCxnp9v/5+pH5hgwZMl7FOMLVLzh5uy04lQwZMkYzeICrjR77QTw4jwwZMkYzeLufF5O1Mpj8WBdUGTJkjGPwlj3foP/T8AHDnwxXhgwZQxkkqJF0kLf1ecAtDgBkyJAxlNEZCq63JKE2fXKQ28qQIWMQg4fdtMXfrzFbwVeGDBmDGJ0mGmnx14rYuG0nQ4aM0Yy0iOXBmqeP5KJGMMKUIUPGUEbnQBzM0z6epMqQIWM2ox8K+1cx+MDg4rKFDBkyhjLIge5qrtWGna3/iQwZMoYy0tEjCZ21YpiPE2TIkDGb0WlmdYYHpMUfpJUyZMgYzahdhiDBmrfebi5iZciQMZqRpne1ixFpAhoniDJkyNiGUWu68eFBOl9F78uQIWMDRvrQWos/HV5ykgwZMqYyjnCl1yaeGzbIkCFjHwZfvLDshPJ1g4+npDJkyJjH4OVrSk3ZnfRUhgwZOzDS4WVteJB+84bLFjJkyNiSwUeetWBdpMqQIUMGZvB3eBqKimEZMmRswEib9WnATUebD9biMmTIeCGj0+Inn/YvgXWSThkyZLyc8QPxKNsZA/cX6AAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

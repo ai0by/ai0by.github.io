@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2021-12-03T09:18:25.051Z</updated>
+  <updated>2021-12-07T02:37:21.882Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>多线程中的资源竞争</title>
+    <link href="https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html"/>
+    <id>https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html</id>
+    <published>2021-12-06T05:54:50.000Z</published>
+    <updated>2021-12-07T02:37:21.882Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="资源竞争问题"><a href="#资源竞争问题" class="headerlink" title="资源竞争问题"></a>资源竞争问题</h2><p>当我们有两个线程同时操作同一块儿内存空间时，就容易出现资源竞争问题，这种问题目前有各种各样的出现情况，但在分布式系统中，或者说多线程任务中都是需要处理的</p><p>多线程是线程阻塞通过调度器去协调处理的，那么按理说即使是多线程实际上也都是串行操作，为什么也会出现资源竞争呢？</p><p>如下图</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s4.ax1x.com/2021/12/06/osnXcQ.png" alt="osnXcQ.png" title>                </div>                <div class="image-caption">osnXcQ.png</div>            </figure><p>当进入线程操作时，会先把变量存的值存入寄存器，待到处理完后在重新放回i的所属内存空间，那么当在放回内存时就有可能覆盖掉上一个线程操作的值，也就出现了资源竞争</p><h2 id="解决策略"><a href="#解决策略" class="headerlink" title="解决策略"></a>解决策略</h2><h3 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h3><p>由于多线程执行操作共享变量的这段代码可能会导致竞争状态，因此我们将此段代码称为临界区(critical section)，它是访问共享资源的代码片段，一定不能给多线程同时执行。我们希望这段代码是互斥(mutualexclusion)的，也就说保证一个线程在临界区执行时，其他线程应该 被阻止进入临界区，说白了，就是这段代码执行过程中，最多只能出现一个线程。</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s4.ax1x.com/2021/12/06/osKHSS.png" alt="osKHSS.png" title>                </div>                <div class="image-caption">osKHSS.png</div>            </figure><p>这种行为也被称为 <code>互斥</code>，通过阻塞完成</p><h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>另外还有一种Go语言中常用的操作是 <code>同步</code>，当任务一和任务二同时执行时，任务二的某处任务需要等到等到任务一执行完得到的数据才能继续执行任务二，相当于Go中的信道阻塞<code>select</code>，只有取到数据才执行否则就一直阻塞</p><h3 id="原子操作与锁"><a href="#原子操作与锁" class="headerlink" title="原子操作与锁"></a>原子操作与锁</h3><p>原子操作，类似于事务，原子操作就是要么全部执行，要么都不执行，不能出现执行到一半的中间状态</p><p>锁的概念与进程资源锁一样，进程中通过信号判断是否可以执行，而在线程中，可以通过代码来处理</p><p>声明一个变量存储 0 1 为占用状态，为 0 时进入等待队列，使用while循环等待，直到为1时才可执行，这只是一种最简单的锁</p><h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>信号量则是一个类似线程池的概念，通过信号量控制线程数，当一个方法被多个线程调用时，每个线程进入方法时就增加信号量的值，直到一个负荷后阻塞后来的线程进入等待队列，当信号量发生变更时再决定是否要让新的线程进入</p><p>而信号量同样可以适用于更丰富的场景，当程序需要同时执行两块儿代码段时，那就需要占两个锁，而进入第一个锁时，另外的程序占用了第二块儿程序，就无法出现同时占两个锁的情况，也有可能造成同时的阻塞，通过信号量则可以处理此类问题，将程序1加入信号量，程序2也加入信号量，当信号量为2时可以执行两个程序，如果线程1占用了一个锁，那么线程2看到自己没有抢到锁且信号量为1则直接进入等待队列，线程1则继续拿第二个锁，程序执行完时释放加回信号量即可</p><h3 id="读写问题"><a href="#读写问题" class="headerlink" title="读写问题"></a>读写问题</h3><p>「读-读」允许:同一时刻，允许多个读者同时读<br>「读-写」互斥:没有写者时读者才能读，没有读者时写者才能写<br>「写-写」互斥:没有其他写者时，写者才能写</p><p>通过信号量来处理读写问题，所有的操作都存储于队列，当写操作开始时，所有其他任务都终止。即当写操作的信号量为0时才可以进行读操作，读操作信号量不为0时写操作不允许执行，所有任务以队列形式进入，因此，此为公平的读写操作</p><h2 id="锁的安全性"><a href="#锁的安全性" class="headerlink" title="锁的安全性"></a>锁的安全性</h2><h3 id="deadlock"><a href="#deadlock" class="headerlink" title="deadlock"></a>deadlock</h3><p>死锁，一个生产环境上最为可怕的错误之一，他的形成原因大概可以被解释为，程序1和程序2都在等待对方结束才可执行，结果造成了无限期的等待，程序就此卡死，典型的死锁场景</p><p>死锁一般长出现于并发线程场景，满足如下条件时会发生</p><ul><li><code>互斥条件</code>，互相等待对方结束后才可继续执行，一次两个或多个线程同时阻塞</li><li><code>持有并等待条件</code>，持有资源一后需要拿到资源二的时候发生，不释放资源一（参照哲学家就餐的问题，可以按照规定顺序拿资源解决，按场景使用信号量解决）</li><li><code>不可剥夺条件</code>，当线程A持有资源时，必须等到线程A结束时线程B才可获取</li><li><code>环路等待条件</code>，两个线程获取的资源形成环形链，死循环造成死锁</li></ul><p>在Go语言中可以使用pprof来跟踪堆栈获取死锁行为的信息</p><h3 id="死锁解决策略"><a href="#死锁解决策略" class="headerlink" title="死锁解决策略"></a>死锁解决策略</h3><p>所有的资源全部按顺序获取，例如强制线程来的时候先拿A资源再拿B资源，当A信号量不足时线程阻塞等待，直到 A，B资源同时被上一个线程拿到后再释放信号量</p><p>这么做的目的是为了资源的合理分配，而这种情况也会导致资源的缓慢阻塞问题，要最大化的利用则可以根据场景去制定更好的合理化资源分配方案</p><h3 id="自旋锁还是互斥锁"><a href="#自旋锁还是互斥锁" class="headerlink" title="自旋锁还是互斥锁"></a>自旋锁还是互斥锁</h3><p>简单来说，互斥锁是通过内核态由CPU调度处理的锁，当程序没有拿到锁的时候会直接释放CPU，进入睡眠等待，也就是上下文切换，等到拿到锁的时候再唤醒</p><p>自旋锁是发生于用户态的锁，由用户程序控制，通俗地讲使用<code>while</code>去轮询获取锁，也算是阻塞等待了，这种操作在Go语言中还挺常见的（所以我总是认为Go的设计理念很大部分都是基于用户态的），CPU提供了<code>PAUSE</code>函数去等待获取锁，相对于<code>while</code>他可以有效减少耗电量，自旋锁可以通过CPU去加锁，CPU提供了<code>CAS</code>函数来加锁，也可以用户自定义锁的方式来做</p><h3 id="是否有必要读优先或者写优先"><a href="#是否有必要读优先或者写优先" class="headerlink" title="是否有必要读优先或者写优先"></a>是否有必要读优先或者写优先</h3><p>字面意思，读优先是，不管什么情况下，读写锁，只要有读操作的线程加入，那么写就要向后排，直到所有的读操作结束写操作才能结束，而写优先则反之</p><p>这种情况可以有效地解决一些并发场景，但一昧的单条优先行为，可能会导致 读或者写长期阻塞（<code>饥饿</code>），这并不是开发者愿意看到的，所以使用这种读写优先锁，还是要谨慎</p><h3 id="悲观锁和乐观锁"><a href="#悲观锁和乐观锁" class="headerlink" title="悲观锁和乐观锁"></a>悲观锁和乐观锁</h3><p>首先，为了安全性稳定性，我们上述的所有操作都属于悲观锁</p><p>乐观锁是什么呢？它的工作方式是，先修改完共享资源，再验证这段时间内 有没有发生冲突，如果没有其他线程在修改资源，那么操作完成，如果发现有其他线程已经修改过这个资源，就放弃本次操作，释放寄存器。</p><p>反之悲观锁是只要占用上就不能继续操作</p><p>但某些场景下，为了效率，有的人也推荐使用乐观锁</p><p>例如在线文档，如果使用悲观锁，那么有人进入文档操作时，剩下的人都得等待，直到编写完成后才能查看或写入，使用乐观锁则可以通过数据判断修改内容，达成在线多人文档的需求</p><p>我们常用的<code>Git</code>和<code>Svn</code>等常见的版本控制工具也都是借鉴了这种想法思路</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;资源竞争问题&quot;&gt;&lt;a href=&quot;#资源竞争问题&quot; class=&quot;headerlink&quot; title=&quot;资源竞争问题&quot;&gt;&lt;/a&gt;资源竞争问题&lt;/h2&gt;&lt;p&gt;当我们有两个线程同时操作同一块儿内存空间时，就容易出现资源竞争问题，这种问题目前有各种各样的出现情况，但在分
+      
+    
+    </summary>
+    
+      <category term="优化" scheme="https://sbcoder.cn/categories/%E4%BC%98%E5%8C%96/"/>
+    
+    
+      <category term="优化" scheme="https://sbcoder.cn/tags/%E4%BC%98%E5%8C%96/"/>
+    
+  </entry>
   
   <entry>
     <title>进程与线程,概念及优化空间</title>
@@ -194,9 +219,9 @@
       <category term="架构" scheme="https://sbcoder.cn/categories/%E6%9E%B6%E6%9E%84/"/>
     
     
-      <category term="Docker" scheme="https://sbcoder.cn/tags/Docker/"/>
-    
       <category term="架构" scheme="https://sbcoder.cn/tags/%E6%9E%B6%E6%9E%84/"/>
+    
+      <category term="Docker" scheme="https://sbcoder.cn/tags/Docker/"/>
     
   </entry>
   
@@ -515,35 +540,6 @@
       
       
         &lt;h1 id=&quot;Portainer-Swarm-管理Docker集群&quot;&gt;&lt;a href=&quot;#Portainer-Swarm-管理Docker集群&quot; class=&quot;headerlink&quot; title=&quot;Portainer + Swarm 管理Docker集群&quot;&gt;&lt;/a&gt;Portai
-      
-    
-    </summary>
-    
-      <category term="架构" scheme="https://sbcoder.cn/categories/%E6%9E%B6%E6%9E%84/"/>
-    
-    
-      <category term="优化" scheme="https://sbcoder.cn/tags/%E4%BC%98%E5%8C%96/"/>
-    
-      <category term="架构" scheme="https://sbcoder.cn/tags/%E6%9E%B6%E6%9E%84/"/>
-    
-      <category term="版本控制" scheme="https://sbcoder.cn/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>公司代码架构 - Docker + Jenkins + Gogs + Portainer(三)</title>
-    <link href="https://sbcoder.cn/2019/12/11/jenkins_docker.html"/>
-    <id>https://sbcoder.cn/2019/12/11/jenkins_docker.html</id>
-    <published>2019-12-11T11:09:38.000Z</published>
-    <updated>2019-12-11T11:10:26.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="配置Jenkins实现自动构建"><a href="#配置Jenkins实现自动构建" class="headerlink" title="配置Jenkins实现自动构建"></a>配置Jenkins实现自动构建</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>前面已经搭建好了基本环境，剩下的就是自动构建了，这里就需要使用我们的构建工具Jenkins，Jenkins是一个非常牛逼的东西，它可以实现代码同步构建，当你修改你的代码并传到git时，Jenkins可以自动将你的代码同步到服务器上面，当然这只是Jenkins的基本功能之一，他还有非常多的东西值得我们学习~</p><h2 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h2><ul><li>服务器2     ：Pacificrack 洛杉矶 RAM2G 2C 35GSSD（圣诞机器）18刀</li><li>操作系统    ：CentOS7.5</li><li>部署环境    ：LNMP1.6 （我是军哥铁粉） + Java8</li></ul><p>服务器1：搭建Jenkins中转服务器，做代码自动构建使用<br>服务器2：生产环境服务器，实则测试服务器，部署代码使用<br>服务器3：Gogs服务器，Git版本库服务器，做代码版本控制使用</p><h2 id="生产环境搭建"><a href="#生产环境搭建" class="headerlink" title="生产环境搭建"></a>生产环境搭建</h2><p>服务器2的生产环境搭建。</p><p>生产环境，主要就是LNMP和Java8，LNMP是可选的，看需要部署的程序环境，例如需要部署node.js则只需要node.js环境即可，其他同理，我这边是准备自动部署PHP程序，因此就还是使用LNMP；</p><p>Java8是必须的，Jenkins使用SSH连接到服务器时是需要源服务器有Java环境的</p><h3 id="安装LNMP"><a href="#安装LNMP" class="headerlink" title="安装LNMP"></a>安装LNMP</h3><p>LNMP环境安装教程 : <a href="https://lnmp.org/install.html" target="_blank" rel="noopener">LNMP一键安装包 - 安装教程</a></p><h3 id="安装Java8"><a href="#安装Java8" class="headerlink" title="安装Java8"></a>安装Java8</h3><p>Jenkins连接节点的服务器必须安装！其他服务器无需安装！</p><p>首先更新 yum 源<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum update</span><br></pre></td></tr></table></figure></p><p>安装 jdk1.8<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java-1.8.0-openjdk java-1.8.0-openjdk-devel</span><br></pre></td></tr></table></figure></p><p>这里注意，是可以选择Java版本的，我这里使用了8所以按照8的方式安装的</p><p>可以搜索yum选择需要安装的版本<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum search java | grep jdk</span><br></pre></td></tr></table></figure></p><p>一般 使用上面方法安装的Java配置文件都在 /etc/profile</p><p>编辑配置<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br></pre></td></tr></table></figure></p><p>在末尾添加 环境变量，注意修改自己的版本号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JAVA_HOME=/user/lib/jvm/java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64</span><br><span class="line">JRE_HOME=$JAVA_HOME/jre</span><br><span class="line">CLASS_PATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib</span><br><span class="line">PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin</span><br><span class="line">export JAVA_HOME JRE_HOME CLASS_PATH PATH</span><br></pre></td></tr></table></figure></p><p>重置 profile<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p><p>查看Java版本<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure></p><h2 id="Jenkins配置"><a href="#Jenkins配置" class="headerlink" title="Jenkins配置"></a>Jenkins配置</h2><h3 id="安装必要的插件"><a href="#安装必要的插件" class="headerlink" title="安装必要的插件"></a>安装必要的插件</h3><p>打开Jenkins登录后 打开 系统管理 - 插件管理 - 可选插件</p><p>搜索 安装 以下插件</p><p>汉化语言包(可选)</p><ul><li>Locale plugin      </li><li>Localization: Chinese (Simplified)</li></ul><p>Docker容器(可选)</p><ul><li>Docker Pipeline</li></ul><p>远程连接(必须)</p><ul><li>SSH plugin</li><li>SSH Slaves plugin</li><li>Oracle Java SE Development Kit Installer Plugin</li></ul><p>Git服务(推荐)</p><ul><li>GitHub plugin</li><li>Gogs plugin</li></ul><p>推荐安装(可选)</p><ul><li>bouncycastle API Plugin</li><li>Branch API Plugin</li><li>Command Agent Launcher Plugin</li></ul><p>插件属于按需配置，不适合自己的插件无需安装</p><h3 id="增加节点"><a href="#增加节点" class="headerlink" title="增加节点"></a>增加节点</h3><p>增加节点必须要先在节点服务器配置Java环境，参照上面的配置Java8环境配置！<br>如果没有配置Java环境则会报错！</p><p>增加节点必须要有SSH插件，因此如果界面与我不一样请检查自己是否安装了上面的插件</p><p>打开Jenkins 系统管理 - 节点管理 - 新建节点<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://i.loli.net/2019/12/11/nRy9qOexkG3fw7N.png" alt="1.png" title>                </div>                <div class="image-caption">1.png</div>            </figure></p><p>新建节点页面如下<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://i.loli.net/2019/12/11/47gwD95NBtXfOQb.png" alt="2.png" title>                </div>                <div class="image-caption">2.png</div>            </figure></p><p>如果没有设置过凭证则选择添加，界面如下<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://i.loli.net/2019/12/11/LdAF3eXkqrQmuDR.png" alt="3.png" title>                </div>                <div class="image-caption">3.png</div>            </figure></p><p>全部设置完点保存，他会自动启动代理节点</p><p>首页左下角会显示状态<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://i.loli.net/2019/12/11/JhEOstraiI5Lqd4.png" alt="4.png" title>                </div>                <div class="image-caption">4.png</div>            </figure></p><p>或者在节点管理里面也可以看到</p><h3 id="配置Gogs-WebHook"><a href="#配置Gogs-WebHook" class="headerlink" title="配置Gogs WebHook"></a>配置Gogs WebHook</h3><p>根据上一节我们配置好的Gogs，新建一个仓库，这里不多说，直接点加号就行，用过Github的都懂</p><p>可以选择公有仓库或者私有仓库，我这里都是私有仓库，也可以使用Gogs的迁移外部仓库功能直接迁移，迁移时可能会出现504错误，这是因为Nginx的反向代理时有超时设置，超过指定时间则直接504，我们在迁移仓库时经常会超时，因此建议修改一下默认超时时间，具体配置可以自行搜索，不多赘述。</p><p>找到需要自动构建的仓库，选择 仓库设置 - 管理 Web 钩子 - 添加Web钩子</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://i.loli.net/2019/12/11/7uaGjQWqImfYXry.png" alt="6.png" title>                </div>                <div class="image-caption">6.png</div>            </figure><p>注意：图中红框处的test需要跟后面配置的Jenkins对应，例如我创建的Jenkins任务名为 test 则此处填写test，修改域名为你的Jenkins域名，其他格式一致</p><p>注意：图中秘钥可随便填写，记录下来，配置Jenkins任务时会用到</p><h3 id="配置Jenkins任务"><a href="#配置Jenkins任务" class="headerlink" title="配置Jenkins任务"></a>配置Jenkins任务</h3><p>打开 Jenkins  新建任务，如果以前没有任务则首页会显示 创建一个新任务<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://i.loli.net/2019/12/11/vloscVY6eJtIK1q.png" alt="5.png" title>                </div>                <div class="image-caption">5.png</div>            </figure></p><p>配置Jenkins任务<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://i.loli.net/2019/12/11/dAXcI6Y3asNbQgv.png" alt="7.png" title>                </div>                <div class="image-caption">7.png</div>            </figure></p><p>描述部分可随便填写，这里主要配置一下 Gogs Webhook</p><p>勾选 Use Gogs secret，Secret填写上面创建Gogs WebHook时的秘钥</p><p>勾选 限制项目的运行节点 ，标签表达式填写你的节点名字，例如我这里的节点名字就是我的服务器ip地址，直接填写ip地址即可</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://i.loli.net/2019/12/11/LX5pBVqgk7du6no.png" alt="8.png" title>                </div>                <div class="image-caption">8.png</div>            </figure><p>源码管理选择Git，Repository URL选择需要自动构建的Git项目地址，http形式的，Credentials处为验证，如果是公共仓库则无需配置，如果是私有库则需要填写登录到 Gogs 的账户和密码，配置与之前的节点配置凭据一样，不多赘述</p><p>指定分支填写需要自动构建的分支，我这里填写的是dev分支，用来做开发版测试使用，根据自己情况来即可</p><h2 id="配置上线"><a href="#配置上线" class="headerlink" title="配置上线"></a>配置上线</h2><h3 id="Nginx配置"><a href="#Nginx配置" class="headerlink" title="Nginx配置"></a>Nginx配置</h3><p>由于我创建的节点 目录地址是 /home/wwwroot</p><p>在项目自动构建时，则会自动创建目录 /home/wwwroot/workspace/[JOB NAME]<br>JOB NAME 为 任务名，例如我的 test 则自动创建目录 /home/wwwroot/workspace/test</p><p>Nginx则只需要配置  域名解析即可</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lnmp vhost add</span><br></pre></td></tr></table></figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s2.ax1x.com/2019/12/11/QsEMVA.png" alt="9.png" title>                </div>                <div class="image-caption">9.png</div>            </figure><p>按图上配置即可，建议增加SSL证书，增加证书前记得先把域名解析到指定服务器IP上，否则会生成证书失败</p><p>记得给文件夹加上权限，755</p><h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>返回Jenkins，点击立即构建，第一次构建时间可能会长一些，等待即可!</p><p>构建完成后则会在 配置的目录下创建workspace目录，并将代码放入 /home/wwwroot/workspace/test 目录中，根据自己的配置自行修改目录</p><p>由于我的程序涉及到跨目录访问，因此需要更改 fastcgi.conf 文件，与本文无关这里不多说~</p><p>附一张成功截图，由于我这是前后端分离项目，因此没有界面~<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s2.ax1x.com/2019/12/11/QsV5wj.png" alt="10.png" title>                </div>                <div class="image-caption">10.png</div>            </figure></p><h3 id="自动构建"><a href="#自动构建" class="headerlink" title="自动构建"></a>自动构建</h3><p>上面已经配置好了自动构建，我们每次合并代码或者提交代码变更到dev分支时，Gogs则会以Webhook的形式将内容推送到Jenkins上面去，实现每次更新代码自动构建服务器代码。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>目前搭建好的架构，适合还在开发测试程序的开发小组，配合测试人员使用，也能让产品们在汇报工作进度的时候更得心应手，了解开发进度，当然也不是特别准确的开发进度，摸鱼还是要摸的。后面应该会写一下 Portainer + Swarm 管理Docker集群，慢慢写~</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;配置Jenkins实现自动构建&quot;&gt;&lt;a href=&quot;#配置Jenkins实现自动构建&quot; class=&quot;headerlink&quot; title=&quot;配置Jenkins实现自动构建&quot;&gt;&lt;/a&gt;配置Jenkins实现自动构建&lt;/h1&gt;&lt;h2 id=&quot;介绍&quot;&gt;&lt;a href=&quot;
       
     
     </summary>
