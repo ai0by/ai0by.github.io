@@ -162,6 +162,54 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-I-O-多路复用技术-epoll" class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2021-12-14 15:41:30" datetime="2021-12-14T07:41:30.000Z" itemprop="datePublished">2021-12-14</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2021/12/14/Linux-IO-epoll.html">I/O 多路复用技术-epoll</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        SocketLinux一切皆文件的概念，都可以用“打开open –&gt; 读写write/read –&gt; 关闭close”模式来操作。Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭），这些函数我们在后面进行介绍。
+想要客户端和服务端在网络间通信则必须使用Socket，支持跨主机通信
+在建立两端通信时，需...
+    
+
+        <a href="/2021/12/14/Linux-IO-epoll.html" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-一文搞懂LinuxIO流" class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
@@ -598,53 +646,6 @@ Kubernetes是一个完备的分布式系统支撑平台。Kubernetes具有完备
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构/">架构</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-Redis持久化及数据备份" class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2020-06-10 16:14:42" datetime="2020-06-10T08:14:42.000Z" itemprop="datePublished">2020-06-10</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
-
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2020/06/10/Redis-Backup.html">Redis持久化及数据备份</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        Redis持久化Redis作为内存数据库，数据的安全性一定要得到确切的保障，很多情况下，Redis是作为存储数据库来用的，如果遇到断电，关机等突发情况，则容易丢失关键数据，对此，Redis的持久化就显得尤为关键，甚至某些情况下，需要定时去做备份
-RDB可以在每隔一段时间执行一次备份操作，性能比AOF方式更好，RDB是紧凑型文件，但是最多可以执行到5分钟左右，如果再低可能会影响性能RDB相当于...
-    
-
-        <a href="/2020/06/10/Redis-Backup.html" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
 
     </div>
     

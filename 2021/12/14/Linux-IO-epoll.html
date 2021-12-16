@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>I/O 多路复用技术-epoll | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="优化">
+    <meta name="description" content="SocketLinux一切皆文件的概念，都可以用“打开open –&amp;gt; 读写write/read –&amp;gt; 关闭close”模式来操作。Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭），这些函数我们在后面进行介绍。 想要客户端和服务端在网络间通信则必须使用Socket，支持跨主机通信 在建立两端通信时，需要将客">
+<meta name="keywords" content="优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="I&#x2F;O 多路复用技术-epoll">
+<meta property="og:url" content="https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="SocketLinux一切皆文件的概念，都可以用“打开open –&amp;gt; 读写write/read –&amp;gt; 关闭close”模式来操作。Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭），这些函数我们在后面进行介绍。 想要客户端和服务端在网络间通信则必须使用Socket，支持跨主机通信 在建立两端通信时，需要将客">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/16/T9V5Uf.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/16/T9eyXd.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/16/T9Ju7D.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/16/T9YOs0.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/16/T9aLhF.png">
+<meta property="og:updated_time" content="2021-12-16T03:35:11.681Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="I&#x2F;O 多路复用技术-epoll">
+<meta name="twitter:description" content="SocketLinux一切皆文件的概念，都可以用“打开open –&amp;gt; 读写write/read –&amp;gt; 关闭close”模式来操作。Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭），这些函数我们在后面进行介绍。 想要客户端和服务端在网络间通信则必须使用Socket，支持跨主机通信 在建立两端通信时，需要将客">
+<meta name="twitter:image" content="https://s4.ax1x.com/2021/12/16/T9V5Uf.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api">
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                Link
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/25/Hello_world.html">
+                <i class="icon icon-lg icon-user"></i>
+                About Me
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">I/O 多路复用技术-epoll</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">I/O 多路复用技术-epoll</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-12-14T07:41:30.000Z" itemprop="datePublished" class="page-time">
+  2021-12-14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Socket"><span class="post-toc-number">1.</span> <span class="post-toc-text">Socket</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多进程模型"><span class="post-toc-number">2.</span> <span class="post-toc-text">多进程模型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多线程模型"><span class="post-toc-number">3.</span> <span class="post-toc-text">多线程模型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#I-O多路复用"><span class="post-toc-number">4.</span> <span class="post-toc-text">I/O多路复用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#select"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">select</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#poll"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">poll</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#epoll"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">epoll</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#结语"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">结语</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-I-O-多路复用技术-epoll" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">I/O 多路复用技术-epoll</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-12-14 15:41:30" datetime="2021-12-14T07:41:30.000Z" itemprop="datePublished">2021-12-14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2><p>Linux一切皆文件的概念，都可以用“打开open –&gt; 读写write/read –&gt; 关闭close”模式来操作。Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭），这些函数我们在后面进行介绍。</p>
+<p>想要客户端和服务端在网络间通信则必须使用<code>Socket</code>，支持跨主机通信</p>
+<p>在建立两端通信时，需要将客户端和服务端都创建一个<code>Socket</code>，像一条线通过<code>Socket</code>连接起两端主机，<code>Socket</code>创建时可以指定使用的网络协议，通常情况下是使用<code>TCP</code> 和<code>UDP</code>，而相对来说<code>TCP</code>的场景偏多一些</p>
+<p>如何创建两端通信呢？首先，服务端调用 <code>socket()</code>函数，创建网络协议IPV4，传输协议为<code>TCP</code> 的<code>Socket</code>，接着调用 <code>bind()</code>函数给这个<code>Socket</code>绑定IP和端口，接着会调用 <code>listen()</code> 函数监听连接接入，通过 <code>accept()</code>函数等待连接连入，如无客户端连接则阻塞，客户端则在创建好 <code>Socket</code> 后调用 <code>connect()</code> 函数发起连接，指定服务端的IP及端口，然后通过<code>TCP</code>的三次握手后连接建立完成</p>
+<p>这个连接过程中，监听和连接的<code>Socket</code> 实际上是两个<code>Socket</code></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s4.ax1x.com/2021/12/16/T9V5Uf.png" alt="T9V5Uf.png" title>
+                </div>
+                <div class="image-caption">T9V5Uf.png</div>
+            </figure>
+<p>通过上图可以发现，<code>Socket</code>本质上与文件传输很接近，而Linux一切皆文件的概念，<code>Socket</code>本质上也是文件，而上面这种<code>Socket</code>通信，是最简单的一对一通信，当服务端未处理完一个客户端的网络I/O时则会阻塞，而这个时候其他客户端是无法连接的，只能等待</p>
+<h2 id="多进程模型"><a href="#多进程模型" class="headerlink" title="多进程模型"></a>多进程模型</h2><p>基于上述的<code>Socket</code>阻塞传输I/O，衍生出了多进程模型，即为每个连接进来的客户端都分配一个进程去处理，阻塞也只阻塞当前进程，服务器主进程通过<code>accept()</code>监听客户端连接，当接收到连接后，调用系统<code>fork()</code>函数创建子进程，将父进程的一切内容复制到子进程中，这种复制更像是一种指针，通过子进程来继续与客户端通信，待子进程处理完后再返回给父进程，通过不同的返回值，子进程为 <code>0</code>。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s4.ax1x.com/2021/12/16/T9eyXd.png" alt="T9eyXd.png" title>
+                </div>
+                <div class="image-caption">T9eyXd.png</div>
+            </figure>
+<p>这种做法很容易出现垃圾无法回收的问题，子进程无法销毁，因此父进程可以调用<code>wait()</code>和<code>waitpid()</code>来回收子进程</p>
+<p>这种多进程模型的缺点在于，不断地fork子进程会造成大量的进程间上下文切换，而且进程并不足够<code>轻量</code>，每次创建进程则也需要创建对应的 堆栈.寄存器等一系列资源</p>
+<h2 id="多线程模型"><a href="#多线程模型" class="headerlink" title="多线程模型"></a>多线程模型</h2><p>通过上面的多进程模型理念可以看出，不够<code>轻量</code>会导致更多的负载，那么后续又衍生出了多线程模型的概念，既然进程不满足那么就从多线程去下手</p>
+<p>通过<code>线程池</code>的概念，连接连接进来时，将已连接的<code>Socket</code>塞到<code>Socket</code>等待队列中，另一边从线程池不断地取出已连接的<code>Socket</code>，然后创建线程交给线程去处理</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s4.ax1x.com/2021/12/16/T9Ju7D.png" alt="T9Ju7D.png" title>
+                </div>
+                <div class="image-caption">T9Ju7D.png</div>
+            </figure>
+<p>结合之前的文章，实际应用中，每个创建的线程创建后都需要加锁，避免资源竞争问题</p>
+<p>而这种多线程的做法很大程度上提高了一些效率，也减少了上下文切换的资源消耗问题，但是当数量很大的请求过来时，维护一个超大数量的线程池，或者说给线程池加上限，这并不是一个很好的做法，而维护也更麻烦，调度可能就会宕机，调度宕机也就面临着不可预测的问题。</p>
+<h2 id="I-O多路复用"><a href="#I-O多路复用" class="headerlink" title="I/O多路复用"></a>I/O多路复用</h2><p>多路复用的概念则是从源头出发，这种一对一的方式显然不是最好的，那么就衍生出了 <code>一个进程/线程 对应多个Socket的技术</code></p>
+<p>一个进程同时只能处理一个<code>Socket</code>，但是如果将这个任务时间控制到毫秒微妙级时，将多个<code>Socket</code>都指向同一个进程则是多路复用，他与CPU的并发模型很接近，也被称为<code>时分多路复用</code></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s4.ax1x.com/2021/12/16/T9YOs0.png" alt="T9YOs0.png" title>
+                </div>
+                <div class="image-caption">T9YOs0.png</div>
+            </figure>
+<h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><p>将已连接的<code>Socket</code>放到一个<code>文件描述集合(类指针)</code>中，调用<code>select</code>函数将集合拷贝到内核中，内核遍历其中的<code>Socket</code>是否有事件产生，然后将其标记为<code>可读</code>,<code>可写</code>标识，将改过的集合送回用户态，然后用户态则继续遍历找到<code>可读</code>,<code>可写</code>的<code>Socket</code>对其处理</p>
+<p><code>select</code>使用<code>bitsmap</code>标识<code>文件描述集合</code>，所支持的描述符个数有限制，在Linux中的<code>FD_SETSIZE</code>限制，默认最大值是<code>1024</code>，因此只能监听<code>0~1023</code>个<code>文件描述符</code></p>
+<h3 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h3><p>poll与select很接近，只是不采用bitsmap存储，改用了链表，解除了限制</p>
+<p>但由于结构未变，因此poll与select都有遍历两次循环的问题，且都需要复制两次集合的操作</p>
+<h3 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h3><p><code>epoll</code>的诞生就是为了解决<code>select/poll</code>留下的问题，且目前<code>epoll</code>的应用场景也很多</p>
+<p>关于存储文件描述符，<code>epoll</code>使用红黑树来跟踪进程所有待检测的文件描述符，将需要监控的 <code>Socket</code> 使用 <code>epoll_ctl()</code> 函数将其加入至内核中的红黑树中，这样检查 <code>Socket</code> 是否有事件发生则只需要传入一个待检测的 <code>Socket</code> 即可，不需要整个集合复制，减少了多次数据拷贝的问题</p>
+<p><code>epoll</code> 使用事件驱动，内核中维护一个链表来记录就绪事件，当 <code>Socket</code> 发生了事件时，内核会将其加入这个链表中，用户调用 <code>epoll_wait()</code> 时，只返回链表（事件发生的个数）即可，不需要整个集合返回</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s4.ax1x.com/2021/12/16/T9aLhF.png" alt="T9aLhF.png" title>
+                </div>
+                <div class="image-caption">T9aLhF.png</div>
+            </figure>
+<p><strong>水平触发</strong></p>
+<p>实则上面的 select/poll/epoll 都支持水平触发，当<code>Socket</code>有可读事件发生时，服务端<code>不断</code>地苏醒，直到<code>read</code>函数执行完才停止</p>
+<p><strong>边缘触发</strong></p>
+<p>epoll独有的边缘触发，当 <code>Socket</code> 有可读事件发生时，服务端从 <code>epoll_wait</code> 中苏醒，并执行<code>read</code>读取数据，由于他只苏醒一次的概念，因此我们在读取时要一次性将数据读完</p>
+<p>边缘触发是循环从<code>文件描述符</code>读写数据，那么如果<code>文件描述符</code>是阻塞的，没有数据可读写时，进程会阻塞在读写函数那里，程序就没办法继续往下执行。所以，边缘触发模式一般和非阻塞 I/O 搭配使用，程序会一直执行 I/O 操作，直到系统调用(如 read 和 write)返回错误，错误类型为 EAGAIN 或 EWOULDBLOCK</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>多路复用 API 返回的事件并不一定可读写的，因此使用多路复用时最好配合 <code>非阻塞 I/O</code>一起使用，应对特殊情况</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-12-16T03:35:11.681Z" itemprop="dateUpdated">2021-12-16 11:35:11</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html&title=《I/O 多路复用技术-epoll》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html&title=《I/O 多路复用技术-epoll》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《I/O 多路复用技术-epoll》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/12/13/One-Linux-IO.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">一文搞懂Linux I/O流</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html&title=《I/O 多路复用技术-epoll》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html&title=《I/O 多路复用技术-epoll》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《I/O 多路复用技术-epoll》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2021/12/14/Linux-IO-epoll.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3a0W6DQAwEQP7/p9PnKoKsbYjCMTxFaQs3VFqd7du2+HrtXMc/zX///fvtigsDA+O2jN6D3x+WLOv4/nufk6djYGA8gbGXYHu/E916ENb52jAwMDCOGd8JXAwMDIx54Fary+R1YGBgYPSK2En49pZ+SS2OgYFxQ0bedf/+50vmGxgYGLdivIrXJDTPXcm/VWFgYCzN6D3meANXvWf+/YetJwYGxsMY8yCuspPvt+pbwcDAWJRRvVFecOaHLZpjVAwMjEUZeSz2wrE6HE1e6O7/AQMDY1HG/I/zRVcL3XLEY2BgLM3otfV7oZm8pmYRi4GBsSgjD8Fe6z9H9uI1KmIxMDBuzsjb9FVwMmCottuiESYGBsZyjLyJ1txvnlowN49ZYGBgLMSYFKV5vM4L5mgGi4GBsRBjcthiXsRWi+RLzoxgYGD8PKMajvO22mmjSgwMjMcwqoPGpGWWN9HyeI1eCgYGxmMYvRI0D8e8JK4WxhgYGE9gzAeKeaQmAV3etmJgYDyGMW+Q5RvN/FnlriEGBsbSjEmkJpFd3VAm20QMDIy1Ga/iVQVUj2Ukwf1hJICBgbEcYxJ2vaFmcod86WUMBgbGbRl5yJ7Qvj/ple3ucDEwMJZm9Bph1S1jPrzMm24YGBgYeQlaPS7WGydgYGBgVIvJXlGab0MLYwkMDIwHMHrDgN6i8/HkJbU4BgbGDRm90nFeiPYOnJ0w38DAwLgT4w9vwgPxt7zkDgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
