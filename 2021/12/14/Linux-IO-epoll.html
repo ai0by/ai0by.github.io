@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://s4.ax1x.com/2021/12/16/T9Ju7D.png">
 <meta property="og:image" content="https://s4.ax1x.com/2021/12/16/T9YOs0.png">
 <meta property="og:image" content="https://s4.ax1x.com/2021/12/16/T9aLhF.png">
-<meta property="og:updated_time" content="2021-12-16T03:35:11.681Z">
+<meta property="og:updated_time" content="2021-12-16T08:06:12.792Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="I&#x2F;O 多路复用技术-epoll">
 <meta name="twitter:description" content="SocketLinux一切皆文件的概念，都可以用“打开open –&amp;gt; 读写write/read –&amp;gt; 关闭close”模式来操作。Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭），这些函数我们在后面进行介绍。 想要客户端和服务端在网络间通信则必须使用Socket，支持跨主机通信 在建立两端通信时，需要将客">
@@ -241,6 +241,7 @@
 <p>而这种多线程的做法很大程度上提高了一些效率，也减少了上下文切换的资源消耗问题，但是当数量很大的请求过来时，维护一个超大数量的线程池，或者说给线程池加上限，这并不是一个很好的做法，而维护也更麻烦，调度可能就会宕机，调度宕机也就面临着不可预测的问题。</p>
 <h2 id="I-O多路复用"><a href="#I-O多路复用" class="headerlink" title="I/O多路复用"></a>I/O多路复用</h2><p>多路复用的概念则是从源头出发，这种一对一的方式显然不是最好的，那么就衍生出了 <code>一个进程/线程 对应多个Socket的技术</code></p>
 <p>一个进程同时只能处理一个<code>Socket</code>，但是如果将这个任务时间控制到毫秒微妙级时，将多个<code>Socket</code>都指向同一个进程则是多路复用，他与CPU的并发模型很接近，也被称为<code>时分多路复用</code></p>
+<p>I/O 复用其实复用的不是 I/O 连接，而是复用线程，让一个 thread of control 能够处理多个连接（I/O 事件）</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -276,7 +277,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2021-12-16T03:35:11.681Z" itemprop="dateUpdated">2021-12-16 11:35:11</time>
+    最后更新时间：<time datetime="2021-12-16T08:06:12.792Z" itemprop="dateUpdated">2021-12-16 16:06:12</time>
 </span><br>
 
 
