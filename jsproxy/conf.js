@@ -13,7 +13,7 @@ jsproxy_config({
   // 节点配置
   node_map: {
     'node1': {
-      label: 'CF-Worker-node1',
+      label: '备用线路1',
       lines: {
         // 主机:权重
         'node-aliyun-hk-1.etherdream.com:8443': 1,
@@ -21,7 +21,7 @@ jsproxy_config({
       }
     },
     'node2': {
-      label: 'CF-Worker-node2',
+      label: '备用线路2',
       lines: {
         'node-aliyun-sg.etherdream.com:8443': 1,
       },
@@ -65,7 +65,7 @@ jsproxy_config({
    * 静态资源 CDN 地址
    * 用于加速 `assets` 目录中的资源访问
    */
-  assets_cdn: 'https://cdn.jsdelivr.net/gh/ai0by/ai0by.github.io@master/jsproxy/assets/',
+  assets_cdn: 'https://cdn.jsdelivr.net/gh/ai0by/ai0by.github.io@master/assets/',
 
   // 本地测试时打开，否则访问的是线上的
   // assets_cdn: 'assets/',
@@ -88,10 +88,10 @@ jsproxy_config({
     'https://www.baidu.com/img/baidu_resultlogo@2.png': {
       replace: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'
     },
-    'https://www.baidu.com/': {
-      redir: 'https://fsou.cc/'
+    'https://www.pornhub.com/': {
+      redir: 'https://php.net/'
     },
-    'http://hello.com/': {
+    'http://haha.com/': {
       content: 'Hello World'
     },
   }
