@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2021-12-16T08:06:12.792Z</updated>
+  <updated>2022-01-29T01:28:57.281Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>设计高可用安全的协程池kd-schedule</title>
+    <link href="https://sbcoder.cn/2022/01/29/kd-schedule.html"/>
+    <id>https://sbcoder.cn/2022/01/29/kd-schedule.html</id>
+    <published>2022-01-29T01:11:58.000Z</published>
+    <updated>2022-01-29T01:28:57.281Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="kd-schedule"><a href="#kd-schedule" class="headerlink" title="kd-schedule"></a>kd-schedule</h1><ul><li>限制并发，使程序可控</li><li>错峰处理，使程序平衡性更强，性能占用可控（自动错峰，如果用户不配置错峰处理，则程序自动错峰处理，区间可配置最少为1秒）</li><li>定时发送任务，周期型任务（按分钟），单项程序管控，使得程序定时器结束后立刻增加权重，并在结束后恢复其权重重新排序</li></ul><h2 id="协程控制"><a href="#协程控制" class="headerlink" title="协程控制"></a>协程控制</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s4.ax1x.com/2022/01/25/77sPsK.png" alt="77sPsK.png" title>                </div>                <div class="image-caption">77sPsK.png</div>            </figure><h2 id="权重配比说明"><a href="#权重配比说明" class="headerlink" title="权重配比说明"></a>权重配比说明</h2><p>参考了CPU及GMP的调度算法，增加了权重的配置，权重可以使程序不断地插队</p><p>建议增加任务时按大到小形式增加任务，且权重尽可能不重复，重复权重会依次排序</p><h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>轮询任务，定时器监控</p><p>增加定时增加权重，轮询任务增加权重，避免一个任务长期被插队无法执行</p><h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><p>每个控制器被称作一个worker，每个worker可以控制协程数，由于各个参数不同因此不支持带参数的任务</p><p>程序在worker初始化时开启一个协程去监听add操作，并在start后退出该协程，之后所有的任务都以动态加载形式增加</p><p>任务使用链表形式存储，为了按权重插队，插队速度更快</p><p>每个worker都有一个入口workerentry，用来控制任务链表，每个workerentry都是一个协程<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s4.ax1x.com/2022/01/27/7XcVlF.png" alt="7XcVlF.png" title>                </div>                <div class="image-caption">7XcVlF.png</div>            </figure></p><p>worker在add的时候会再workerentry中按大到小顺序添加任务，但多个workerentry不能排序因此需要用户自行按从大到小增加任务，否则权重可能不生效</p><p>循环worker中的workerentry增加任务，到头后停止增加并从第一个workerentry重新添加</p><p>workerentry中遇到相同的权重任务时会将后加入的任务权重自动后排</p><p>删除任务时只能通过权重删除，因此权重也被视为一个编号，尽可能不要重复</p><p>head只作为链表头部，执行从head后面开始执行</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://s4.ax1x.com/2022/01/27/7Xcnm9.png" alt="7Xcnm9.png" title>                </div>                <div class="image-caption">7Xcnm9.png</div>            </figure><h2 id="kd-edr-中的应用"><a href="#kd-edr-中的应用" class="headerlink" title="kd-edr 中的应用"></a>kd-edr 中的应用</h2><p>edr-agent作为系统底层硬件监控，需要对其限制性能，性能瓶颈时做出告警行为，这是 <code>kd-schedule</code> 的作用</p><p>edr-agent希望 <code>kd-schedule</code> 在初始化结束后启用动态加载的形式给链表重新排队，但当队列出现延时过高时提示错误，并重新分配协程任务</p><p>同时在任务中增加定时器概念，使得不使用重新排队也可以让任务继续执行，定时器只能保证单个entry，重新排队需要手动调用或者等待程序自动调用</p><h2 id="不同于协程池"><a href="#不同于协程池" class="headerlink" title="不同于协程池"></a>不同于协程池</h2><p>协程池是一个worker从池子里取任务，控制协程数不超过一个阈值，但权重排序问题比较麻烦，而且协程池无法控制程序周期</p><p>链表结构保证了可以由程序控制下一个执行的方法，支持了动态加载</p><h2 id="动态加载（插队）"><a href="#动态加载（插队）" class="headerlink" title="动态加载（插队）"></a>动态加载（插队）</h2><p>动态加载时给每个workerentry一个标记，当workerentry队列为空的时候，将动态加载的任务送给这个workerentry</p><p>任务自动加载，任务在初始阶段给定一个数值，标记其需要执行的次数，并增加定时，0为不限制次数，默认为1</p><h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">"fmt"</span></span><br><span class="line"><span class="string">"github.com/ai0by/kd-schedule/schedule"</span></span><br><span class="line"><span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> edr <span class="keyword">struct</span> &#123;</span><br><span class="line">Num <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> edr2 <span class="keyword">struct</span> &#123;</span><br><span class="line">Num <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"><span class="keyword">var</span> edrS = &amp;edr&#123;Num:<span class="number">0</span>&#125;</span><br><span class="line"><span class="keyword">var</span> edr2 = &amp;edr2&#123;Num:<span class="number">0</span>&#125;</span><br><span class="line">wk := schedule.NewWorker(<span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">1</span>; i &lt; <span class="number">9999</span>; i++ &#123;</span><br><span class="line">_ = wk.Add(<span class="keyword">uint8</span>(i), <span class="number">50</span>, edrS)</span><br><span class="line">&#125;</span><br><span class="line">wk.Start()</span><br><span class="line"><span class="comment">// 实现接口增加任务</span></span><br><span class="line">wk.Add(<span class="number">200</span>,<span class="number">50</span>, edr2)</span><br><span class="line"><span class="comment">// 闭包带参数任务</span></span><br><span class="line">wk.AddClosureFunc(<span class="number">199</span>,<span class="number">50</span>, <span class="function"><span class="keyword">func</span><span class="params">(args ...<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line"><span class="keyword">for</span> _,v := <span class="keyword">range</span> args&#123;</span><br><span class="line">fmt.Println(v.(<span class="keyword">string</span>))</span><br><span class="line">&#125;</span><br><span class="line">&#125;,<span class="string">"~~~~~~~~~~~~~~~~~~~~~~~~~~~~"</span>)</span><br><span class="line">wk.AddClosureFunc(<span class="number">199</span>,<span class="number">50</span>, <span class="function"><span class="keyword">func</span><span class="params">(args ...<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line"><span class="keyword">for</span> _,v := <span class="keyword">range</span> args&#123;</span><br><span class="line">fmt.Println(v.(<span class="keyword">string</span>))</span><br><span class="line">&#125;</span><br><span class="line">&#125;,<span class="string">"---------------------------"</span>)</span><br><span class="line">time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line"><span class="comment">//wk.Stop()</span></span><br><span class="line"><span class="keyword">var</span> cc = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">&lt;-cc</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e *edr)</span><span class="title">TaskFunc</span><span class="params">(args ...<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">fmt.Println(<span class="string">"--------------"</span>,e.Num)</span><br><span class="line">e.Num++</span><br><span class="line">time.Sleep(<span class="number">500</span> * time.Millisecond)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e *edr2)</span><span class="title">TaskFunc</span><span class="params">(args ...<span class="keyword">interface</span>&#123;&#125;)</span></span>&#123;</span><br><span class="line">fmt.Println(<span class="string">"+++++++++++++++++"</span>,e.Num)</span><br><span class="line">e.Num++</span><br><span class="line">time.Sleep(<span class="number">50</span> * time.Millisecond)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>后续这个库应该会用在edr项目中，根据edr的需求会再迭代</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;kd-schedule&quot;&gt;&lt;a href=&quot;#kd-schedule&quot; class=&quot;headerlink&quot; title=&quot;kd-schedule&quot;&gt;&lt;/a&gt;kd-schedule&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;限制并发，使程序可控&lt;/li&gt;
+&lt;li&gt;错峰处理，使程序
+      
+    
+    </summary>
+    
+      <category term="Go" scheme="https://sbcoder.cn/categories/Go/"/>
+    
+    
+      <category term="优化" scheme="https://sbcoder.cn/tags/%E4%BC%98%E5%8C%96/"/>
+    
+      <category term="Go" scheme="https://sbcoder.cn/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>I/O 多路复用技术-epoll</title>
@@ -269,9 +298,9 @@
       <category term="架构" scheme="https://sbcoder.cn/categories/%E6%9E%B6%E6%9E%84/"/>
     
     
-      <category term="架构" scheme="https://sbcoder.cn/tags/%E6%9E%B6%E6%9E%84/"/>
-    
       <category term="Docker" scheme="https://sbcoder.cn/tags/Docker/"/>
+    
+      <category term="架构" scheme="https://sbcoder.cn/tags/%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
@@ -515,34 +544,6 @@
       <category term="离线下载" scheme="https://sbcoder.cn/tags/%E7%A6%BB%E7%BA%BF%E4%B8%8B%E8%BD%BD/"/>
     
       <category term="Google" scheme="https://sbcoder.cn/tags/Google/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Canal 根据 binlog日志数据同步</title>
-    <link href="https://sbcoder.cn/2020/01/22/canal_go.html"/>
-    <id>https://sbcoder.cn/2020/01/22/canal_go.html</id>
-    <published>2020-01-21T23:32:09.000Z</published>
-    <updated>2020-01-21T23:33:46.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="创建mysql账户"><a href="#创建mysql账户" class="headerlink" title="创建mysql账户"></a>创建mysql账户</h2><p>如果使用的是root用户，则不需要操作这个步骤</p><p>grant all privileges on  <em>.</em> to  ‘jcc’@’%’ identified by ‘jcc’;<br>flush privileges;</p><h2 id="配置mysql-参见canal-Quickstart"><a href="#配置mysql-参见canal-Quickstart" class="headerlink" title="配置mysql (参见canal　Quickstart)"></a>配置mysql (参见canal　Quickstart)</h2><p>启用binlog日志<br>打开 mysql.cnf 文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[mysqld] </span><br><span class="line">log-bin=mysql-bin </span><br><span class="line">binlog-format=ROW #选择row模式 </span><br><span class="line">server_id=9527 #配置mysql replaction需要定义，不能和canal的slaveId重复</span><br></pre></td></tr></table></figure></p><h2 id="添加slave权限"><a href="#添加slave权限" class="headerlink" title="添加slave权限"></a>添加slave权限</h2><p>如果使用的是root用户，则不需要操作这个步骤<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> canal <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'canal'</span>;  </span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span>, <span class="keyword">SHOW</span> <span class="keyword">VIEW</span>, <span class="keyword">REPLICATION</span> <span class="keyword">SLAVE</span>, <span class="keyword">REPLICATION</span> <span class="keyword">CLIENT</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'canal'</span>@<span class="string">'%'</span>;<span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure></p><h2 id="创建canal-server-服务端"><a href="#创建canal-server-服务端" class="headerlink" title="创建canal server 服务端"></a>创建canal server 服务端</h2><p>需要提前安装好Docker，如果不会安装，可以参考我之前写的文章 <a href="https://sbcoder.cn/2019/12/10/gogs_docker.html#CentOS7-%E5%AE%89%E8%A3%85-Docker">CentOS7 安装 Docker</a></p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 11111:11111 -e canal.auto.scan=false -e canal.instance.master.address=127.0.0.1:3306 -e canal.instance.dbUsername=test -e canal.instance.dbPassword=test -e canal.instance.connectionCharset=UTF-8 -e canal.instance.tsdb.enable=true -e canal.instance.gtidon=false -e canal.instance.filter.regex=.*\\..* -e canal.destinations=test  -d canal/canal-server</span><br></pre></td></tr></table></figure><p>需要替换以下参数</p><ul><li>canal.instance.master.address=127.0.0.1:3306  地址ip更换（尽量用内网）  </li><li>canal.instance.dbUsername=test     数据库账户  </li><li>canal.instance.dbPassword=test      数据库密码</li><li>canal.destinations=test          test为名称 可以修改</li><li>11111:11111       服务器端口：docker端口</li></ul><p>需要注意的是，所填写的数据库账户必须拥有数据库的操作权限，如果不知道权限如何配置，则建议直接使用root用户</p><h2 id="canal-客户端"><a href="#canal-客户端" class="headerlink" title="canal 客户端"></a>canal 客户端</h2><p>我们这里使用Go客户端，因为Go语言的特性，可以很好的运行在Docker上</p><p>canal-go 文档: <a href="https://github.com/withlin/canal-go" target="_blank" rel="noopener">withlin/canal-go</a></p><p>开发过程可以参照文档</p><h2 id="Docker启动canal客户端"><a href="#Docker启动canal客户端" class="headerlink" title="Docker启动canal客户端"></a>Docker启动canal客户端</h2><p>推荐使用Jenkins配置 canal-go<br>构建成功后执行shell</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t canal_prod:v1 $&#123;WORKSPACE&#125;</span><br><span class="line">docker service update --image canal_prod:v1 --force --no-resolve-image canal_prod</span><br></pre></td></tr></table></figure><p>如果看过我之前的 代码架构文章，可以在Portainer中看到打印在控制台的文字，也可以看到运行状态</p><h2 id="FAQ问题解决"><a href="#FAQ问题解决" class="headerlink" title="FAQ问题解决"></a>FAQ问题解决</h2><p>Q:如果服务停止了，如何解决<br>A:链接到canal-server的Docker内部，查看 canal-server - logs 中的日志</p><p>Q:如果数据同步失败了如何解决<br>A:很大可能是由于改变了数据库结构导致的，需要重启客户端和服务端尝试</p><p>Q:一开始数据就不同步<br>A:查看你的数据库账户是否有权限，如无权限则修改服务端启动时附带的数据库账户参数</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;创建mysql账户&quot;&gt;&lt;a href=&quot;#创建mysql账户&quot; class=&quot;headerlink&quot; title=&quot;创建mysql账户&quot;&gt;&lt;/a&gt;创建mysql账户&lt;/h2&gt;&lt;p&gt;如果使用的是root用户，则不需要操作这个步骤&lt;/p&gt;
-&lt;p&gt;grant all p
-      
-    
-    </summary>
-    
-      <category term="优化" scheme="https://sbcoder.cn/categories/%E4%BC%98%E5%8C%96/"/>
-    
-    
-      <category term="数据库" scheme="https://sbcoder.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-      <category term="优化" scheme="https://sbcoder.cn/tags/%E4%BC%98%E5%8C%96/"/>
     
   </entry>
   
