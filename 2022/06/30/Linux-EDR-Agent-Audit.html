@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Linux 探针技术 - Audit | 风向标 | 分享与创造</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="攻防,审计">
+    <meta name="description" content="Audit是什么Audit是Linux中的审计程序，主要的作用可以看做审计日志，功能全面，可以说市面上大部分Linux探针都绕不开Audit，且Audit有着实时性很强的特性，因此可以替代部分Linux Hook操作及监控操作。 Audit主要监测的内容包含但不限于  文件监控（文件操作日志，创建，删除，增加，修改，权限 …） 网络监控 （connect，close，bind） 进程监控 （exe">
+<meta name="keywords" content="攻防,审计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 探针技术 - Audit">
+<meta property="og:url" content="https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html">
+<meta property="og:site_name" content="风向标 | 分享与创造">
+<meta property="og:description" content="Audit是什么Audit是Linux中的审计程序，主要的作用可以看做审计日志，功能全面，可以说市面上大部分Linux探针都绕不开Audit，且Audit有着实时性很强的特性，因此可以替代部分Linux Hook操作及监控操作。 Audit主要监测的内容包含但不限于  文件监控（文件操作日志，创建，删除，增加，修改，权限 …） 网络监控 （connect，close，bind） 进程监控 （exe">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-06-30T07:00:48.402Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 探针技术 - Audit">
+<meta name="twitter:description" content="Audit是什么Audit是Linux中的审计程序，主要的作用可以看做审计日志，功能全面，可以说市面上大部分Linux探针都绕不开Audit，且Audit有着实时性很强的特性，因此可以替代部分Linux Hook操作及监控操作。 Audit主要监测的内容包含但不限于  文件监控（文件操作日志，创建，删除，增加，修改，权限 …） 网络监控 （connect，close，bind） 进程监控 （exe">
+    
+        <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ai0by</h5>
+          <a href="mailto:killnetsec@gmail.com" title="killnetsec@gmail.com" class="mail">killnetsec@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/api">
+                <i class="icon icon-lg icon-api"></i>
+                API
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                Link
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/25/Hello_world.html">
+                <i class="icon icon-lg icon-user"></i>
+                About Me
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Linux 探针技术 - Audit</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Linux 探针技术 - Audit</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2022-06-30T02:53:00.000Z" itemprop="datePublished" class="page-time">
+  2022-06-30
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Linux/">Linux</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Audit是什么"><span class="post-toc-number">1.</span> <span class="post-toc-text">Audit是什么</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Audit使用方式"><span class="post-toc-number">2.</span> <span class="post-toc-text">Audit使用方式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#audit-启动"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">audit 启动</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#audit-日志配置"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">audit 日志配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#audit-日志配置-1"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">audit 日志配置</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Audit监控文件"><span class="post-toc-number">3.</span> <span class="post-toc-text">Audit监控文件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#为什么不选择Inotify"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">为什么不选择Inotify</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#如何判断文件的操作行为"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">如何判断文件的操作行为</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Audit监控网络访问"><span class="post-toc-number">4.</span> <span class="post-toc-text">Audit监控网络访问</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Audit监控进程启动"><span class="post-toc-number">5.</span> <span class="post-toc-text">Audit监控进程启动</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#关于探针"><span class="post-toc-number">6.</span> <span class="post-toc-text">关于探针</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Linux-探针技术-Audit" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Linux 探针技术 - Audit</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2022-06-30 10:53:00" datetime="2022-06-30T02:53:00.000Z" itemprop="datePublished">2022-06-30</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Linux/">Linux</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="Audit是什么"><a href="#Audit是什么" class="headerlink" title="Audit是什么"></a>Audit是什么</h2><p>Audit是Linux中的审计程序，主要的作用可以看做审计日志，功能全面，可以说市面上大部分Linux探针都绕不开Audit，且Audit有着实时性很强的特性，因此可以替代部分Linux Hook操作及监控操作。</p>
+<p>Audit主要监测的内容包含但不限于</p>
+<ul>
+<li>文件监控（文件操作日志，创建，删除，增加，修改，权限 …）</li>
+<li>网络监控 （connect，close，bind）</li>
+<li>进程监控 （execve）（按pid监控）</li>
+</ul>
+<p>本文主体也按照如上几种常见探针功能描述</p>
+<h2 id="Audit使用方式"><a href="#Audit使用方式" class="headerlink" title="Audit使用方式"></a>Audit使用方式</h2><h3 id="audit-启动"><a href="#audit-启动" class="headerlink" title="audit 启动"></a>audit 启动</h3><p>如何使用肯定是第一话题，现在绝大部分的Linux主机都内置了Audit</p>
+<p>通过命令启动即可 <code>/etc/init.d/auditd start</code></p>
+<p>audit会在目录 <code>/var/log/audit/</code> 下生成log文件，通过解析audit的原始log可以拿到非常多的审计日志信息</p>
+<p>Netlink监控，通过netlink也可以监控audit信息</p>
+<h3 id="audit-日志配置"><a href="#audit-日志配置" class="headerlink" title="audit 日志配置"></a>audit 日志配置</h3><p>列举一些常见配置</p>
+<p>监控execve，也可用作进程启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-a exit,always -F arch=b64 -S execve -k ProcStart</span><br></pre></td></tr></table></figure></p>
+<p>系统关键目录监控<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-w /etc/hosts -p w -k HostChange</span><br><span class="line">-w /etc/services -p w -k ServicesChange</span><br><span class="line">-w /etc/sysconfig/network-devices/ -p w -k NetCardChange</span><br></pre></td></tr></table></figure></p>
+<p>套接字监控<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-a always,exit -F arch=b64 -S socket -k SocketChange</span><br></pre></td></tr></table></figure></p>
+<p>连接监控<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-a always,exit -F arch=b64 -S connect -k ConnectChange</span><br></pre></td></tr></table></figure></p>
+<p>发送消息监控<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-a always,exit -F arch=b64 -S sendmsg -k SendMsgChange</span><br></pre></td></tr></table></figure></p>
+<p>绑定监控<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-a always,exit -F arch=b64 -S bind -k BindChange</span><br></pre></td></tr></table></figure></p>
+<p>接收消息监控<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-a always,exit -F arch=b64 -S recvmsg -k RecvMsgChange</span><br></pre></td></tr></table></figure></p>
+<p>关闭操作监控(量大)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-a always,exit -F arch=b64 -S close -k CloseChange</span><br></pre></td></tr></table></figure></p>
+<p>过滤日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 参照如下写法</span><br><span class="line">-A exit,never -F path=/bin/ls -F perm=x</span><br></pre></td></tr></table></figure></p>
+<h3 id="audit-日志配置-1"><a href="#audit-日志配置-1" class="headerlink" title="audit 日志配置"></a>audit 日志配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#  设置日志文件</span><br><span class="line">log_file = /var/log/audit/audit.log</span><br><span class="line">log_group = root</span><br><span class="line">log_format = ENRICHED</span><br><span class="line">flush = INCREMENTAL_ASYNC</span><br><span class="line">freq = 50</span><br><span class="line">#  设置日志文件大小，单位是MB</span><br><span class="line">max_log_file = 8</span><br><span class="line">#  日志文件滚动的数目，如果设置为小于 2，则不会循环记录。没设置则位0，不循环日志文件</span><br><span class="line">num_logs = 5</span><br><span class="line">priority_boost = 4</span><br><span class="line">name_format = NONE</span><br><span class="line">##name = mydomain</span><br><span class="line">#  日志文件到达最大值后的动作，ROTATE是滚动记录</span><br><span class="line">max_log_file_action = ROTATE</span><br></pre></td></tr></table></figure>
+<h2 id="Audit监控文件"><a href="#Audit监控文件" class="headerlink" title="Audit监控文件"></a>Audit监控文件</h2><h3 id="为什么不选择Inotify"><a href="#为什么不选择Inotify" class="headerlink" title="为什么不选择Inotify"></a>为什么不选择Inotify</h3><p>inotify应该是应用最广泛的文件监控工具了，针对Linux的思想，一切皆文件，Inotify确实是得天独厚</p>
+<p>inotify适用的场景不同，inotify使用epoll，性能更佳，但inotify只能监控文件的部分信息，无法做到审计，也就是操作进程的信息和操作用户信息，作为一个优秀的EDR，必然需要审计分析能力，因此Inotify只能作为部分监控项所用，如果需要溯源，audit更适合</p>
+<h3 id="如何判断文件的操作行为"><a href="#如何判断文件的操作行为" class="headerlink" title="如何判断文件的操作行为"></a>如何判断文件的操作行为</h3><p>根据不同的文件制定不同的key，如果key是唯一的那么可以通过key来识别文件，或者根据audit日志中的path来识别</p>
+<p>操作行为可以通过系统的syscall来判断 增删改查，需要监控文件时增加文件监控属性 <code>-p rwax</code></p>
+<h2 id="Audit监控网络访问"><a href="#Audit监控网络访问" class="headerlink" title="Audit监控网络访问"></a>Audit监控网络访问</h2><p>必须配置对应的采集配置</p>
+<h2 id="Audit监控进程启动"><a href="#Audit监控进程启动" class="headerlink" title="Audit监控进程启动"></a>Audit监控进程启动</h2><p>必须配置对应的采集配置</p>
+<p>进程监控建议增加过滤，否则会积压很多Audit日志</p>
+<h2 id="关于探针"><a href="#关于探针" class="headerlink" title="关于探针"></a>关于探针</h2><p>探针采集内容目前非常稳定，各类进程，网络，文件，防火墙（适配多种主流防火墙），系统信息，系统状态，外设，硬件设备….</p>
+<p>欢迎交流~</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2022-06-30T07:00:48.402Z" itemprop="dateUpdated">2022-06-30 15:00:48</time>
+</span><br>
+
+
+        
+        承接各类外包私活，有意邮箱联系 killnetsec#gmail.com~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sbcoder.cn">
+            <img src="/img/avatar.jpg" alt="ai0by">
+            ai0by
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/审计/">审计</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/攻防/">攻防</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html&title=《Linux 探针技术 - Audit》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html&title=《Linux 探针技术 - Audit》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Linux 探针技术 - Audit》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2022/01/29/kd-schedule.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">设计高可用安全的协程池kd-schedule</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '288baabedd78311b1394',
+          clientSecret: 'd82c9d2ea22f06844ebecc14b8c62f91aedb4f3b',
+          repo: 'ai0by.github.io',
+          owner: 'ai0by',
+          admin: ['ai0by'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ai0by &copy; 2015 - 2022</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html&title=《Linux 探针技术 - Audit》 — 风向标 | 分享与创造&pic=https://sbcoder.cn/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html&title=《Linux 探针技术 - Audit》 — 风向标 | 分享与创造&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Linux 探针技术 - Audit》 — 风向标 | 分享与创造&url=https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html&via=https://sbcoder.cn" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sbcoder.cn/2022/06/30/Linux-EDR-Agent-Audit.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3a246DMAxF0f7/T9PXGbXAPjZUwtl5qqpOyGIky5e8Xnhtf9bn93wH8g3fM14yZMh4LGM7XJ+P5I/nO+ztQ84mQ4aMdRjHIfJkC/C35PPx6zs5swwZMmSAUJgmhWmYliFDhgweNEnByV8BSQ1lyJAhgxexvNDtHO72WlyGDBkPZKRt/V9+vmW+IUOGjEcxtktXmiDy1t7Jc2XIkDGa0W/c1xI4Xh6TYliGDBmzGaSYJI37Dpikg0GolSFDxjhG5yLF8VGuauGRtFKGDBmzGemB+LupBeJiGSxDhowFGJ3D8SFleuUiGFHIkCFjMQZvh6GrWqUmWtzIkyFDxgIMXr6mLX5OrSWgMmTIWJlx1SWJWpgmLbkvqaEMGTKGMngArV0O4y3+WiCWIUPGOow0qKWtND7IJPsHg0wZMmSMYHQCZeeyBd8t/j/IkCFjKKM2YkyDJk8ByXP//UaGDBkLMK7KMUkI7rTzdk8iQ4aMBRjBtYbGdTGOjMerMmTIGM2ote/T8jX9Pk0rZciQMZvBG20EyS+K1dp2u/vLkCFjNKMzHije5sBpZdySkyFDxlDGFq4+qd/aO7lsIUOGjHEMvjqtN07i4wQZMmSsxiBBtjO8rJW+cbCWIUPGAgzeOOOHJoGyVvTKkCFDBjl6OintNPXQq5EhQ4YM3PaqBd90wCBDhow1GWmjPw2+ac/v9lpchgwZj2LUSkfeIOvwbplvyJAh40mMN3Nb9Ru8KXhZAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '哎呦！网页崩溃了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
