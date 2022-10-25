@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sbcoder.cn/"/>
-  <updated>2022-10-25T09:54:11.938Z</updated>
+  <updated>2022-10-25T09:55:53.388Z</updated>
   <id>https://sbcoder.cn/</id>
   
   <author>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>自定义过滤网络请求 - nfqueue</title>
-    <link href="https://sbcoder.cn/2022/10/21/undefined.html"/>
-    <id>https://sbcoder.cn/2022/10/21/undefined.html</id>
+    <link href="https://sbcoder.cn/2022/10/21/nfqueue.html"/>
+    <id>https://sbcoder.cn/2022/10/21/nfqueue.html</id>
     <published>2022-10-21T08:07:51.000Z</published>
-    <updated>2022-10-25T09:54:11.938Z</updated>
+    <updated>2022-10-25T09:55:53.388Z</updated>
     
     <content type="html"><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>基于iptables的内核通讯大杀器，使用nfnetlink协议与内核通信。</p><p>他可以通过iptables定义的规则去拦截相应的网络报文，他可以基于iptables前或者后去自定义拦截这些报文，也可以通过解析这些报文做一些审计之类的工作，也可以通过这些报文来形成一个阻断功能</p><p>NFQUEU 的源代码分为 <code>nf_queue</code> 和 <code>nfnetlink_queue</code> 两部分。<code>nf_queue</code> 是 <code>iptables</code> 的一部分，<code>nfnetlink_queue</code> 是<code>netfilter</code> 的一个子模块。</p><p><code>nfnetlink_queue</code> 是 <code>nf_queue</code> 跟用户程序之间的桥梁，是基于 <code>nfnetlink</code> 的专门用于 NFQUEUE 的通信机制；而 <code>nfnetlink</code> 是一套基于 netlink的专门用于 <code>netfilter</code> 的通信机制。</p><h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p>nfqueue是一个队列，程序通过队列的形式来处理报文，默认这个队列的长度是1024，超出此队列的报文默认会丢弃，正常环境下，要控制好这些流量。在内核 3.6 之后，可以使用 <code>--fail-open</code> 选项将这默认丢包改为默认接收。在 <code>/proc/net/netfilter/nfnetlink_queue</code> 中可以看到丢包统计。</p><p>NFQUEUE 很容易地为任意入队的包做包重排序。然而，需要注意的是内核是使用链式列表来排队包的；所以，乱序判决会带来一定的损耗。</p><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>按照iptables的四表五链配置规则即可</p><p>例如：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t raw -I PREROUTING -p tcp --syn -j NFQUEUE --queue-num=1 --queue-bypass</span><br></pre></td></tr></table></figure><ul><li>–queue-num 代表队列号</li><li>–queue-bypass 默认情况下，如果没有用户空间程序正在监听 NFQUEUE，那么将丢弃所有要排队的数据包。使用此选项时，NFQUEUE 规则的行为类似于 ACCEPT，数据包将转移到下一个表。但此规则要求 内核 &gt;= 2.6.39，iptables &gt;= 1.4.11</li></ul><p>同时，为了防止丢包，也有负载均衡的配置</p><p><code>--queue-balance</code> 是 NFQUEUE 选项，由 Florian Westphal 实现，实现了同一条 iptables 规则的网络包负载均衡到多个队列。用法非常简单。比如，负载均衡 INPUT 流量到 0-3 队列的规则如下，注意，负载均衡是基于流实现的（made with respect to the flow），一条流的所有网络包会发送到同一个队列。但此规则要求 Linux 内核 &gt;= 2.6.31，iptables &gt;= 1.4.5</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -j NFQUEUE --queue-balance 0:3</span><br></pre></td></tr></table></figure><p>其他iptables配置可以参照 <a href="https://blog.csdn.net/weixin_69543697/article/details/125839732" target="_blank" rel="noopener">iptables 配置</a></p><h2 id="代码参考"><a href="#代码参考" class="headerlink" title="代码参考"></a>代码参考</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">"fmt"</span></span><br><span class="line"><span class="string">"os"</span></span><br><span class="line"><span class="string">"github.com/subgraph/go-nfnetlink/nfqueue"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">q := nfqueue.NewNFQueue(<span class="number">1</span>) <span class="comment">// 此处参数1需要改为绑定的对列号</span></span><br><span class="line">ps, err := q.Open()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">fmt.Printf(<span class="string">"Error opening NFQueue: %v\n"</span>, err)</span><br><span class="line">os.Exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">defer</span> q.Close()</span><br><span class="line">fmt.Println(<span class="string">"Start Listen ..."</span>)</span><br><span class="line"><span class="keyword">for</span> p := <span class="keyword">range</span> ps &#123;</span><br><span class="line">fmt.Println(p.Packet.String())</span><br><span class="line">err = p.Accept()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">fmt.Println(err)</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
     
@@ -35,6 +35,12 @@
     
     </summary>
     
+      <category term="Linux" scheme="https://sbcoder.cn/categories/Linux/"/>
+    
+    
+      <category term="攻防" scheme="https://sbcoder.cn/tags/%E6%94%BB%E9%98%B2/"/>
+    
+      <category term="审计" scheme="https://sbcoder.cn/tags/%E5%AE%A1%E8%AE%A1/"/>
     
   </entry>
   
@@ -347,9 +353,9 @@
       <category term="架构" scheme="https://sbcoder.cn/categories/%E6%9E%B6%E6%9E%84/"/>
     
     
-      <category term="Docker" scheme="https://sbcoder.cn/tags/Docker/"/>
-    
       <category term="架构" scheme="https://sbcoder.cn/tags/%E6%9E%B6%E6%9E%84/"/>
+    
+      <category term="Docker" scheme="https://sbcoder.cn/tags/Docker/"/>
     
   </entry>
   
