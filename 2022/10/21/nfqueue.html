@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
     
 
     
@@ -22,17 +22,18 @@
     
     <meta name="keywords" content="攻防,审计">
     <meta name="description" content="简介基于iptables的内核通讯大杀器，使用nfnetlink协议与内核通信。 他可以通过iptables定义的规则去拦截相应的网络报文，他可以基于iptables前或者后去自定义拦截这些报文，也可以通过解析这些报文做一些审计之类的工作，也可以通过这些报文来形成一个阻断功能 NFQUEU 的源代码分为 nf_queue 和 nfnetlink_queue 两部分。nf_queue 是 iptab">
-<meta name="keywords" content="攻防,审计">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自定义过滤网络请求 - nfqueue">
 <meta property="og:url" content="https://sbcoder.cn/2022/10/21/nfqueue.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
 <meta property="og:description" content="简介基于iptables的内核通讯大杀器，使用nfnetlink协议与内核通信。 他可以通过iptables定义的规则去拦截相应的网络报文，他可以基于iptables前或者后去自定义拦截这些报文，也可以通过解析这些报文做一些审计之类的工作，也可以通过这些报文来形成一个阻断功能 NFQUEU 的源代码分为 nf_queue 和 nfnetlink_queue 两部分。nf_queue 是 iptab">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2022-10-25T09:55:53.388Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-21T08:07:51.000Z">
+<meta property="article:modified_time" content="2022-10-25T09:55:54.000Z">
+<meta property="article:author" content="ai0by">
+<meta property="article:tag" content="攻防">
+<meta property="article:tag" content="审计">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="自定义过滤网络请求 - nfqueue">
-<meta name="twitter:description" content="简介基于iptables的内核通讯大杀器，使用nfnetlink协议与内核通信。 他可以通过iptables定义的规则去拦截相应的网络报文，他可以基于iptables前或者后去自定义拦截这些报文，也可以通过解析这些报文做一些审计之类的工作，也可以通过这些报文来形成一个阻断功能 NFQUEU 的源代码分为 nf_queue 和 nfnetlink_queue 两部分。nf_queue 是 iptab">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
     
@@ -43,12 +44,12 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 <body>
     <div id="loading" class="active"></div>
 
-    <aside id="menu" class="hide">
+    <aside id="menu" class="hide" >
   <div class="inner flex-row-vertical">
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
@@ -68,49 +69,49 @@
       <ul class="nav">
         
             <li class="waves-block waves-effect">
-              <a href="/">
+              <a href="/"  >
                 <i class="icon icon-lg icon-home"></i>
                 Home
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/archives">
+              <a href="/archives"  >
                 <i class="icon icon-lg icon-archives"></i>
                 Archives
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/tags">
+              <a href="/tags"  >
                 <i class="icon icon-lg icon-tags"></i>
                 Tags
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/categories">
+              <a href="/categories"  >
                 <i class="icon icon-lg icon-th-list"></i>
                 Categories
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/api">
+              <a href="/api"  >
                 <i class="icon icon-lg icon-api"></i>
                 API
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/custom">
+              <a href="/custom"  >
                 <i class="icon icon-lg icon-link"></i>
                 Link
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/2019/03/25/Hello_world.html">
+              <a href="/2019/03/25/Hello_world.html"  >
                 <i class="icon icon-lg icon-user"></i>
                 About Me
               </a>
@@ -174,17 +175,18 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安全性"><span class="post-toc-number">2.</span> <span class="post-toc-text">安全性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#配置"><span class="post-toc-number">3.</span> <span class="post-toc-text">配置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代码参考"><span class="post-toc-number">4.</span> <span class="post-toc-text">代码参考</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7"><span class="post-toc-number">2.</span> <span class="post-toc-text">安全性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="post-toc-number">3.</span> <span class="post-toc-text">配置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BB%A3%E7%A0%81%E5%8F%82%E8%80%83"><span class="post-toc-number">4.</span> <span class="post-toc-text">代码参考</span></a></li></ol>
         </nav>
     </aside>
 
 
-<article id="post-自定义过滤网络请求 - nfqueue" class="post-article article-type-post fade" itemprop="blogPost">
+<article id="post-自定义过滤网络请求 - nfqueue"
+  class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
         <h1 class="post-card-title">自定义过滤网络请求 - nfqueue</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-10-21 16:07:51" datetime="2022-10-21T08:07:51.000Z" itemprop="datePublished">2022-10-21</time>
+            <time class="post-time" title="2022-10-21 16:07:51" datetime="2022-10-21T08:07:51.000Z"  itemprop="datePublished">2022-10-21</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Linux/">Linux</a></li></ul>
@@ -192,7 +194,7 @@
 
 
             
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
     <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
 </span>
 
@@ -207,16 +209,19 @@
 <p>NFQUEUE 很容易地为任意入队的包做包重排序。然而，需要注意的是内核是使用链式列表来排队包的；所以，乱序判决会带来一定的损耗。</p>
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>按照iptables的四表五链配置规则即可</p>
 <p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t raw -I PREROUTING -p tcp --syn -j NFQUEUE --queue-num=1 --queue-bypass</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t raw -I PREROUTING -p tcp --syn -j NFQUEUE --queue-num=1 --queue-bypass</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>–queue-num 代表队列号</li>
-<li>–queue-bypass 默认情况下，如果没有用户空间程序正在监听 NFQUEUE，那么将丢弃所有要排队的数据包。使用此选项时，NFQUEUE 规则的行为类似于 ACCEPT，数据包将转移到下一个表。但此规则要求 内核 &gt;= 2.6.39，iptables &gt;= 1.4.11</li>
+<li>–queue-bypass 默认情况下，如果没有用户空间程序正在监听 NFQUEUE，那么将丢弃所有要排队的数据包。使用此选项时，NFQUEUE 规则的行为类似于 ACCEPT，数据包将转移到下一个表。但此规则要求 内核 &gt;&#x3D; 2.6.39，iptables &gt;&#x3D; 1.4.11</li>
 </ul>
 <p>同时，为了防止丢包，也有负载均衡的配置</p>
-<p><code>--queue-balance</code> 是 NFQUEUE 选项，由 Florian Westphal 实现，实现了同一条 iptables 规则的网络包负载均衡到多个队列。用法非常简单。比如，负载均衡 INPUT 流量到 0-3 队列的规则如下，注意，负载均衡是基于流实现的（made with respect to the flow），一条流的所有网络包会发送到同一个队列。但此规则要求 Linux 内核 &gt;= 2.6.31，iptables &gt;= 1.4.5</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -j NFQUEUE --queue-balance 0:3</span><br></pre></td></tr></table></figure>
-<p>其他iptables配置可以参照 <a href="https://blog.csdn.net/weixin_69543697/article/details/125839732" target="_blank" rel="noopener">iptables 配置</a></p>
-<h2 id="代码参考"><a href="#代码参考" class="headerlink" title="代码参考"></a>代码参考</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">	<span class="string">"github.com/subgraph/go-nfnetlink/nfqueue"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	q := nfqueue.NewNFQueue(<span class="number">1</span>) <span class="comment">// 此处参数1需要改为绑定的对列号</span></span><br><span class="line">	ps, err := q.Open()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"Error opening NFQueue: %v\n"</span>, err)</span><br><span class="line">		os.Exit(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> q.Close()</span><br><span class="line">	fmt.Println(<span class="string">"Start Listen ..."</span>)</span><br><span class="line">	<span class="keyword">for</span> p := <span class="keyword">range</span> ps &#123;</span><br><span class="line">		fmt.Println(p.Packet.String())</span><br><span class="line">		err = p.Accept()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>--queue-balance</code> 是 NFQUEUE 选项，由 Florian Westphal 实现，实现了同一条 iptables 规则的网络包负载均衡到多个队列。用法非常简单。比如，负载均衡 INPUT 流量到 0-3 队列的规则如下，注意，负载均衡是基于流实现的（made with respect to the flow），一条流的所有网络包会发送到同一个队列。但此规则要求 Linux 内核 &gt;&#x3D; 2.6.31，iptables &gt;&#x3D; 1.4.5</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -j NFQUEUE --queue-balance 0:3</span><br></pre></td></tr></table></figure>
+
+<p>其他iptables配置可以参照 <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_69543697/article/details/125839732">iptables 配置</a></p>
+<h2 id="代码参考"><a href="#代码参考" class="headerlink" title="代码参考"></a>代码参考</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/subgraph/go-nfnetlink/nfqueue&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	q := nfqueue.NewNFQueue(<span class="number">1</span>) <span class="comment">// 此处参数1需要改为绑定的对列号</span></span><br><span class="line">	ps, err := q.Open()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;Error opening NFQueue: %v\n&quot;</span>, err)</span><br><span class="line">		os.Exit(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> q.Close()</span><br><span class="line">	fmt.Println(<span class="string">&quot;Start Listen ...&quot;</span>)</span><br><span class="line">	<span class="keyword">for</span> p := <span class="keyword">range</span> ps &#123;</span><br><span class="line">		fmt.Println(p.Packet.String())</span><br><span class="line">		err = p.Accept()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 
         </div>
 
@@ -225,7 +230,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2022-10-25T09:55:53.388Z" itemprop="dateUpdated">2022-10-25 17:55:53</time>
+    最后更新时间：<time datetime="2022-10-25T09:55:54.000Z" itemprop="dateUpdated">2022-10-25 17:55:54</time>
 </span><br>
 
 
@@ -251,7 +256,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/审计/">审计</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/攻防/">攻防</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%A1%E8%AE%A1/" rel="tag">审计</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%94%BB%E9%98%B2/" rel="tag">攻防</a></li></ul>
 
 
             
@@ -306,7 +311,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2026/02/09/Hello_world.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">博客迁移说明</h4>
+      </a>
+    </div>
   
 
   
@@ -382,7 +394,8 @@
         </div>
         
         <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
             <div class="reward-toggle-ctrol">
                 <span class="reward-toggle-item wechat">微信</span>
                 <span class="reward-toggle-label"></span>
@@ -401,10 +414,10 @@
     <div class="top">
         
 <p>
-    <span id="busuanzi_container_site_uv" style="display:none">
+    <span id="busuanzi_container_site_uv" style='display:none'>
         站点总访客数：<span id="busuanzi_value_site_uv"></span>
     </span>
-    <span id="busuanzi_container_site_pv" style="display:none">
+    <span id="busuanzi_container_site_pv" style='display:none'>
         站点总访问量：<span id="busuanzi_value_site_pv"></span>
     </span>
 </p>
@@ -414,12 +427,14 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>ai0by &copy; 2015 - 2022</span>
+        <p><span>ai0by &copy; 2015 - 2026</span>
             <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">辽ICP备2026001716号</a><br>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
             </span>

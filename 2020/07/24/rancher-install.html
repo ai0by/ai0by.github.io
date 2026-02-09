@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
     
 
     
@@ -21,14 +21,13 @@
     
     
     <meta name="keywords" content="运维,Docker">
-    <meta name="description" content="安装Rancher注意：最低配置为 2H4G1M  本教程使用 2H8G5M Ubuntu18.04卸载旧版Docker1sudo apt-get remove docker docker-engine docker.io containerd runc 脚本安装Docker1curl -fsSL https://get.docker.com | bash -s docker --mirror A">
-<meta name="keywords" content="运维,Docker">
+    <meta name="description" content="安装Rancher注意：最低配置为 2H4G1M  本教程使用 2H8G5M Ubuntu18.04卸载旧版Docker 1sudo apt-get remove docker docker-engine docker.io containerd runc 脚本安装Docker 1curl -fsSL https:&#x2F;&#x2F;get.docker.com | bash -s docker --mirror">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Rancher快速部署k8s集群">
 <meta property="og:url" content="https://sbcoder.cn/2020/07/24/rancher-install.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
-<meta property="og:description" content="安装Rancher注意：最低配置为 2H4G1M  本教程使用 2H8G5M Ubuntu18.04卸载旧版Docker1sudo apt-get remove docker docker-engine docker.io containerd runc 脚本安装Docker1curl -fsSL https://get.docker.com | bash -s docker --mirror A">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:description" content="安装Rancher注意：最低配置为 2H4G1M  本教程使用 2H8G5M Ubuntu18.04卸载旧版Docker 1sudo apt-get remove docker docker-engine docker.io containerd runc 脚本安装Docker 1curl -fsSL https:&#x2F;&#x2F;get.docker.com | bash -s docker --mirror">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/24/UXXLLt.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/24/UXjlO1.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/24/UXjctS.png">
@@ -40,10 +39,12 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/24/UXznfS.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/24/UjC13T.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/24/Uj9r0s.png">
-<meta property="og:updated_time" content="2020-07-24T03:34:48.050Z">
+<meta property="article:published_time" content="2020-07-24T03:32:57.000Z">
+<meta property="article:modified_time" content="2020-07-24T03:34:48.000Z">
+<meta property="article:author" content="ai0by">
+<meta property="article:tag" content="运维">
+<meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用Rancher快速部署k8s集群">
-<meta name="twitter:description" content="安装Rancher注意：最低配置为 2H4G1M  本教程使用 2H8G5M Ubuntu18.04卸载旧版Docker1sudo apt-get remove docker docker-engine docker.io containerd runc 脚本安装Docker1curl -fsSL https://get.docker.com | bash -s docker --mirror A">
 <meta name="twitter:image" content="https://s1.ax1x.com/2020/07/24/UXXLLt.png">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
@@ -55,12 +56,12 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 <body>
     <div id="loading" class="active"></div>
 
-    <aside id="menu" class="hide">
+    <aside id="menu" class="hide" >
   <div class="inner flex-row-vertical">
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
@@ -80,49 +81,49 @@
       <ul class="nav">
         
             <li class="waves-block waves-effect">
-              <a href="/">
+              <a href="/"  >
                 <i class="icon icon-lg icon-home"></i>
                 Home
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/archives">
+              <a href="/archives"  >
                 <i class="icon icon-lg icon-archives"></i>
                 Archives
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/tags">
+              <a href="/tags"  >
                 <i class="icon icon-lg icon-tags"></i>
                 Tags
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/categories">
+              <a href="/categories"  >
                 <i class="icon icon-lg icon-th-list"></i>
                 Categories
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/api">
+              <a href="/api"  >
                 <i class="icon icon-lg icon-api"></i>
                 API
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/custom">
+              <a href="/custom"  >
                 <i class="icon icon-lg icon-link"></i>
                 Link
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/2019/03/25/Hello_world.html">
+              <a href="/2019/03/25/Hello_world.html"  >
                 <i class="icon icon-lg icon-user"></i>
                 About Me
               </a>
@@ -169,7 +170,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/架构/">架构</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li></ul>
 
             
         </h5>
@@ -186,112 +187,137 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装Rancher"><span class="post-toc-number">1.</span> <span class="post-toc-text">安装Rancher</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#添加集群"><span class="post-toc-number">2.</span> <span class="post-toc-text">添加集群</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#增加节点"><span class="post-toc-number">3.</span> <span class="post-toc-text">增加节点</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85Rancher"><span class="post-toc-number">1.</span> <span class="post-toc-text">安装Rancher</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B7%BB%E5%8A%A0%E9%9B%86%E7%BE%A4"><span class="post-toc-number">2.</span> <span class="post-toc-text">添加集群</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A2%9E%E5%8A%A0%E8%8A%82%E7%82%B9"><span class="post-toc-number">3.</span> <span class="post-toc-text">增加节点</span></a></li></ol>
         </nav>
     </aside>
 
 
-<article id="post-使用Rancher快速部署k8s集群" class="post-article article-type-post fade" itemprop="blogPost">
+<article id="post-使用Rancher快速部署k8s集群"
+  class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
         <h1 class="post-card-title">使用Rancher快速部署k8s集群</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-07-24 11:32:57" datetime="2020-07-24T03:32:57.000Z" itemprop="datePublished">2020-07-24</time>
+            <time class="post-time" title="2020-07-24 11:32:57" datetime="2020-07-24T03:32:57.000Z"  itemprop="datePublished">2020-07-24</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/架构/">架构</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li></ul>
 
 
 
             
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
     <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
 </span>
 
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h2 id="安装Rancher"><a href="#安装Rancher" class="headerlink" title="安装Rancher"></a>安装Rancher</h2><p><strong>注意</strong>：最低配置为 2H4G1M  本教程使用 2H8G5M Ubuntu18.04<br>卸载旧版Docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br></pre></td></tr></table></figure></p>
-<p>脚本安装Docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun</span><br></pre></td></tr></table></figure></p>
-<p>更换阿里云源<br>登录 <a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors" target="_blank" rel="noopener">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
-<p>找到 加速地址，或者使用我的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&apos;EOF&apos;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://p4sew3ge.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure></p>
-<p>安装Rancher<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d --restart=unless-stopped -v /home/rancher:/var/lib/rancher/ -p 80:80 -p 443:443 rancher/rancher:stable</span><br></pre></td></tr></table></figure></p>
-<p>打开 https://&lt;你的IP&gt;<br>忽略掉证书提示，继续进入<br><figure class="image-bubble">
+            <h2 id="安装Rancher"><a href="#安装Rancher" class="headerlink" title="安装Rancher"></a>安装Rancher</h2><p><strong>注意</strong>：最低配置为 2H4G1M  本教程使用 2H8G5M Ubuntu18.04<br>卸载旧版Docker</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br></pre></td></tr></table></figure>
+<p>脚本安装Docker</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun</span><br></pre></td></tr></table></figure>
+<p>更换阿里云源<br>登录 <a target="_blank" rel="noopener" href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors</a></p>
+<p>找到 加速地址，或者使用我的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://p4sew3ge.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<p>安装Rancher</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d --restart=unless-stopped -v /home/rancher:/var/lib/rancher/ -p 80:80 -p 443:443 rancher/rancher:stable</span><br></pre></td></tr></table></figure>
+
+<p>打开 https:&#x2F;&#x2F;&lt;你的IP&gt;<br>忽略掉证书提示，继续进入</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/UXXLLt.png" alt="1.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/UXXLLt.png" alt="1.png" title="">
                 </div>
                 <div class="image-caption">1.png</div>
-            </figure></p>
-<h2 id="添加集群"><a href="#添加集群" class="headerlink" title="添加集群"></a>添加集群</h2><p>Step1.设置语言<br><figure class="image-bubble">
+            </figure>
+<h2 id="添加集群"><a href="#添加集群" class="headerlink" title="添加集群"></a>添加集群</h2><p>Step1.设置语言</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/UXjlO1.png" alt="2.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/UXjlO1.png" alt="2.png" title="">
                 </div>
                 <div class="image-caption">2.png</div>
-            </figure></p>
-<p>Step2.选择右上角添加集群，选择自定义<br><figure class="image-bubble">
+            </figure>
+
+<p>Step2.选择右上角添加集群，选择自定义</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/UXjctS.png" alt="3.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/UXjctS.png" alt="3.png" title="">
                 </div>
                 <div class="image-caption">3.png</div>
-            </figure></p>
+            </figure>
+
 <p>Step3.设置好集群名字后直接点击下一步</p>
-<p>Step4.配置节点<br>按照需要配置，我这里选择全部<br><figure class="image-bubble">
+<p>Step4.配置节点<br>按照需要配置，我这里选择全部</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/UXvRUK.png" alt="4.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/UXvRUK.png" alt="4.png" title="">
                 </div>
                 <div class="image-caption">4.png</div>
-            </figure></p>
-<p>Step5.配置公网IP<br>云主机需要配置<br><figure class="image-bubble">
+            </figure>
+
+<p>Step5.配置公网IP<br>云主机需要配置</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/UXxexJ.png" alt="5.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/UXxexJ.png" alt="5.png" title="">
                 </div>
                 <div class="image-caption">5.png</div>
-            </figure></p>
-<p>Step6.复制命令执行<br><figure class="image-bubble">
+            </figure>
+
+<p>Step6.复制命令执行</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/UXxwZt.png" alt="6.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/UXxwZt.png" alt="6.png" title="">
                 </div>
                 <div class="image-caption">6.png</div>
-            </figure><br>执行后会启动一个容器<br><figure class="image-bubble">
+            </figure>
+<p>执行后会启动一个容器</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/UXxhd0.png" alt="7.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/UXxhd0.png" alt="7.png" title="">
                 </div>
                 <div class="image-caption">7.png</div>
-            </figure></p>
-<p>Step7.集群部署节点完成<br>准备中…<br><figure class="image-bubble">
+            </figure>
+
+<p>Step7.集群部署节点完成<br>准备中…</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/UXzPQH.png" alt="8.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/UXzPQH.png" alt="8.png" title="">
                 </div>
                 <div class="image-caption">8.png</div>
-            </figure><br>完成部署<br><figure class="image-bubble">
+            </figure>
+<p>完成部署</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/UXznfS.png" alt="9.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/UXznfS.png" alt="9.png" title="">
                 </div>
                 <div class="image-caption">9.png</div>
-            </figure></p>
-<h2 id="增加节点"><a href="#增加节点" class="headerlink" title="增加节点"></a>增加节点</h2><p>选择主机 - 编辑集群<br><figure class="image-bubble">
+            </figure>
+
+<h2 id="增加节点"><a href="#增加节点" class="headerlink" title="增加节点"></a>增加节点</h2><p>选择主机 - 编辑集群</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/UjC13T.png" alt="11.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/UjC13T.png" alt="11.png" title="">
                 </div>
                 <div class="image-caption">11.png</div>
-            </figure><br>拉到最下面，与上面添加节点方式一样，修改为子节点的ip，然后在子节点运行该命令<br>等待添加完成<br><figure class="image-bubble">
+            </figure>
+<p>拉到最下面，与上面添加节点方式一样，修改为子节点的ip，然后在子节点运行该命令<br>等待添加完成</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/07/24/Uj9r0s.png" alt="10.png" title>
+                    <img src="https://s1.ax1x.com/2020/07/24/Uj9r0s.png" alt="10.png" title="">
                 </div>
                 <div class="image-caption">10.png</div>
-            </figure></p>
-
+            </figure>
         </div>
 
         <blockquote class="post-copyright">
@@ -299,7 +325,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-07-24T03:34:48.050Z" itemprop="dateUpdated">2020-07-24 11:34:48</time>
+    最后更新时间：<time datetime="2020-07-24T03:34:48.000Z" itemprop="dateUpdated">2020-07-24 11:34:48</time>
 </span><br>
 
 
@@ -325,7 +351,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/运维/">运维</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li></ul>
 
 
             
@@ -463,7 +489,8 @@
         </div>
         
         <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
             <div class="reward-toggle-ctrol">
                 <span class="reward-toggle-item wechat">微信</span>
                 <span class="reward-toggle-label"></span>
@@ -482,10 +509,10 @@
     <div class="top">
         
 <p>
-    <span id="busuanzi_container_site_uv" style="display:none">
+    <span id="busuanzi_container_site_uv" style='display:none'>
         站点总访客数：<span id="busuanzi_value_site_uv"></span>
     </span>
-    <span id="busuanzi_container_site_pv" style="display:none">
+    <span id="busuanzi_container_site_pv" style='display:none'>
         站点总访问量：<span id="busuanzi_value_site_pv"></span>
     </span>
 </p>
@@ -495,12 +522,14 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>ai0by &copy; 2015 - 2022</span>
+        <p><span>ai0by &copy; 2015 - 2026</span>
             <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">辽ICP备2026001716号</a><br>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
             </span>

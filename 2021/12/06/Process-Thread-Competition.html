@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
     
 
     
@@ -22,19 +22,19 @@
     
     <meta name="keywords" content="优化">
     <meta name="description" content="资源竞争问题当我们有两个线程同时操作同一块儿内存空间时，就容易出现资源竞争问题，这种问题目前有各种各样的出现情况，但在分布式系统中，或者说多线程任务中都是需要处理的 多线程是线程阻塞通过调度器去协调处理的，那么按理说即使是多线程实际上也都是串行操作，为什么也会出现资源竞争呢？ 如下图">
-<meta name="keywords" content="优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程中的资源竞争">
 <meta property="og:url" content="https://sbcoder.cn/2021/12/06/Process-Thread-Competition.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
 <meta property="og:description" content="资源竞争问题当我们有两个线程同时操作同一块儿内存空间时，就容易出现资源竞争问题，这种问题目前有各种各样的出现情况，但在分布式系统中，或者说多线程任务中都是需要处理的 多线程是线程阻塞通过调度器去协调处理的，那么按理说即使是多线程实际上也都是串行操作，为什么也会出现资源竞争呢？ 如下图">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s4.ax1x.com/2021/12/06/osnXcQ.png">
 <meta property="og:image" content="https://s4.ax1x.com/2021/12/06/osKHSS.png">
-<meta property="og:updated_time" content="2021-12-07T02:37:21.882Z">
+<meta property="article:published_time" content="2021-12-06T05:54:50.000Z">
+<meta property="article:modified_time" content="2021-12-07T02:37:22.000Z">
+<meta property="article:author" content="ai0by">
+<meta property="article:tag" content="优化">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="多线程中的资源竞争">
-<meta name="twitter:description" content="资源竞争问题当我们有两个线程同时操作同一块儿内存空间时，就容易出现资源竞争问题，这种问题目前有各种各样的出现情况，但在分布式系统中，或者说多线程任务中都是需要处理的 多线程是线程阻塞通过调度器去协调处理的，那么按理说即使是多线程实际上也都是串行操作，为什么也会出现资源竞争呢？ 如下图">
 <meta name="twitter:image" content="https://s4.ax1x.com/2021/12/06/osnXcQ.png">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
@@ -46,12 +46,12 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 <body>
     <div id="loading" class="active"></div>
 
-    <aside id="menu" class="hide">
+    <aside id="menu" class="hide" >
   <div class="inner flex-row-vertical">
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
@@ -71,49 +71,49 @@
       <ul class="nav">
         
             <li class="waves-block waves-effect">
-              <a href="/">
+              <a href="/"  >
                 <i class="icon icon-lg icon-home"></i>
                 Home
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/archives">
+              <a href="/archives"  >
                 <i class="icon icon-lg icon-archives"></i>
                 Archives
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/tags">
+              <a href="/tags"  >
                 <i class="icon icon-lg icon-tags"></i>
                 Tags
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/categories">
+              <a href="/categories"  >
                 <i class="icon icon-lg icon-th-list"></i>
                 Categories
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/api">
+              <a href="/api"  >
                 <i class="icon icon-lg icon-api"></i>
                 API
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/custom">
+              <a href="/custom"  >
                 <i class="icon icon-lg icon-link"></i>
                 Link
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/2019/03/25/Hello_world.html">
+              <a href="/2019/03/25/Hello_world.html"  >
                 <i class="icon icon-lg icon-user"></i>
                 About Me
               </a>
@@ -160,7 +160,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E4%BC%98%E5%8C%96/">优化</a></li></ul>
 
             
         </h5>
@@ -177,25 +177,26 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#资源竞争问题"><span class="post-toc-number">1.</span> <span class="post-toc-text">资源竞争问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#解决策略"><span class="post-toc-number">2.</span> <span class="post-toc-text">解决策略</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#互斥"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">互斥</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#同步"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">同步</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#原子操作与锁"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">原子操作与锁</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#信号量"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">信号量</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#读写问题"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">读写问题</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#锁的安全性"><span class="post-toc-number">3.</span> <span class="post-toc-text">锁的安全性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#deadlock"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">deadlock</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#死锁解决策略"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">死锁解决策略</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#自旋锁还是互斥锁"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">自旋锁还是互斥锁</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#是否有必要读优先或者写优先"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">是否有必要读优先或者写优先</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#悲观锁和乐观锁"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">悲观锁和乐观锁</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%B5%84%E6%BA%90%E7%AB%9E%E4%BA%89%E9%97%AE%E9%A2%98"><span class="post-toc-number">1.</span> <span class="post-toc-text">资源竞争问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%A7%A3%E5%86%B3%E7%AD%96%E7%95%A5"><span class="post-toc-number">2.</span> <span class="post-toc-text">解决策略</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BA%92%E6%96%A5"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">互斥</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%90%8C%E6%AD%A5"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">同步</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E4%B8%8E%E9%94%81"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">原子操作与锁</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">信号量</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%AF%BB%E5%86%99%E9%97%AE%E9%A2%98"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">读写问题</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%94%81%E7%9A%84%E5%AE%89%E5%85%A8%E6%80%A7"><span class="post-toc-number">3.</span> <span class="post-toc-text">锁的安全性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#deadlock"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">deadlock</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%AD%BB%E9%94%81%E8%A7%A3%E5%86%B3%E7%AD%96%E7%95%A5"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">死锁解决策略</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%87%AA%E6%97%8B%E9%94%81%E8%BF%98%E6%98%AF%E4%BA%92%E6%96%A5%E9%94%81"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">自旋锁还是互斥锁</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E6%9C%89%E5%BF%85%E8%A6%81%E8%AF%BB%E4%BC%98%E5%85%88%E6%88%96%E8%80%85%E5%86%99%E4%BC%98%E5%85%88"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">是否有必要读优先或者写优先</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%82%B2%E8%A7%82%E9%94%81%E5%92%8C%E4%B9%90%E8%A7%82%E9%94%81"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">悲观锁和乐观锁</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
 
-<article id="post-多线程中的资源竞争" class="post-article article-type-post fade" itemprop="blogPost">
+<article id="post-多线程中的资源竞争"
+  class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
         <h1 class="post-card-title">多线程中的资源竞争</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-12-06 13:54:50" datetime="2021-12-06T05:54:50.000Z" itemprop="datePublished">2021-12-06</time>
+            <time class="post-time" title="2021-12-06 13:54:50" datetime="2021-12-06T05:54:50.000Z"  itemprop="datePublished">2021-12-06</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E4%BC%98%E5%8C%96/">优化</a></li></ul>
 
 
 
             
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
     <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
 </span>
 
@@ -208,19 +209,21 @@
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s4.ax1x.com/2021/12/06/osnXcQ.png" alt="osnXcQ.png" title>
+                    <img src="https://s4.ax1x.com/2021/12/06/osnXcQ.png" alt="osnXcQ.png" title="">
                 </div>
                 <div class="image-caption">osnXcQ.png</div>
             </figure>
+
 <p>当进入线程操作时，会先把变量存的值存入寄存器，待到处理完后在重新放回i的所属内存空间，那么当在放回内存时就有可能覆盖掉上一个线程操作的值，也就出现了资源竞争</p>
 <h2 id="解决策略"><a href="#解决策略" class="headerlink" title="解决策略"></a>解决策略</h2><h3 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h3><p>由于多线程执行操作共享变量的这段代码可能会导致竞争状态，因此我们将此段代码称为临界区(critical section)，它是访问共享资源的代码片段，一定不能给多线程同时执行。我们希望这段代码是互斥(mutualexclusion)的，也就说保证一个线程在临界区执行时，其他线程应该 被阻止进入临界区，说白了，就是这段代码执行过程中，最多只能出现一个线程。</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s4.ax1x.com/2021/12/06/osKHSS.png" alt="osKHSS.png" title>
+                    <img src="https://s4.ax1x.com/2021/12/06/osKHSS.png" alt="osKHSS.png" title="">
                 </div>
                 <div class="image-caption">osKHSS.png</div>
             </figure>
+
 <p>这种行为也被称为 <code>互斥</code>，通过阻塞完成</p>
 <h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>另外还有一种Go语言中常用的操作是 <code>同步</code>，当任务一和任务二同时执行时，任务二的某处任务需要等到等到任务一执行完得到的数据才能继续执行任务二，相当于Go中的信道阻塞<code>select</code>，只有取到数据才执行否则就一直阻塞</p>
 <h3 id="原子操作与锁"><a href="#原子操作与锁" class="headerlink" title="原子操作与锁"></a>原子操作与锁</h3><p>原子操作，类似于事务，原子操作就是要么全部执行，要么都不执行，不能出现执行到一半的中间状态</p>
@@ -259,7 +262,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2021-12-07T02:37:21.882Z" itemprop="dateUpdated">2021-12-07 10:37:21</time>
+    最后更新时间：<time datetime="2021-12-07T02:37:22.000Z" itemprop="dateUpdated">2021-12-07 10:37:22</time>
 </span><br>
 
 
@@ -285,7 +288,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BC%98%E5%8C%96/" rel="tag">优化</a></li></ul>
 
 
             
@@ -423,7 +426,8 @@
         </div>
         
         <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
             <div class="reward-toggle-ctrol">
                 <span class="reward-toggle-item wechat">微信</span>
                 <span class="reward-toggle-label"></span>
@@ -442,10 +446,10 @@
     <div class="top">
         
 <p>
-    <span id="busuanzi_container_site_uv" style="display:none">
+    <span id="busuanzi_container_site_uv" style='display:none'>
         站点总访客数：<span id="busuanzi_value_site_uv"></span>
     </span>
-    <span id="busuanzi_container_site_pv" style="display:none">
+    <span id="busuanzi_container_site_pv" style='display:none'>
         站点总访问量：<span id="busuanzi_value_site_pv"></span>
     </span>
 </p>
@@ -455,12 +459,14 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>ai0by &copy; 2015 - 2022</span>
+        <p><span>ai0by &copy; 2015 - 2026</span>
             <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">辽ICP备2026001716号</a><br>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
             </span>

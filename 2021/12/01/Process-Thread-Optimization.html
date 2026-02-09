@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
     
 
     
@@ -22,13 +22,12 @@
     
     <meta name="keywords" content="优化">
     <meta name="description" content="本文以Go语言为基础 进程基本概念将编译好的的二进制程序，在系统中执行起来的程序会被CPU装载到内存中，CPU会按照程序的指令去顺序执行程序，这个执行中的程序被称之为进程，多个程序同时执行则被称为多进程 单核CPU在执行任务过程中不能同时执行多余的任务，但是我们在实际场景中往往可以看到一台电脑有非常多的进程在运行，这就引出了进程的中断，当程序在读写硬盘这种慢IO操作时，当前进程会发出中断指令，使得">
-<meta name="keywords" content="优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="进程与线程,概念及优化空间">
 <meta property="og:url" content="https://sbcoder.cn/2021/12/01/Process-Thread-Optimization.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
 <meta property="og:description" content="本文以Go语言为基础 进程基本概念将编译好的的二进制程序，在系统中执行起来的程序会被CPU装载到内存中，CPU会按照程序的指令去顺序执行程序，这个执行中的程序被称之为进程，多个程序同时执行则被称为多进程 单核CPU在执行任务过程中不能同时执行多余的任务，但是我们在实际场景中往往可以看到一台电脑有非常多的进程在运行，这就引出了进程的中断，当程序在读写硬盘这种慢IO操作时，当前进程会发出中断指令，使得">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/01/o8RNHH.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/01/o8RSBQ.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/01/oG86l6.png">
@@ -36,10 +35,11 @@
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/03/oa1uHf.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/03/oa38IO.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/12/03/oa89YD.png">
-<meta property="og:updated_time" content="2021-12-03T09:18:25.051Z">
+<meta property="article:published_time" content="2021-12-01T02:36:57.000Z">
+<meta property="article:modified_time" content="2021-12-03T09:18:26.000Z">
+<meta property="article:author" content="ai0by">
+<meta property="article:tag" content="优化">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="进程与线程,概念及优化空间">
-<meta name="twitter:description" content="本文以Go语言为基础 进程基本概念将编译好的的二进制程序，在系统中执行起来的程序会被CPU装载到内存中，CPU会按照程序的指令去顺序执行程序，这个执行中的程序被称之为进程，多个程序同时执行则被称为多进程 单核CPU在执行任务过程中不能同时执行多余的任务，但是我们在实际场景中往往可以看到一台电脑有非常多的进程在运行，这就引出了进程的中断，当程序在读写硬盘这种慢IO操作时，当前进程会发出中断指令，使得">
 <meta name="twitter:image" content="https://z3.ax1x.com/2021/12/01/o8RNHH.png">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
@@ -51,12 +51,12 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 <body>
     <div id="loading" class="active"></div>
 
-    <aside id="menu" class="hide">
+    <aside id="menu" class="hide" >
   <div class="inner flex-row-vertical">
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
@@ -76,49 +76,49 @@
       <ul class="nav">
         
             <li class="waves-block waves-effect">
-              <a href="/">
+              <a href="/"  >
                 <i class="icon icon-lg icon-home"></i>
                 Home
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/archives">
+              <a href="/archives"  >
                 <i class="icon icon-lg icon-archives"></i>
                 Archives
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/tags">
+              <a href="/tags"  >
                 <i class="icon icon-lg icon-tags"></i>
                 Tags
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/categories">
+              <a href="/categories"  >
                 <i class="icon icon-lg icon-th-list"></i>
                 Categories
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/api">
+              <a href="/api"  >
                 <i class="icon icon-lg icon-api"></i>
                 API
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/custom">
+              <a href="/custom"  >
                 <i class="icon icon-lg icon-link"></i>
                 Link
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/2019/03/25/Hello_world.html">
+              <a href="/2019/03/25/Hello_world.html"  >
                 <i class="icon icon-lg icon-user"></i>
                 About Me
               </a>
@@ -165,7 +165,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E4%BC%98%E5%8C%96/">优化</a></li></ul>
 
             
         </h5>
@@ -182,25 +182,26 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程"><span class="post-toc-number">1.</span> <span class="post-toc-text">进程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本概念"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">基本概念</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程"><span class="post-toc-number">2.</span> <span class="post-toc-text">线程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本概念-1"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">基本概念</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#三种形式"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">三种形式</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#调度"><span class="post-toc-number">3.</span> <span class="post-toc-text">调度</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调度模型"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">调度模型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#通信"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">通信</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#思考"><span class="post-toc-number">4.</span> <span class="post-toc-text">思考</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="post-toc-number">1.</span> <span class="post-toc-text">进程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">基本概念</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="post-toc-number">2.</span> <span class="post-toc-text">线程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-1"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">基本概念</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%89%E7%A7%8D%E5%BD%A2%E5%BC%8F"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">三种形式</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%B0%83%E5%BA%A6"><span class="post-toc-number">3.</span> <span class="post-toc-text">调度</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%B0%83%E5%BA%A6%E6%A8%A1%E5%9E%8B"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">调度模型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%80%9A%E4%BF%A1"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">通信</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%80%9D%E8%80%83"><span class="post-toc-number">4.</span> <span class="post-toc-text">思考</span></a></li></ol>
         </nav>
     </aside>
 
 
-<article id="post-进程与线程与协程-协程GMP调度" class="post-article article-type-post fade" itemprop="blogPost">
+<article id="post-进程与线程与协程-协程GMP调度"
+  class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
         <h1 class="post-card-title">进程与线程,概念及优化空间</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-12-01 10:36:57" datetime="2021-12-01T02:36:57.000Z" itemprop="datePublished">2021-12-01</time>
+            <time class="post-time" title="2021-12-01 10:36:57" datetime="2021-12-01T02:36:57.000Z"  itemprop="datePublished">2021-12-01</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/优化/">优化</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E4%BC%98%E5%8C%96/">优化</a></li></ul>
 
 
 
             
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
     <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
 </span>
 
@@ -213,18 +214,20 @@
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://z3.ax1x.com/2021/12/01/o8RNHH.png" alt="o8RNHH.png" title>
+                    <img src="https://z3.ax1x.com/2021/12/01/o8RNHH.png" alt="o8RNHH.png" title="">
                 </div>
                 <div class="image-caption">o8RNHH.png</div>
             </figure>
+
 <p>值得注意的是，并发和并行并非一样的东西，并发是代表一个CPU核心同时处理多个任务的情况，而并行是多个CPU核心处理多个任务</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://z3.ax1x.com/2021/12/01/o8RSBQ.png" alt="o8RSBQ.png" title>
+                    <img src="https://z3.ax1x.com/2021/12/01/o8RSBQ.png" alt="o8RSBQ.png" title="">
                 </div>
                 <div class="image-caption">o8RSBQ.png</div>
             </figure>
+
 <p>当进程中有大量硬盘IO操作时，将会出现大量的进程阻塞行为，而这种情况可能会占用大量的物理内存，在虚拟内存中，则会将这种阻塞的进程物理内存地址转移至硬盘地址，直至阻塞结束后再替换回物理内存中</p>
 <p>而这种进程的执行过程也可以分为 创建、终止、阻塞、唤醒 的过程</p>
 <h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><h3 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h3><p>一个进程可以有一个或多个线程</p>
@@ -241,10 +244,11 @@
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://z3.ax1x.com/2021/12/01/oG86l6.png" alt="oG86l6.png" title>
+                    <img src="https://z3.ax1x.com/2021/12/01/oG86l6.png" alt="oG86l6.png" title="">
                 </div>
                 <div class="image-caption">oG86l6.png</div>
             </figure>
+
 <p>通常我们常说的线程大部分指的是内核线程 ~</p>
 <p>用户线程是由用户发起的调用，操作系统无法干预，当用户线程执行过程中，操作系统无法查看当前线程的情况也无法由操作系统关闭，即任务管理器也没用（协程则可以通过 pprof 之类的debug工具去测试）</p>
 <p>用户线程相当于用户自发开启的线程，不通过系统内核，也可以认为启动用户线程的速度要比内核线程要快的多，也因为如此，即使是不支持线程的系统，也能由用户自发开启的线程来开启用户线程无需兼容内核</p>
@@ -261,37 +265,41 @@
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://z3.ax1x.com/2021/12/03/oaUUtx.png" alt="oaUUtx.png" title>
+                    <img src="https://z3.ax1x.com/2021/12/03/oaUUtx.png" alt="oaUUtx.png" title="">
                 </div>
                 <div class="image-caption">oaUUtx.png</div>
             </figure>
+
 <h3 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h3><p><strong>管道</strong><br>在Linux中我们常用的通信管道，<code>|</code>，如下命令中 <code>ps -ef |grep sbcoder</code> ，里面的符号位 <code>|</code> 就是一个管道，他代表将前一个进程中的数据带到下一个进程中</p>
 <p>这种没有命名的管道被称之为 匿名管道，匿名管道将在进程结束后释放，有匿名则也有有名字的管道 命名管道 ，Linux中通过关键字 <code>mkfifo</code> 创建命名管道 <code>mkfifo sbcoderChannel</code>，通过命令可以将数据传输至管道中，<code>echo &quot;sbcoder&quot; &gt; sbcoderChannel</code>，接着命令就卡住了，这与Go语言中的信道很类似，有阻塞的作用通过阻塞我们可以做很多事情，有入则有出，可以通过命令取出数据 <code>cat &lt; sbcoderChannel</code> 获取刚才echo进去的数据</p>
 <p>管道实际上是内核中的缓存，而读取管道数据则是在一个进程中fork出一个子进程去读取，而如果由一个进程同事负责读写则会非常混乱，所以如果需要双向通信则需要fork两个子进程，而创建子进程也会徒增负荷，也要尽可能避免此类操作</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://z3.ax1x.com/2021/12/03/oa1uHf.png" alt="oa1uHf.png" title>
+                    <img src="https://z3.ax1x.com/2021/12/03/oa1uHf.png" alt="oa1uHf.png" title="">
                 </div>
                 <div class="image-caption">oa1uHf.png</div>
             </figure>
+
 <p><strong>消息队列</strong><br>消息队列是保存在内核中的消息链表，由于消息队列的特性，会出现通信不及时和大小限制问题，更适合小数据的场景</p>
 <p><strong>共享内存</strong><br>进程A与进程B都使用虚拟内存（只保存物理地址），则可以实现同一个数据块儿被两个进程同时使用</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://z3.ax1x.com/2021/12/03/oa38IO.png" alt="oa38IO.png" title>
+                    <img src="https://z3.ax1x.com/2021/12/03/oa38IO.png" alt="oa38IO.png" title="">
                 </div>
                 <div class="image-caption">oa38IO.png</div>
             </figure>
+
 <p>当A和B同时操作一块儿内存时，则也会出现问题，很容易造成数据冲突，就出现了<code>lock</code>的概念，也被称为 <code>信号量</code>，A操作时将信号量数值更改，B同时操作时发现数值已经被更改则说明资源被占用，进程阻塞，A在操作完成后会将信号量数值再改回去，B此时即可继续执行</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://z3.ax1x.com/2021/12/03/oa89YD.png" alt="oa89YD.png" title>
+                    <img src="https://z3.ax1x.com/2021/12/03/oa89YD.png" alt="oa89YD.png" title="">
                 </div>
                 <div class="image-caption">oa89YD.png</div>
             </figure>
+
 <p><strong>信号Signal</strong></p>
 <p>信号，也就是Signal，通过进程中的各种指令做通信，例如：程序接收到快捷键 <code>ctrl + c</code> 则会终止程序</p>
 <p>Go语言中的Signal同理~</p>
@@ -317,7 +325,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2021-12-03T09:18:25.051Z" itemprop="dateUpdated">2021-12-03 17:18:25</time>
+    最后更新时间：<time datetime="2021-12-03T09:18:26.000Z" itemprop="dateUpdated">2021-12-03 17:18:26</time>
 </span><br>
 
 
@@ -343,7 +351,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BC%98%E5%8C%96/" rel="tag">优化</a></li></ul>
 
 
             
@@ -481,7 +489,8 @@
         </div>
         
         <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
             <div class="reward-toggle-ctrol">
                 <span class="reward-toggle-item wechat">微信</span>
                 <span class="reward-toggle-label"></span>
@@ -500,10 +509,10 @@
     <div class="top">
         
 <p>
-    <span id="busuanzi_container_site_uv" style="display:none">
+    <span id="busuanzi_container_site_uv" style='display:none'>
         站点总访客数：<span id="busuanzi_value_site_uv"></span>
     </span>
-    <span id="busuanzi_container_site_pv" style="display:none">
+    <span id="busuanzi_container_site_pv" style='display:none'>
         站点总访问量：<span id="busuanzi_value_site_pv"></span>
     </span>
 </p>
@@ -513,12 +522,14 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>ai0by &copy; 2015 - 2022</span>
+        <p><span>ai0by &copy; 2015 - 2026</span>
             <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">辽ICP备2026001716号</a><br>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
             </span>

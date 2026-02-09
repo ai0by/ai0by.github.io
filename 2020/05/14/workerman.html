@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
     
 
     
@@ -22,22 +22,24 @@
     
     <meta name="keywords" content="socket,通讯,workerman">
     <meta name="description" content="简介适用于 客户端-服务端 客户端-客户端 一对多 多对多的关系，多个客户端之间的长连接通信，聊天室，在线客服，服务端反向推送播报消息 特性：多进程，长连接，高并发，常驻内存…  客户端与worker进程                                                                                             客户端与w">
-<meta name="keywords" content="socket,通讯,workerman">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Workerman 适合PHPer使用的Socket通讯框架">
 <meta property="og:url" content="https://sbcoder.cn/2020/05/14/workerman.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
 <meta property="og:description" content="简介适用于 客户端-服务端 客户端-客户端 一对多 多对多的关系，多个客户端之间的长连接通信，聊天室，在线客服，服务端反向推送播报消息 特性：多进程，长连接，高并发，常驻内存…  客户端与worker进程                                                                                             客户端与w">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s1.ax1x.com/2020/05/14/Y0lDgg.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/05/14/Y0lrvQ.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/05/14/YBkdJA.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/05/14/YBkaid.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/05/14/Y0J6AA.png">
-<meta property="og:updated_time" content="2020-05-14T13:51:53.699Z">
+<meta property="article:published_time" content="2020-05-14T13:48:33.000Z">
+<meta property="article:modified_time" content="2020-05-14T13:51:54.000Z">
+<meta property="article:author" content="ai0by">
+<meta property="article:tag" content="socket">
+<meta property="article:tag" content="通讯">
+<meta property="article:tag" content="workerman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Workerman 适合PHPer使用的Socket通讯框架">
-<meta name="twitter:description" content="简介适用于 客户端-服务端 客户端-客户端 一对多 多对多的关系，多个客户端之间的长连接通信，聊天室，在线客服，服务端反向推送播报消息 特性：多进程，长连接，高并发，常驻内存…  客户端与worker进程                                                                                             客户端与w">
 <meta name="twitter:image" content="https://s1.ax1x.com/2020/05/14/Y0lDgg.png">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
@@ -49,12 +51,12 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 <body>
     <div id="loading" class="active"></div>
 
-    <aside id="menu" class="hide">
+    <aside id="menu" class="hide" >
   <div class="inner flex-row-vertical">
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
@@ -74,49 +76,49 @@
       <ul class="nav">
         
             <li class="waves-block waves-effect">
-              <a href="/">
+              <a href="/"  >
                 <i class="icon icon-lg icon-home"></i>
                 Home
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/archives">
+              <a href="/archives"  >
                 <i class="icon icon-lg icon-archives"></i>
                 Archives
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/tags">
+              <a href="/tags"  >
                 <i class="icon icon-lg icon-tags"></i>
                 Tags
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/categories">
+              <a href="/categories"  >
                 <i class="icon icon-lg icon-th-list"></i>
                 Categories
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/api">
+              <a href="/api"  >
                 <i class="icon icon-lg icon-api"></i>
                 API
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/custom">
+              <a href="/custom"  >
                 <i class="icon icon-lg icon-link"></i>
                 Link
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/2019/03/25/Hello_world.html">
+              <a href="/2019/03/25/Hello_world.html"  >
                 <i class="icon icon-lg icon-user"></i>
                 About Me
               </a>
@@ -180,17 +182,18 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装Workerman框架"><span class="post-toc-number">2.</span> <span class="post-toc-text">安装Workerman框架</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#服务端"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">服务端</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前端测试"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">前端测试</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#效果展示"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">效果展示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Workermen框架支持的协议"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">Workermen框架支持的协议</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#整合ThinkPHP"><span class="post-toc-number">3.</span> <span class="post-toc-text">整合ThinkPHP</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#说明"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">说明</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装及引用"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">安装及引用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#服务端-1"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">服务端</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结语"><span class="post-toc-number">4.</span> <span class="post-toc-text">结语</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85Workerman%E6%A1%86%E6%9E%B6"><span class="post-toc-number">2.</span> <span class="post-toc-text">安装Workerman框架</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">服务端</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%89%8D%E7%AB%AF%E6%B5%8B%E8%AF%95"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">前端测试</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">效果展示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Workermen%E6%A1%86%E6%9E%B6%E6%94%AF%E6%8C%81%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">Workermen框架支持的协议</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%95%B4%E5%90%88ThinkPHP"><span class="post-toc-number">3.</span> <span class="post-toc-text">整合ThinkPHP</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%AF%B4%E6%98%8E"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">说明</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85%E5%8F%8A%E5%BC%95%E7%94%A8"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">安装及引用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF-1"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">服务端</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="post-toc-number">4.</span> <span class="post-toc-text">结语</span></a></li></ol>
         </nav>
     </aside>
 
 
-<article id="post-Workerman-适合PHPer使用的Socket通讯框架" class="post-article article-type-post fade" itemprop="blogPost">
+<article id="post-Workerman-适合PHPer使用的Socket通讯框架"
+  class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
         <h1 class="post-card-title">Workerman 适合PHPer使用的Socket通讯框架</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-05-14 21:48:33" datetime="2020-05-14T13:48:33.000Z" itemprop="datePublished">2020-05-14</time>
+            <time class="post-time" title="2020-05-14 21:48:33" datetime="2020-05-14T13:48:33.000Z"  itemprop="datePublished">2020-05-14</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a></li></ul>
@@ -198,7 +201,7 @@
 
 
             
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
     <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
 </span>
 
@@ -211,56 +214,69 @@
 <li>客户端与worker进程<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/05/14/Y0lDgg.png" alt="客户端与worker进程.png" title>
+                    <img src="https://s1.ax1x.com/2020/05/14/Y0lDgg.png" alt="客户端与worker进程.png" title="">
                 </div>
                 <div class="image-caption">客户端与worker进程.png</div>
             </figure></li>
 <li>主进程与worker子进程<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/05/14/Y0lrvQ.png" alt="主进程与worker子进程.png" title>
+                    <img src="https://s1.ax1x.com/2020/05/14/Y0lrvQ.png" alt="主进程与worker子进程.png" title="">
                 </div>
                 <div class="image-caption">主进程与worker子进程.png</div>
-            </figure>
-</li>
+            </figure></li>
 </ul>
 <p>使用Workerman可以做很多有趣的事。（工业自动化，互联网工业，PLC机械报警…），通过长连接取数据，操作数据等，但PHP并不适用于工业领域。做一个仿im聊天工具，除了前端展示界面，后端也要考虑全面，更多的依赖于长连接。</p>
-<p>本文参考 <a href="http://doc.workerman.net" target="_blank" rel="noopener">workerman官方文档</a><br>本文参考 <a href="https://github.com/hsu1943/thinksocketio" target="_blank" rel="noopener">thinksocketio - 基于socketio的聊天室Demo</a></p>
-<h2 id="安装Workerman框架"><a href="#安装Workerman框架" class="headerlink" title="安装Workerman框架"></a>安装Workerman框架</h2><h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><p>创建一个文件夹 我这里使用 <code>testWebSocket</code><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir testWebSocket</span><br><span class="line">cd testWebSocket</span><br></pre></td></tr></table></figure></p>
+<p>本文参考 <a target="_blank" rel="noopener" href="http://doc.workerman.net/">workerman官方文档</a><br>本文参考 <a target="_blank" rel="noopener" href="https://github.com/hsu1943/thinksocketio">thinksocketio - 基于socketio的聊天室Demo</a></p>
+<h2 id="安装Workerman框架"><a href="#安装Workerman框架" class="headerlink" title="安装Workerman框架"></a>安装Workerman框架</h2><h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3><p>创建一个文件夹 我这里使用 <code>testWebSocket</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir testWebSocket</span><br><span class="line">cd testWebSocket</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>git形式安装(推荐)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/walkor/Workerman</span><br></pre></td></tr></table></figure>
-</li>
+<li>git形式安装(推荐)<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/walkor/Workerman</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p>根据官方文档创建一个示例 在 <code>testWebSocket</code> 下创建一个 PHP文件 test.php<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">use</span> <span class="title">Workerman</span>\<span class="title">Worker</span>;</span><br><span class="line"><span class="keyword">require_once</span> <span class="keyword">__DIR__</span> . <span class="string">'/Workerman/Autoloader.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意：这里与上个例子不同，使用的是websocket协议</span></span><br><span class="line">$ws_worker = <span class="keyword">new</span> Worker(<span class="string">"websocket://0.0.0.0:2000"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动4个进程对外提供服务</span></span><br><span class="line">$ws_worker-&gt;count = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当收到客户端发来的数据后返回hello $data给客户端</span></span><br><span class="line">$ws_worker-&gt;onMessage = <span class="function"><span class="keyword">function</span><span class="params">($connection, $data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 向客户端发送hello $data</span></span><br><span class="line">    $connection-&gt;send(<span class="string">'hello '</span> . $data);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 运行worker</span></span><br><span class="line">Worker::runAll()</span><br></pre></td></tr></table></figure></p>
-<h3 id="前端测试"><a href="#前端测试" class="headerlink" title="前端测试"></a>前端测试</h3><p>前端测试例子代码 直接在Google浏览器执行<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ws = <span class="keyword">new</span> WebSocket(<span class="string">"ws://127.0.0.1:2000"</span>);</span><br><span class="line">ws.onopen = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">"连接成功"</span>);</span><br><span class="line">    ws.send(<span class="string">'tom'</span>);</span><br><span class="line">    alert(<span class="string">"给服务端发送一个字符串：tom"</span>);</span><br><span class="line">&#125;;</span><br><span class="line">ws.onmessage = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">"收到服务端的消息："</span> + e.data);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>根据官方文档创建一个示例 在 <code>testWebSocket</code> 下创建一个 PHP文件 test.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">use</span> <span class="title">Workerman</span>\<span class="title">Worker</span>;</span><br><span class="line"><span class="keyword">require_once</span> <span class="keyword">__DIR__</span> . <span class="string">&#x27;/Workerman/Autoloader.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意：这里与上个例子不同，使用的是websocket协议</span></span><br><span class="line"><span class="variable">$ws_worker</span> = <span class="keyword">new</span> <span class="title class_">Worker</span>(<span class="string">&quot;websocket://0.0.0.0:2000&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动4个进程对外提供服务</span></span><br><span class="line"><span class="variable">$ws_worker</span>-&gt;count = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当收到客户端发来的数据后返回hello $data给客户端</span></span><br><span class="line"><span class="variable">$ws_worker</span>-&gt;onMessage = <span class="function"><span class="keyword">function</span>(<span class="params"><span class="variable">$connection</span>, <span class="variable">$data</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 向客户端发送hello $data</span></span><br><span class="line">    <span class="variable">$connection</span>-&gt;<span class="title function_ invoke__">send</span>(<span class="string">&#x27;hello &#x27;</span> . <span class="variable">$data</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 运行worker</span></span><br><span class="line"><span class="title class_">Worker</span>::<span class="title function_ invoke__">runAll</span>()</span><br></pre></td></tr></table></figure>
+<h3 id="前端测试"><a href="#前端测试" class="headerlink" title="前端测试"></a>前端测试</h3><p>前端测试例子代码 直接在Google浏览器执行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ws = <span class="keyword">new</span> <span class="title class_">WebSocket</span>(<span class="string">&quot;ws://127.0.0.1:2000&quot;</span>);</span><br><span class="line">ws.<span class="property">onopen</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&quot;连接成功&quot;</span>);</span><br><span class="line">    ws.<span class="title function_">send</span>(<span class="string">&#x27;tom&#x27;</span>);</span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&quot;给服务端发送一个字符串：tom&quot;</span>);</span><br><span class="line">&#125;;</span><br><span class="line">ws.<span class="property">onmessage</span> = <span class="keyword">function</span>(<span class="params">e</span>) &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&quot;收到服务端的消息：&quot;</span> + e.<span class="property">data</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 <h3 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h3><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/05/14/YBkdJA.png" alt="执行界面.png" title>
+                    <img src="https://s1.ax1x.com/2020/05/14/YBkdJA.png" alt="执行界面.png" title="">
                 </div>
                 <div class="image-caption">执行界面.png</div>
             </figure>
+
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/05/14/YBkaid.png" alt="服务端界面.png" title>
+                    <img src="https://s1.ax1x.com/2020/05/14/YBkaid.png" alt="服务端界面.png" title="">
                 </div>
                 <div class="image-caption">服务端界面.png</div>
             </figure>
-<h3 id="Workermen框架支持的协议"><a href="#Workermen框架支持的协议" class="headerlink" title="Workermen框架支持的协议"></a>Workermen框架支持的协议</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$websocket_worker = <span class="keyword">new</span> Worker(<span class="string">'websocket://0.0.0.0:2345'</span>);</span><br><span class="line"><span class="comment">// text协议</span></span><br><span class="line">$text_worker = <span class="keyword">new</span> Worker(<span class="string">'text://0.0.0.0:2346'</span>);</span><br><span class="line"><span class="comment">// frame协议</span></span><br><span class="line">$frame_worker = <span class="keyword">new</span> Worker(<span class="string">'frame://0.0.0.0:2347'</span>);</span><br><span class="line"><span class="comment">// tcp Worker，直接基于socket传输，不使用任何应用层协议</span></span><br><span class="line">$tcp_worker = <span class="keyword">new</span> Worker(<span class="string">'tcp://0.0.0.0:2348'</span>);</span><br><span class="line"><span class="comment">// udp Worker，不使用任何应用层协议</span></span><br><span class="line">$udp_worker = <span class="keyword">new</span> Worker(<span class="string">'udp://0.0.0.0:2349'</span>);</span><br><span class="line"><span class="comment">// unix domain Worker，不使用任何应用层协议</span></span><br><span class="line">$unix_worker = <span class="keyword">new</span> Worker(<span class="string">'unix:///tmp/wm.sock'</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Workermen框架支持的协议"><a href="#Workermen框架支持的协议" class="headerlink" title="Workermen框架支持的协议"></a>Workermen框架支持的协议</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$websocket_worker</span> = <span class="keyword">new</span> <span class="title class_">Worker</span>(<span class="string">&#x27;websocket://0.0.0.0:2345&#x27;</span>);</span><br><span class="line"><span class="comment">// text协议</span></span><br><span class="line"><span class="variable">$text_worker</span> = <span class="keyword">new</span> <span class="title class_">Worker</span>(<span class="string">&#x27;text://0.0.0.0:2346&#x27;</span>);</span><br><span class="line"><span class="comment">// frame协议</span></span><br><span class="line"><span class="variable">$frame_worker</span> = <span class="keyword">new</span> <span class="title class_">Worker</span>(<span class="string">&#x27;frame://0.0.0.0:2347&#x27;</span>);</span><br><span class="line"><span class="comment">// tcp Worker，直接基于socket传输，不使用任何应用层协议</span></span><br><span class="line"><span class="variable">$tcp_worker</span> = <span class="keyword">new</span> <span class="title class_">Worker</span>(<span class="string">&#x27;tcp://0.0.0.0:2348&#x27;</span>);</span><br><span class="line"><span class="comment">// udp Worker，不使用任何应用层协议</span></span><br><span class="line"><span class="variable">$udp_worker</span> = <span class="keyword">new</span> <span class="title class_">Worker</span>(<span class="string">&#x27;udp://0.0.0.0:2349&#x27;</span>);</span><br><span class="line"><span class="comment">// unix domain Worker，不使用任何应用层协议</span></span><br><span class="line"><span class="variable">$unix_worker</span> = <span class="keyword">new</span> <span class="title class_">Worker</span>(<span class="string">&#x27;unix:///tmp/wm.sock&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
 <h2 id="整合ThinkPHP"><a href="#整合ThinkPHP" class="headerlink" title="整合ThinkPHP"></a>整合ThinkPHP</h2><h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>Workermen是一个成熟的单独框架，在ThinkPHP中也可以使用Composer安装对应的扩展来使用，这里使用了针对PHP开发的扩展 PHPSocket.IO。<br>PHPSocket.IO设计的目标是利用PHP构建能够在不同浏览器和移动设备上良好运行的实时应用，如实时分析系统、在线聊天室、在线客服系统、评论系统、WebIM等。 PHPSocket.IO与workerman的区别是，PHPSocket.IO基于workerman开发，workerman有的特性PHPSocket.IO都支持。 PHPSocket.IO最大的优势是对各种浏览器的兼容性更好。</p>
-<h3 id="安装及引用"><a href="#安装及引用" class="headerlink" title="安装及引用"></a>安装及引用</h3><p>使用Composer 安装对应的扩展<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require workerman/phpsocket.io</span><br></pre></td></tr></table></figure></p>
-<p>在编辑代码时引用对应的扩展即可<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Workerman</span>\<span class="title">Worker</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">PHPSocketIO</span>\<span class="title">SocketIO</span>;</span><br></pre></td></tr></table></figure></p>
-<h3 id="服务端-1"><a href="#服务端-1" class="headerlink" title="服务端"></a>服务端</h3><p>创建一个服务端 <code>application\socketio\controller\server.php</code><br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">app</span>\<span class="title">socketio</span>\<span class="title">controller</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Workerman</span>\<span class="title">Worker</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">PHPSocketIO</span>\<span class="title">SocketIO</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">think</span>\<span class="title">Db</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Server</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// 在2021端口创建服务</span></span><br><span class="line">        $io = <span class="keyword">new</span> SocketIO(<span class="number">2021</span>);</span><br><span class="line">        $io-&gt;on(<span class="string">'connection'</span>, <span class="function"><span class="keyword">function</span><span class="params">($socket)</span><span class="title">use</span><span class="params">($io)</span></span>&#123;</span><br><span class="line">            $socket-&gt;on(<span class="string">'chat message'</span>, <span class="function"><span class="keyword">function</span><span class="params">($msg)</span><span class="title">use</span><span class="params">($io)</span></span>&#123;</span><br><span class="line">                $io-&gt;emit(<span class="string">'chat message'</span>, $msg);</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="comment">// 监听到新的客户端连接即在服务端输出'new connection'</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'new connection'</span>.<span class="string">"\n"</span>;</span><br><span class="line">            <span class="comment">// 并向服务端发送'连接成功'</span></span><br><span class="line">            $socket-&gt;emit(<span class="string">'success'</span>, <span class="string">'连接成功'</span>);</span><br><span class="line">            <span class="comment">// 服务端发送消息过来</span></span><br><span class="line">            $socket-&gt;on(<span class="string">'sendMsg'</span>, <span class="function"><span class="keyword">function</span><span class="params">($msg)</span><span class="title">use</span><span class="params">($io)</span></span>&#123;</span><br><span class="line">                <span class="comment">// 在服务端输出消息</span></span><br><span class="line">                <span class="keyword">echo</span> $msg.<span class="string">"\n"</span>;</span><br><span class="line">                <span class="comment">// 在收到的消息前面拼接'收到'后向客户端发送回去</span></span><br><span class="line">                $io-&gt;emit(<span class="string">'sendMsg'</span>, <span class="string">'收到"'</span>.$msg.<span class="string">'"'</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// 启动服务</span></span><br><span class="line">        Worker::runAll();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>由于 Workermen 是一个独立于PHP程序使用的单一文件，需要单独用一个命令行来启动的，他完全可以独立使用，因此并不推荐使用TP框架来整合，但如果有这个需求，也可以在 <code>/public</code>目录下生成一个文件来绑定控制器，例如绑定 到 <code>socketio/Server</code><br>创建文件 <code>public/server.php</code> , 输入以下内容<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// [ 应用入口文件 ]</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">think</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加载基础文件</span></span><br><span class="line"><span class="keyword">require</span> <span class="keyword">__DIR__</span> . <span class="string">'/../thinkphp/base.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行应用并响应（绑定）</span></span><br><span class="line">Container::get(<span class="string">'app'</span>)-&gt;bind(<span class="string">'socketio/Server'</span>)-&gt;run()-&gt;send();</span><br></pre></td></tr></table></figure></p>
-<p>执行时 直接在Shell中运行该PHP文件即可，剩下的交给TP的机制<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /public</span><br><span class="line">php server.php</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装及引用"><a href="#安装及引用" class="headerlink" title="安装及引用"></a>安装及引用</h3><p>使用Composer 安装对应的扩展</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require workerman/phpsocket.io</span><br></pre></td></tr></table></figure>
+<p>在编辑代码时引用对应的扩展即可</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Workerman</span>\<span class="title">Worker</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">PHPSocketIO</span>\<span class="title">SocketIO</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="服务端-1"><a href="#服务端-1" class="headerlink" title="服务端"></a>服务端</h3><p>创建一个服务端 <code>application\socketio\controller\server.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">app</span>\<span class="title class_">socketio</span>\<span class="title class_">controller</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Workerman</span>\<span class="title">Worker</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">PHPSocketIO</span>\<span class="title">SocketIO</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">think</span>\<span class="title">Db</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Server</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="comment">// 在2021端口创建服务</span></span><br><span class="line">        <span class="variable">$io</span> = <span class="keyword">new</span> <span class="title function_ invoke__">SocketIO</span>(<span class="number">2021</span>);</span><br><span class="line">        <span class="variable">$io</span>-&gt;<span class="title function_ invoke__">on</span>(<span class="string">&#x27;connection&#x27;</span>, function(<span class="variable">$socket</span>)<span class="keyword">use</span>($<span class="title">io</span>)&#123;</span><br><span class="line">            $<span class="title">socket</span>-&gt;<span class="title">on</span>(&#x27;<span class="title">chat</span> <span class="title">message</span>&#x27;, <span class="keyword">function</span>($<span class="title">msg</span>)<span class="title">use</span>($<span class="title">io</span>)&#123;</span><br><span class="line">                $<span class="title">io</span>-&gt;<span class="title">emit</span>(&#x27;<span class="title">chat</span> <span class="title">message</span>&#x27;, $<span class="title">msg</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="comment">// 监听到新的客户端连接即在服务端输出&#x27;new connection&#x27;</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;new connection&#x27;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">            <span class="comment">// 并向服务端发送&#x27;连接成功&#x27;</span></span><br><span class="line">            <span class="variable">$socket</span>-&gt;<span class="title function_ invoke__">emit</span>(<span class="string">&#x27;success&#x27;</span>, <span class="string">&#x27;连接成功&#x27;</span>);</span><br><span class="line">            <span class="comment">// 服务端发送消息过来</span></span><br><span class="line">            <span class="variable">$socket</span>-&gt;<span class="title function_ invoke__">on</span>(<span class="string">&#x27;sendMsg&#x27;</span>, function(<span class="variable">$msg</span>)<span class="keyword">use</span>($<span class="title">io</span>)&#123;</span><br><span class="line">                // 在服务端输出消息</span><br><span class="line">                <span class="title">echo</span> $<span class="title">msg</span>.&quot;\<span class="title">n</span>&quot;;</span><br><span class="line">                <span class="comment">// 在收到的消息前面拼接&#x27;收到&#x27;后向客户端发送回去</span></span><br><span class="line">                <span class="variable">$io</span>-&gt;<span class="title function_ invoke__">emit</span>(<span class="string">&#x27;sendMsg&#x27;</span>, <span class="string">&#x27;收到&quot;&#x27;</span>.<span class="variable">$msg</span>.<span class="string">&#x27;&quot;&#x27;</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// 启动服务</span></span><br><span class="line">        <span class="title class_">Worker</span>::<span class="title function_ invoke__">runAll</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于 Workermen 是一个独立于PHP程序使用的单一文件，需要单独用一个命令行来启动的，他完全可以独立使用，因此并不推荐使用TP框架来整合，但如果有这个需求，也可以在 <code>/public</code>目录下生成一个文件来绑定控制器，例如绑定 到 <code>socketio/Server</code><br>创建文件 <code>public/server.php</code> , 输入以下内容</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// [ 应用入口文件 ]</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">think</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加载基础文件</span></span><br><span class="line"><span class="keyword">require</span> <span class="keyword">__DIR__</span> . <span class="string">&#x27;/../thinkphp/base.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行应用并响应（绑定）</span></span><br><span class="line"><span class="title class_">Container</span>::<span class="title function_ invoke__">get</span>(<span class="string">&#x27;app&#x27;</span>)-&gt;<span class="title function_ invoke__">bind</span>(<span class="string">&#x27;socketio/Server&#x27;</span>)-&gt;<span class="title function_ invoke__">run</span>()-&gt;<span class="title function_ invoke__">send</span>();</span><br></pre></td></tr></table></figure>
+<p>执行时 直接在Shell中运行该PHP文件即可，剩下的交给TP的机制</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /public</span><br><span class="line">php server.php</span><br></pre></td></tr></table></figure>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://s1.ax1x.com/2020/05/14/Y0J6AA.png" alt="执行结果.png" title>
+                    <img src="https://s1.ax1x.com/2020/05/14/Y0J6AA.png" alt="执行结果.png" title="">
                 </div>
                 <div class="image-caption">执行结果.png</div>
             </figure>
+
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>根据通信行为可以衍生出各类应用，目前websocket已经是各大公司都需要的技术，会websocket就多了一份机会！</p>
 
         </div>
@@ -270,7 +286,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-14T13:51:53.699Z" itemprop="dateUpdated">2020-05-14 21:51:53</time>
+    最后更新时间：<time datetime="2020-05-14T13:51:54.000Z" itemprop="dateUpdated">2020-05-14 21:51:54</time>
 </span><br>
 
 
@@ -296,7 +312,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/socket/">socket</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/workerman/">workerman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/通讯/">通讯</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/socket/" rel="tag">socket</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/workerman/" rel="tag">workerman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%80%9A%E8%AE%AF/" rel="tag">通讯</a></li></ul>
 
 
             
@@ -434,7 +450,8 @@
         </div>
         
         <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
             <div class="reward-toggle-ctrol">
                 <span class="reward-toggle-item wechat">微信</span>
                 <span class="reward-toggle-label"></span>
@@ -453,10 +470,10 @@
     <div class="top">
         
 <p>
-    <span id="busuanzi_container_site_uv" style="display:none">
+    <span id="busuanzi_container_site_uv" style='display:none'>
         站点总访客数：<span id="busuanzi_value_site_uv"></span>
     </span>
-    <span id="busuanzi_container_site_pv" style="display:none">
+    <span id="busuanzi_container_site_pv" style='display:none'>
         站点总访问量：<span id="busuanzi_value_site_pv"></span>
     </span>
 </p>
@@ -466,12 +483,14 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>ai0by &copy; 2015 - 2022</span>
+        <p><span>ai0by &copy; 2015 - 2026</span>
             <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">辽ICP备2026001716号</a><br>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
             </span>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
     
 
     
@@ -21,19 +21,21 @@
     
     
     <meta name="keywords" content="Python,爬虫,福利">
-    <meta name="description" content="观察目录结构目标网站：192tb.com网站结构复杂，但也不是太复杂，总体来说都写在导航栏上面了，本以为是new分类下就是所有的文章了，后来发现不是，需要遍历整个导航分类，由于每个分类都有很庞大的资源，因此我决定写成配置文件的形式，建立config.py 1234567891011121314# -*- coding: utf-8 -*-mt  = &apos;https://www.192tb.com/l">
-<meta name="keywords" content="Python,爬虫,福利">
+    <meta name="description" content="观察目录结构目标网站：192tb.com网站结构复杂，但也不是太复杂，总体来说都写在导航栏上面了，本以为是new分类下就是所有的文章了，后来发现不是，需要遍历整个导航分类，由于每个分类都有很庞大的资源，因此我决定写成配置文件的形式，建立config.py 123456789101112131415# -*- coding: utf-8 -*-mt  &#x3D; &amp;#x27;https:&#x2F;&#x2F;www.192t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="192TT(192tb)套图吧整站爬虫">
 <meta property="og:url" content="https://sbcoder.cn/2019/03/28/192tt_Spider.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
-<meta property="og:description" content="观察目录结构目标网站：192tb.com网站结构复杂，但也不是太复杂，总体来说都写在导航栏上面了，本以为是new分类下就是所有的文章了，后来发现不是，需要遍历整个导航分类，由于每个分类都有很庞大的资源，因此我决定写成配置文件的形式，建立config.py 1234567891011121314# -*- coding: utf-8 -*-mt  = &apos;https://www.192tb.com/l">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:description" content="观察目录结构目标网站：192tb.com网站结构复杂，但也不是太复杂，总体来说都写在导航栏上面了，本以为是new分类下就是所有的文章了，后来发现不是，需要遍历整个导航分类，由于每个分类都有很庞大的资源，因此我决定写成配置文件的形式，建立config.py 123456789101112131415# -*- coding: utf-8 -*-mt  &#x3D; &amp;#x27;https:&#x2F;&#x2F;www.192t">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://qiniu.xnbox.cn/2019/03/29/5c9dba3205190.png">
-<meta property="og:updated_time" content="2020-05-17T05:22:15.811Z">
+<meta property="article:published_time" content="2019-03-28T08:15:16.000Z">
+<meta property="article:modified_time" content="2020-05-17T05:22:16.000Z">
+<meta property="article:author" content="ai0by">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="福利">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="192TT(192tb)套图吧整站爬虫">
-<meta name="twitter:description" content="观察目录结构目标网站：192tb.com网站结构复杂，但也不是太复杂，总体来说都写在导航栏上面了，本以为是new分类下就是所有的文章了，后来发现不是，需要遍历整个导航分类，由于每个分类都有很庞大的资源，因此我决定写成配置文件的形式，建立config.py 1234567891011121314# -*- coding: utf-8 -*-mt  = &apos;https://www.192tb.com/l">
 <meta name="twitter:image" content="http://qiniu.xnbox.cn/2019/03/29/5c9dba3205190.png">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
@@ -45,12 +47,12 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 <body>
     <div id="loading" class="active"></div>
 
-    <aside id="menu" class="hide">
+    <aside id="menu" class="hide" >
   <div class="inner flex-row-vertical">
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
@@ -70,49 +72,49 @@
       <ul class="nav">
         
             <li class="waves-block waves-effect">
-              <a href="/">
+              <a href="/"  >
                 <i class="icon icon-lg icon-home"></i>
                 Home
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/archives">
+              <a href="/archives"  >
                 <i class="icon icon-lg icon-archives"></i>
                 Archives
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/tags">
+              <a href="/tags"  >
                 <i class="icon icon-lg icon-tags"></i>
                 Tags
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/categories">
+              <a href="/categories"  >
                 <i class="icon icon-lg icon-th-list"></i>
                 Categories
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/api">
+              <a href="/api"  >
                 <i class="icon icon-lg icon-api"></i>
                 API
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/custom">
+              <a href="/custom"  >
                 <i class="icon icon-lg icon-link"></i>
                 Link
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/2019/03/25/Hello_world.html">
+              <a href="/2019/03/25/Hello_world.html"  >
                 <i class="icon icon-lg icon-user"></i>
                 About Me
               </a>
@@ -176,17 +178,18 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#观察目录结构"><span class="post-toc-number">1.</span> <span class="post-toc-text">观察目录结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#核心代码"><span class="post-toc-number">2.</span> <span class="post-toc-text">核心代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取单个套图并下载"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">获取单个套图并下载</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取下一页页面信息"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">获取下一页页面信息</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#演示及下载"><span class="post-toc-number">3.</span> <span class="post-toc-text">演示及下载</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%A7%82%E5%AF%9F%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="post-toc-number">1.</span> <span class="post-toc-text">观察目录结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="post-toc-number">2.</span> <span class="post-toc-text">核心代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%8E%B7%E5%8F%96%E5%8D%95%E4%B8%AA%E5%A5%97%E5%9B%BE%E5%B9%B6%E4%B8%8B%E8%BD%BD"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">获取单个套图并下载</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%8E%B7%E5%8F%96%E4%B8%8B%E4%B8%80%E9%A1%B5%E9%A1%B5%E9%9D%A2%E4%BF%A1%E6%81%AF"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">获取下一页页面信息</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%BC%94%E7%A4%BA%E5%8F%8A%E4%B8%8B%E8%BD%BD"><span class="post-toc-number">3.</span> <span class="post-toc-text">演示及下载</span></a></li></ol>
         </nav>
     </aside>
 
 
-<article id="post-192TT-192tb-套图吧整站爬虫" class="post-article article-type-post fade" itemprop="blogPost">
+<article id="post-192TT-192tb-套图吧整站爬虫"
+  class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
         <h1 class="post-card-title">192TT(192tb)套图吧整站爬虫</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-03-28 16:15:16" datetime="2019-03-28T08:15:16.000Z" itemprop="datePublished">2019-03-28</time>
+            <time class="post-time" title="2019-03-28 16:15:16" datetime="2019-03-28T08:15:16.000Z"  itemprop="datePublished">2019-03-28</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Python/">Python</a></li></ul>
@@ -194,7 +197,7 @@
 
 
             
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
     <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
 </span>
 
@@ -202,17 +205,18 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h2 id="观察目录结构"><a href="#观察目录结构" class="headerlink" title="观察目录结构"></a>观察目录结构</h2><p>目标网站：192tb.com<br>网站结构复杂，但也不是太复杂，总体来说都写在导航栏上面了，本以为是new分类下就是所有的文章了，后来发现不是，需要遍历整个导航分类，由于每个分类都有很庞大的资源，因此我决定写成配置文件的形式，建立config.py</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">mt  = <span class="string">'https://www.192tb.com/listinfo-1-1.html'</span>                  <span class="comment"># 美图</span></span><br><span class="line">mt1 = <span class="string">'https://www.192tb.com/meitu/xingganmeinv/'</span>  <span class="comment"># 性感美女</span></span><br><span class="line">mt2 = <span class="string">'https://www.192tb.com/meitu/siwameitui/'</span>    <span class="comment"># 丝袜美腿</span></span><br><span class="line">mt3 = <span class="string">'https://www.192tb.com/meitu/weimeixiezhen/'</span> <span class="comment"># 唯美写真</span></span><br><span class="line">mt4 = <span class="string">'https://www.192tb.com/meitu/wangluomeinv/'</span>  <span class="comment"># 网络美女</span></span><br><span class="line">mt5 = <span class="string">'https://www.192tb.com/meitu/gaoqingmeinv/'</span>  <span class="comment"># 高清美女</span></span><br><span class="line">mt6 = <span class="string">'https://www.192tb.com/meitu/motemeinv/'</span>     <span class="comment"># 模特美女</span></span><br><span class="line">mt7 = <span class="string">'https://www.192tb.com/meitu/tiyumeinv/'</span>     <span class="comment"># 体育美女</span></span><br><span class="line">mt8 = <span class="string">'https://www.192tb.com/meitu/dongmanmeinv/'</span>  <span class="comment"># 动漫美女</span></span><br><span class="line">mt9 = <span class="string">'https://www.192tb.com/new/ugirlapp/'</span>        <span class="comment"># 爱尤物APP/尤果网</span></span><br><span class="line"></span><br><span class="line">gc  = <span class="string">'https://www.192tb.com/gc/'</span>                   <span class="comment"># 国产</span></span><br><span class="line">gc1 = <span class="string">'https://www.192tb.com/gc/bl/'</span> <span class="comment"># beautyleg1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">mt  = <span class="string">&#x27;https://www.192tb.com/listinfo-1-1.html&#x27;</span>                  <span class="comment"># 美图</span></span><br><span class="line">mt1 = <span class="string">&#x27;https://www.192tb.com/meitu/xingganmeinv/&#x27;</span>  <span class="comment"># 性感美女</span></span><br><span class="line">mt2 = <span class="string">&#x27;https://www.192tb.com/meitu/siwameitui/&#x27;</span>    <span class="comment"># 丝袜美腿</span></span><br><span class="line">mt3 = <span class="string">&#x27;https://www.192tb.com/meitu/weimeixiezhen/&#x27;</span> <span class="comment"># 唯美写真</span></span><br><span class="line">mt4 = <span class="string">&#x27;https://www.192tb.com/meitu/wangluomeinv/&#x27;</span>  <span class="comment"># 网络美女</span></span><br><span class="line">mt5 = <span class="string">&#x27;https://www.192tb.com/meitu/gaoqingmeinv/&#x27;</span>  <span class="comment"># 高清美女</span></span><br><span class="line">mt6 = <span class="string">&#x27;https://www.192tb.com/meitu/motemeinv/&#x27;</span>     <span class="comment"># 模特美女</span></span><br><span class="line">mt7 = <span class="string">&#x27;https://www.192tb.com/meitu/tiyumeinv/&#x27;</span>     <span class="comment"># 体育美女</span></span><br><span class="line">mt8 = <span class="string">&#x27;https://www.192tb.com/meitu/dongmanmeinv/&#x27;</span>  <span class="comment"># 动漫美女</span></span><br><span class="line">mt9 = <span class="string">&#x27;https://www.192tb.com/new/ugirlapp/&#x27;</span>        <span class="comment"># 爱尤物APP/尤果网</span></span><br><span class="line"></span><br><span class="line">gc  = <span class="string">&#x27;https://www.192tb.com/gc/&#x27;</span>                   <span class="comment"># 国产</span></span><br><span class="line">gc1 = <span class="string">&#x27;https://www.192tb.com/gc/bl/&#x27;</span> <span class="comment"># beautyleg1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>顶级分类和二级分类不便多说，这里只是测试并没有收录所有的分类，有兴趣可以自己添加</p>
 <p>进入分类页后既是套图封面，从这里可以爬取套图的链接，分类页的底部也是有下一页的选项，可以根据下一页来获取下一个分类页的链接，以此递归，并获取链接</p>
 <p>获取到套图链接后发现每个单页面都是需要点击下一张图片来做的，单页面中的图片，使用BeautifulSoup即可轻松获取，由于不知道一套图里面有多少张，我这边使用递归的方式，走到最后一张，即退出递归。</p>
-<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><h3 id="获取单个套图并下载"><a href="#获取单个套图并下载" class="headerlink" title="获取单个套图并下载"></a>获取单个套图并下载</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSingleData</span><span class="params">(url,singleTitle,i = <span class="number">1</span>)</span>:</span></span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    soup = BeautifulSoup(response.text,<span class="string">"html.parser"</span>)</span><br><span class="line">    imgUrl = soup.find(id = <span class="string">'p'</span>).find(<span class="string">'center'</span>).find(<span class="string">'img'</span>).get(<span class="string">'lazysrc'</span>)</span><br><span class="line">    <span class="keyword">print</span> imgUrl</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        j = i + <span class="number">1</span></span><br><span class="line">        result = <span class="string">'_%s.html'</span>%i <span class="keyword">in</span> url</span><br><span class="line">        <span class="keyword">if</span> result:</span><br><span class="line">            nextImg = response.url.replace(<span class="string">'_%s.html'</span>%i, <span class="string">'_%s.html'</span>%j)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            nextImg = response.url.replace(<span class="string">'.html'</span>, <span class="string">'_%s.html'</span>%j)</span><br><span class="line">        <span class="comment"># print nextImg</span></span><br><span class="line">        downImg(imgUrl,singleTitle,i)</span><br><span class="line">        getSingleData(nextImg,j)</span><br><span class="line">    <span class="keyword">except</span> Exception,e:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<h3 id="获取下一页页面信息"><a href="#获取下一页页面信息" class="headerlink" title="获取下一页页面信息"></a>获取下一页页面信息</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getPage</span><span class="params">(url,new = <span class="number">1</span>,i = <span class="number">1</span>)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'开始采集第%s页'</span>%i</span><br><span class="line">    <span class="keyword">print</span> url</span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    soup = BeautifulSoup(response.text,<span class="string">"html.parser"</span>)</span><br><span class="line">    <span class="keyword">for</span> dataUrl <span class="keyword">in</span> soup.find(<span class="string">'div'</span>,&#123;<span class="string">'class'</span>:<span class="string">'piclist'</span>&#125;).find(<span class="string">'ul'</span>).find_all(<span class="string">'li'</span>):</span><br><span class="line">        singleDataUrl = <span class="string">'https://www.192tb.com/'</span>+dataUrl.find(<span class="string">'a'</span>).get(<span class="string">'href'</span>)</span><br><span class="line">        <span class="keyword">print</span> singleDataUrl</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            singleTitle = dataUrl.find(<span class="string">'a'</span>).find(<span class="string">'img'</span>).get(<span class="string">'alt'</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception,e:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">print</span> singleTitle</span><br><span class="line">        getSingleData(singleDataUrl,singleTitle)</span><br><span class="line">    result = <span class="string">'_%s.html'</span> % i <span class="keyword">in</span> url</span><br><span class="line">    j = i + <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> new != <span class="number">1</span>:</span><br><span class="line">        nextPageUrl = url.replace(<span class="string">'listinfo-1-%s.html'</span> % i, <span class="string">'listinfo-1-%s.html'</span> % j)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> result:</span><br><span class="line">            nextPageUrl = url.replace(<span class="string">'index_%s.html'</span> % i, <span class="string">'index_%s.html'</span> % j)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            nextPageUrl = url.replace(url, url+<span class="string">'/index_%s.html'</span> % j)</span><br><span class="line">    getPage(nextPageUrl,new,j)</span><br></pre></td></tr></table></figure>
-<h2 id="演示及下载"><a href="#演示及下载" class="headerlink" title="演示及下载"></a>演示及下载</h2><p>下载地址：<a href="https://github.com/ai0by/ai0by-spider/tree/master/192tt" target="_blank" rel="noopener">Github</a></p>
+<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><h3 id="获取单个套图并下载"><a href="#获取单个套图并下载" class="headerlink" title="获取单个套图并下载"></a>获取单个套图并下载</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">getSingleData</span>(<span class="params">url,singleTitle,i = <span class="number">1</span></span>):</span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    soup = BeautifulSoup(response.text,<span class="string">&quot;html.parser&quot;</span>)</span><br><span class="line">    imgUrl = soup.find(<span class="built_in">id</span> = <span class="string">&#x27;p&#x27;</span>).find(<span class="string">&#x27;center&#x27;</span>).find(<span class="string">&#x27;img&#x27;</span>).get(<span class="string">&#x27;lazysrc&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span> imgUrl</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        j = i + <span class="number">1</span></span><br><span class="line">        result = <span class="string">&#x27;_%s.html&#x27;</span>%i <span class="keyword">in</span> url</span><br><span class="line">        <span class="keyword">if</span> result:</span><br><span class="line">            nextImg = response.url.replace(<span class="string">&#x27;_%s.html&#x27;</span>%i, <span class="string">&#x27;_%s.html&#x27;</span>%j)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            nextImg = response.url.replace(<span class="string">&#x27;.html&#x27;</span>, <span class="string">&#x27;_%s.html&#x27;</span>%j)</span><br><span class="line">        <span class="comment"># print nextImg</span></span><br><span class="line">        downImg(imgUrl,singleTitle,i)</span><br><span class="line">        getSingleData(nextImg,j)</span><br><span class="line">    <span class="keyword">except</span> Exception,e:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h3 id="获取下一页页面信息"><a href="#获取下一页页面信息" class="headerlink" title="获取下一页页面信息"></a>获取下一页页面信息</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">getPage</span>(<span class="params">url,new = <span class="number">1</span>,i = <span class="number">1</span></span>):</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;开始采集第%s页&#x27;</span>%i</span><br><span class="line">    <span class="built_in">print</span> url</span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    soup = BeautifulSoup(response.text,<span class="string">&quot;html.parser&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> dataUrl <span class="keyword">in</span> soup.find(<span class="string">&#x27;div&#x27;</span>,&#123;<span class="string">&#x27;class&#x27;</span>:<span class="string">&#x27;piclist&#x27;</span>&#125;).find(<span class="string">&#x27;ul&#x27;</span>).find_all(<span class="string">&#x27;li&#x27;</span>):</span><br><span class="line">        singleDataUrl = <span class="string">&#x27;https://www.192tb.com/&#x27;</span>+dataUrl.find(<span class="string">&#x27;a&#x27;</span>).get(<span class="string">&#x27;href&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span> singleDataUrl</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            singleTitle = dataUrl.find(<span class="string">&#x27;a&#x27;</span>).find(<span class="string">&#x27;img&#x27;</span>).get(<span class="string">&#x27;alt&#x27;</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception,e:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="built_in">print</span> singleTitle</span><br><span class="line">        getSingleData(singleDataUrl,singleTitle)</span><br><span class="line">    result = <span class="string">&#x27;_%s.html&#x27;</span> % i <span class="keyword">in</span> url</span><br><span class="line">    j = i + <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> new != <span class="number">1</span>:</span><br><span class="line">        nextPageUrl = url.replace(<span class="string">&#x27;listinfo-1-%s.html&#x27;</span> % i, <span class="string">&#x27;listinfo-1-%s.html&#x27;</span> % j)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> result:</span><br><span class="line">            nextPageUrl = url.replace(<span class="string">&#x27;index_%s.html&#x27;</span> % i, <span class="string">&#x27;index_%s.html&#x27;</span> % j)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            nextPageUrl = url.replace(url, url+<span class="string">&#x27;/index_%s.html&#x27;</span> % j)</span><br><span class="line">    getPage(nextPageUrl,new,j)</span><br></pre></td></tr></table></figure>
+
+<h2 id="演示及下载"><a href="#演示及下载" class="headerlink" title="演示及下载"></a>演示及下载</h2><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/ai0by/ai0by-spider/tree/master/192tt">Github</a></p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="http://qiniu.xnbox.cn/2019/03/29/5c9dba3205190.png" alt="192tt演示图" title>
+                    <img src="http://qiniu.xnbox.cn/2019/03/29/5c9dba3205190.png" alt="192tt演示图" title="">
                 </div>
                 <div class="image-caption">192tt演示图</div>
             </figure>
@@ -223,7 +227,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-05-17T05:22:15.811Z" itemprop="dateUpdated">2020-05-17 13:22:15</time>
+    最后更新时间：<time datetime="2020-05-17T05:22:16.000Z" itemprop="dateUpdated">2020-05-17 13:22:16</time>
 </span><br>
 
 
@@ -249,7 +253,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/福利/">福利</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A6%8F%E5%88%A9/" rel="tag">福利</a></li></ul>
 
 
             
@@ -387,7 +391,8 @@
         </div>
         
         <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
             <div class="reward-toggle-ctrol">
                 <span class="reward-toggle-item wechat">微信</span>
                 <span class="reward-toggle-label"></span>
@@ -406,10 +411,10 @@
     <div class="top">
         
 <p>
-    <span id="busuanzi_container_site_uv" style="display:none">
+    <span id="busuanzi_container_site_uv" style='display:none'>
         站点总访客数：<span id="busuanzi_value_site_uv"></span>
     </span>
-    <span id="busuanzi_container_site_pv" style="display:none">
+    <span id="busuanzi_container_site_pv" style='display:none'>
         站点总访问量：<span id="busuanzi_value_site_pv"></span>
     </span>
 </p>
@@ -419,12 +424,14 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>ai0by &copy; 2015 - 2022</span>
+        <p><span>ai0by &copy; 2015 - 2026</span>
             <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">辽ICP备2026001716号</a><br>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
             </span>

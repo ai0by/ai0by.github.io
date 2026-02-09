@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
     
 
     
@@ -21,20 +21,22 @@
     
     
     <meta name="keywords" content="Python,爬虫,福利">
-    <meta name="description" content="前言兔玩是一个非常不错的妹子图网站，跟曾经的PR社有异曲同工之处，花少量的钱可以看Coser的图片，但是tuwan的妹子还是很正经的哟~兔玩官网 tuwanjun.com以下是网站截图                                                                                             tuwan">
-<meta name="keywords" content="Python,爬虫,福利">
+    <meta name="description" content="前言兔玩是一个非常不错的妹子图网站，跟曾经的PR社有异曲同工之处，花少量的钱可以看Coser的图片，但是tuwan的妹子还是很正经的哟~兔玩官网 tuwanjun.com以下是网站截图                                                                                              tuwan">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tuwan（兔玩）全站妹子图爬虫可多窗口">
 <meta property="og:url" content="https://sbcoder.cn/2019/05/13/tuwan_spider.html">
 <meta property="og:site_name" content="风向标 | 分享与创造">
-<meta property="og:description" content="前言兔玩是一个非常不错的妹子图网站，跟曾经的PR社有异曲同工之处，花少量的钱可以看Coser的图片，但是tuwan的妹子还是很正经的哟~兔玩官网 tuwanjun.com以下是网站截图                                                                                             tuwan">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:description" content="前言兔玩是一个非常不错的妹子图网站，跟曾经的PR社有异曲同工之处，花少量的钱可以看Coser的图片，但是tuwan的妹子还是很正经的哟~兔玩官网 tuwanjun.com以下是网站截图                                                                                              tuwan">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2019/05/13/5cd987f05d3b167053.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/05/13/5cd98d4c726e038815.jpeg">
-<meta property="og:updated_time" content="2019-05-13T15:29:23.000Z">
+<meta property="article:published_time" content="2019-05-13T15:01:00.000Z">
+<meta property="article:modified_time" content="2019-05-13T15:29:24.000Z">
+<meta property="article:author" content="ai0by">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="福利">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tuwan（兔玩）全站妹子图爬虫可多窗口">
-<meta name="twitter:description" content="前言兔玩是一个非常不错的妹子图网站，跟曾经的PR社有异曲同工之处，花少量的钱可以看Coser的图片，但是tuwan的妹子还是很正经的哟~兔玩官网 tuwanjun.com以下是网站截图                                                                                             tuwan">
 <meta name="twitter:image" content="https://i.loli.net/2019/05/13/5cd987f05d3b167053.jpg">
     
         <link rel="alternate" type="application/atom+xml" title="风向标 | 分享与创造" href="/atom.xml">
@@ -46,12 +48,12 @@
     <!-- custom head -->
     
 
-</head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 <body>
     <div id="loading" class="active"></div>
 
-    <aside id="menu" class="hide">
+    <aside id="menu" class="hide" >
   <div class="inner flex-row-vertical">
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
@@ -71,49 +73,49 @@
       <ul class="nav">
         
             <li class="waves-block waves-effect">
-              <a href="/">
+              <a href="/"  >
                 <i class="icon icon-lg icon-home"></i>
                 Home
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/archives">
+              <a href="/archives"  >
                 <i class="icon icon-lg icon-archives"></i>
                 Archives
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/tags">
+              <a href="/tags"  >
                 <i class="icon icon-lg icon-tags"></i>
                 Tags
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/categories">
+              <a href="/categories"  >
                 <i class="icon icon-lg icon-th-list"></i>
                 Categories
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/api">
+              <a href="/api"  >
                 <i class="icon icon-lg icon-api"></i>
                 API
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/custom">
+              <a href="/custom"  >
                 <i class="icon icon-lg icon-link"></i>
                 Link
               </a>
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/2019/03/25/Hello_world.html">
+              <a href="/2019/03/25/Hello_world.html"  >
                 <i class="icon icon-lg icon-user"></i>
                 About Me
               </a>
@@ -177,17 +179,18 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#破解"><span class="post-toc-number">2.</span> <span class="post-toc-text">破解</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#下载"><span class="post-toc-number">3.</span> <span class="post-toc-text">下载</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%89%8D%E8%A8%80"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%A0%B4%E8%A7%A3"><span class="post-toc-number">2.</span> <span class="post-toc-text">破解</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%8B%E8%BD%BD"><span class="post-toc-number">3.</span> <span class="post-toc-text">下载</span></a></li></ol>
         </nav>
     </aside>
 
 
-<article id="post-tuwan全站妹子图爬虫可多窗口" class="post-article article-type-post fade" itemprop="blogPost">
+<article id="post-tuwan全站妹子图爬虫可多窗口"
+  class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
         <h1 class="post-card-title">tuwan（兔玩）全站妹子图爬虫可多窗口</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-05-13 23:01:00" datetime="2019-05-13T15:01:00.000Z" itemprop="datePublished">2019-05-13</time>
+            <time class="post-time" title="2019-05-13 23:01:00" datetime="2019-05-13T15:01:00.000Z"  itemprop="datePublished">2019-05-13</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Python/">Python</a></li></ul>
@@ -195,32 +198,42 @@
 
 
             
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
     <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
 </span>
 
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>兔玩是一个非常不错的妹子图网站，跟曾经的PR社有异曲同工之处，花少量的钱可以看Coser的图片，但是tuwan的妹子还是很正经的哟~<br>兔玩官网 <a href="https://www.tuwanjun.com/" target="_blank" rel="noopener">tuwanjun.com</a><br>以下是网站截图<br><figure class="image-bubble">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>兔玩是一个非常不错的妹子图网站，跟曾经的PR社有异曲同工之处，花少量的钱可以看Coser的图片，但是tuwan的妹子还是很正经的哟~<br>兔玩官网 <a target="_blank" rel="noopener" href="https://www.tuwanjun.com/">tuwanjun.com</a><br>以下是网站截图</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://i.loli.net/2019/05/13/5cd987f05d3b167053.jpg" alt="tuwan" title>
+                    <img src="https://i.loli.net/2019/05/13/5cd987f05d3b167053.jpg" alt="tuwan" title="">
                 </div>
                 <div class="image-caption">tuwan</div>
-            </figure><br>兔玩的更新速度还是不错的呢~</p>
-<h2 id="破解"><a href="#破解" class="headerlink" title="破解"></a>破解</h2><p>看到官网的套图打开后，一般是有几张可以看得图，也有一堆尺寸小的预览图，地址很相似，例如这张<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://img4.tuwandata.com/v3/thumb/jpg/YjAzYiwxNTgsMTU4LDksMywxLC0xLE5PTkUsLCw5MA==/u/GLDM9lMIBglnFv7YKftLBuvzpwYbEIoBh8ap84BsgXdniTdx80UqsXLdP5yaJZklUj09PvGO8IYpAC3nOanE0EHpB9bCnRKUnvdbAJH6CcXC.jpg</span><br></pre></td></tr></table></figure></p>
-<p><font color="#FF0000">YjAzYiwxNTgsMTU4LDksMywxLC0xLE5PTkUsLCw5MA==</font>这一串很容易看的出是base64加密过的串，经过解密获得<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">base64.b64decode(imgurl)</span><br><span class="line"><span class="comment"># b03b,158,158,9,3,1,-1,NONE,,,90</span></span><br></pre></td></tr></table></figure></p>
-<p>这里的158,158就是缩略图的尺寸了，我们尝试修改缩略图尺寸然后在base64加密后就可以取得地址，经过尝试，修改为 0，0即可还原原图尺寸~<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">base64.b64encode(base64.b64decode(imgurl.encode(<span class="string">'utf-8'</span>)).replace(<span class="string">'158'</span>,<span class="string">'0'</span>))</span><br><span class="line"><span class="comment"># YjAzYiwwLDAsOSwzLDEsLTEsTk9ORSwsLDkw</span></span><br></pre></td></tr></table></figure></p>
-<p>组合成原图地址：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://img4.tuwandata.com/v3/thumb/jpg/YjAzYiwwLDAsOSwzLDEsLTEsTk9ORSwsLDkw/u/GLDM9lMIBglnFv7YKftLBuvzpwYbEIoBh8ap84BsgXdniTdx80UqsXLdP5yaJZklUj09PvGO8IYpAC3nOanE0EHpB9bCnRKUnvdbAJH6CcXC.jpg</span><br></pre></td></tr></table></figure></p>
-<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>源代码已经开源到Github上了<br>上一张测试图<br><figure class="image-bubble">
+            </figure>
+<p>兔玩的更新速度还是不错的呢~</p>
+<h2 id="破解"><a href="#破解" class="headerlink" title="破解"></a>破解</h2><p>看到官网的套图打开后，一般是有几张可以看得图，也有一堆尺寸小的预览图，地址很相似，例如这张 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://img4.tuwandata.com/v3/thumb/jpg/YjAzYiwxNTgsMTU4LDksMywxLC0xLE5PTkUsLCw5MA==/u/GLDM9lMIBglnFv7YKftLBuvzpwYbEIoBh8ap84BsgXdniTdx80UqsXLdP5yaJZklUj09PvGO8IYpAC3nOanE0EHpB9bCnRKUnvdbAJH6CcXC.jpg</span><br></pre></td></tr></table></figure>
+<p><font color=#FF0000>YjAzYiwxNTgsMTU4LDksMywxLC0xLE5PTkUsLCw5MA&#x3D;&#x3D;</font>这一串很容易看的出是base64加密过的串，经过解密获得</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">base64.b64decode(imgurl)</span><br><span class="line"><span class="comment"># b03b,158,158,9,3,1,-1,NONE,,,90</span></span><br></pre></td></tr></table></figure>
+<p>这里的158,158就是缩略图的尺寸了，我们尝试修改缩略图尺寸然后在base64加密后就可以取得地址，经过尝试，修改为 0，0即可还原原图尺寸~</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">base64.b64encode(base64.b64decode(imgurl.encode(<span class="string">&#x27;utf-8&#x27;</span>)).replace(<span class="string">&#x27;158&#x27;</span>,<span class="string">&#x27;0&#x27;</span>))</span><br><span class="line"><span class="comment"># YjAzYiwwLDAsOSwzLDEsLTEsTk9ORSwsLDkw</span></span><br></pre></td></tr></table></figure>
+<p>组合成原图地址：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://img4.tuwandata.com/v3/thumb/jpg/YjAzYiwwLDAsOSwzLDEsLTEsTk9ORSwsLDkw/u/GLDM9lMIBglnFv7YKftLBuvzpwYbEIoBh8ap84BsgXdniTdx80UqsXLdP5yaJZklUj09PvGO8IYpAC3nOanE0EHpB9bCnRKUnvdbAJH6CcXC.jpg</span><br></pre></td></tr></table></figure>
+
+<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>源代码已经开源到Github上了<br>上一张测试图</p>
+<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://i.loli.net/2019/05/13/5cd98d4c726e038815.jpeg" alt="测试图" title>
+                    <img src="https://i.loli.net/2019/05/13/5cd98d4c726e038815.jpeg" alt="测试图" title="">
                 </div>
                 <div class="image-caption">测试图</div>
-            </figure></p>
-<p>下载地址：<a href="https://github.com/ai0by/ai0by-spider/tree/master/tuwan" target="_blank" rel="noopener">tuwan_spider</a></p>
+            </figure>
+
+
+<p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/ai0by/ai0by-spider/tree/master/tuwan">tuwan_spider</a></p>
 
         </div>
 
@@ -229,7 +242,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-05-13T15:29:23.000Z" itemprop="dateUpdated">2019-05-13 23:29:23</time>
+    最后更新时间：<time datetime="2019-05-13T15:29:24.000Z" itemprop="dateUpdated">2019-05-13 23:29:24</time>
 </span><br>
 
 
@@ -255,7 +268,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/福利/">福利</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A6%8F%E5%88%A9/" rel="tag">福利</a></li></ul>
 
 
             
@@ -393,7 +406,8 @@
         </div>
         
         <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
             <div class="reward-toggle-ctrol">
                 <span class="reward-toggle-item wechat">微信</span>
                 <span class="reward-toggle-label"></span>
@@ -412,10 +426,10 @@
     <div class="top">
         
 <p>
-    <span id="busuanzi_container_site_uv" style="display:none">
+    <span id="busuanzi_container_site_uv" style='display:none'>
         站点总访客数：<span id="busuanzi_value_site_uv"></span>
     </span>
-    <span id="busuanzi_container_site_pv" style="display:none">
+    <span id="busuanzi_container_site_pv" style='display:none'>
         站点总访问量：<span id="busuanzi_value_site_pv"></span>
     </span>
 </p>
@@ -425,12 +439,14 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
-        <p><span>ai0by &copy; 2015 - 2022</span>
+        <p><span>ai0by &copy; 2015 - 2026</span>
             <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">辽ICP备2026001716号</a><br>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
             </span>
