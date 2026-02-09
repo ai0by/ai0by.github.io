@@ -110,19 +110,24 @@
                 headerH = header.clientHeight,
                 titles = $('#post-content').querySelectorAll('h1, h2, h3, h4, h5, h6');
 
-            toc.querySelector('a[href="#' + titles[0].id + '"]').parentNode.classList.add('active');
+            // 修复：需要对 id 进行 URL 编码以匹配 TOC 链接
+            var firstLink = toc.querySelector('a[href="#' + encodeURIComponent(titles[0].id) + '"]');
+            if (firstLink && firstLink.parentNode) {
+                firstLink.parentNode.classList.add('active');
+            }
 
             // Make every child shrink initially
             var tocChilds = toc.querySelectorAll('.post-toc-child');
             for (i = 0, len = tocChilds.length; i < len; i++) {
                 tocChilds[i].classList.add('post-toc-shrink');
             }
-            var firstChild =
-                toc.querySelector('a[href="#' + titles[0].id + '"]')
-                    .nextElementSibling;
-            if (firstChild) {
-                firstChild.classList.add('post-toc-expand');
-                firstChild.classList.remove('post-toc-shrink');
+            var firstLink2 = toc.querySelector('a[href="#' + encodeURIComponent(titles[0].id) + '"]');
+            if (firstLink2) {
+                var firstChild = firstLink2.nextElementSibling;
+                if (firstChild) {
+                    firstChild.classList.add('post-toc-expand');
+                    firstChild.classList.remove('post-toc-shrink');
+                }
             }
             toc.classList.remove('post-toc-shrink');
 
@@ -155,17 +160,20 @@
                     for (i = 0, len = titles.length; i < len; i++) {
                         if (top > offset(titles[i]).y - headerH - 5) {
                             var prevListEle = toc.querySelector('li.active');
-                            var currListEle = toc.querySelector('a[href="#' + titles[i].id + '"]').parentNode;
-
-                            handleTocActive(prevListEle, currListEle);
+                            var currLink = toc.querySelector('a[href="#' + encodeURIComponent(titles[i].id) + '"]');
+                            if (currLink && currLink.parentNode) {
+                                var currListEle = currLink.parentNode;
+                                handleTocActive(prevListEle, currListEle);
+                            }
                         }
                     }
 
                     if (top < offset(titles[0]).y) {
-                        handleTocActive(
-                            toc.querySelector('li.active'),
-                            toc.querySelector('a[href="#' + titles[0].id + '"]').parentNode
-                        );
+                        var activeEle = toc.querySelector('li.active');
+                        var firstLink = toc.querySelector('a[href="#' + encodeURIComponent(titles[0].id) + '"]');
+                        if (activeEle && firstLink && firstLink.parentNode) {
+                            handleTocActive(activeEle, firstLink.parentNode);
+                        }
                     }
                 }
             }
